@@ -3,6 +3,7 @@ package br.com.lume.launcher
 import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
+import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Outline
@@ -31,7 +32,6 @@ import org.json.JSONArray
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
-import java.util.Locale
 import java.util.concurrent.Executors
 import android.content.pm.PackageManager
 import android.os.CancellationSignal
@@ -64,7 +64,7 @@ class LauncherActivity : Activity() {
     private val actions by lazy { DeviceActions(this) }
     private val artwork by lazy { ProgramArtworkBinder { active } }
     private val network by lazy { NetworkMonitor(this) { networkStatus = it; updateNetworkButton() } }
-    private var networkStatus = NetworkStatus("Rede", "Verificando internet")
+    private var networkStatus = NetworkStatus("", "")
     private var networkButton: TextView? = null
     private var clock: TextView? = null
     private var date: TextView? = null
@@ -77,6 +77,8 @@ class LauncherActivity : Activity() {
     private var movingPackage: String? = null
     private var moveOriginal: List<String>? = null
     private var currentPage = "home"
+    private var pendingRestoredFocusTag: String? = null
+    private var languageOriginTag: String? = null
     private var active = false
     private var loaded = false
     private var loading = false
@@ -97,18 +99,21 @@ class LauncherActivity : Activity() {
         if (active && hasWindowFocus() && openDialog == null && appMenu == null && movingPackage == null && prefs.getBoolean("screensaver_enabled", true)) startScreensaver()
         else resetScreensaverTimer()
     }
-    private val locale = Locale.forLanguageTag("pt-BR")
+    private val locale get() = AppLocales.formattingLocale(this)
     private data class Scene(val id: String, val title: String, val theme: String, val file: String, val thumb: String)
     private val scenes by lazy {
         val json = JSONArray(assets.open("scenes.json").bufferedReader().use { it.readText() })
         (0 until json.length()).map { i -> json.getJSONObject(i).let {
-            Scene(it.getString("id"), it.getString("title"), it.getString("theme"), it.getString("file"), it.getString("thumb"))
+            Scene(it.getString("id"), LocalizedText.sceneTitle(this, i), LocalizedText.sceneTheme(this, i), it.getString("file"), it.getString("thumb"))
         } }
     }
     private val tick = object : Runnable {
         override fun run() { if (active) { refreshAmbient(); handler.postDelayed(this, 60000 - System.currentTimeMillis() % 60000) } }
     }
     private fun dp(value: Int) = GlassUi.dp(this, value)
+    private fun s(id: Int, vararg args: Any) = getString(id, *args.map {
+        if (it is String) android.text.BidiFormatter.getInstance(rtl).unicodeWrap(it) else it
+    }.toTypedArray())
     private fun hour() = LocalTime.now().hour
     private fun cinema() = LauncherRules.cinemaActive(prefs.getString("cinema", "off"), hour())
     private fun appearance(): Triple<Int, Int, Boolean> {
@@ -196,30 +201,58 @@ class LauncherActivity : Activity() {
     private fun text(value: String, size: Float = 16f, secondary: Boolean = false) = GlassUi.text(this, value, size, secondary)
     private fun button(value: String, action: () -> Unit): TextView = GlassUi.button(this, value, action).also { it.id = View.generateViewId(); style(it) }
     private fun navigation(value: String, icon: Int, action: () -> Unit) = button(value, action).apply {
-        textSize = 14f; gravity = Gravity.CENTER_VERTICAL; maxLines = 2; setPadding(dp(10), dp(8), dp(10), dp(8))
+        textSize = 14f; gravity = Gravity.CENTER_VERTICAL; maxLines = 1; setPadding(dp(10), dp(8), dp(10), dp(8))
+        setAutoSizeTextTypeUniformWithConfiguration(10, 14, 1, android.util.TypedValue.COMPLEX_UNIT_SP)
         setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0); compoundDrawablePadding = dp(8)
         navigationControls.add(this)
         setOnKeyListener { view, key, event ->
             if (view === navigationControls.firstOrNull() && currentPage == "home" &&
-                key == KeyEvent.KEYCODE_DPAD_RIGHT && event.action == KeyEvent.ACTION_DOWN)
+                logicalKey(key) == KeyEvent.KEYCODE_DPAD_RIGHT && event.action == KeyEvent.ACTION_DOWN)
                 page.findViewWithTag<View>("content-tab:next")?.requestFocus() ?: false
             else false
         }
     }
+    private val rtl: Boolean get() = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+    private fun logicalKey(code: Int) = br.com.lume.launcher.core.LocaleRules.navigationKey(code, rtl)
+    private fun focusStart(view: View, id: Int) { if (rtl) view.nextFocusRightId = id else view.nextFocusLeftId = id }
+    private fun focusEnd(view: View, id: Int) { if (rtl) view.nextFocusLeftId = id else view.nextFocusRightId = id }
     private fun column() = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
     private fun row() = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
     private fun gap(parent: LinearLayout, amount: Int = 8) { parent.addView(View(this), LinearLayout.LayoutParams(if (parent.orientation == LinearLayout.HORIZONTAL) dp(amount) else 1, if (parent.orientation == LinearLayout.VERTICAL) dp(amount) else 1)) }
     private fun safePanel(view: View) { view.tag = "glass"; val a = appearance(); view.background = GlassUi.panel(if (prefs.getBoolean("lightweight", false)) 18 else a.first, if (prefs.getBoolean("lightweight", false)) 0 else a.second) }
 
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLocales.wrap(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        contentTab = prefs.getString("content_tab", "next").takeIf { it == "suggestions" } ?: "next"
+        networkStatus = NetworkStatus(s(R.string.common_network), s(R.string.common_checking_internet))
+        currentPage = savedInstanceState?.getString("state.page")?.takeIf { it in setOf("home", "apps", "scenes") } ?: "home"
+        contentTab = (savedInstanceState?.getString("state.content_tab") ?: prefs.getString("content_tab", "next"))
+            .takeIf { it == "suggestions" } ?: "next"
+        pendingRestoredFocusTag = savedInstanceState?.getString("state.focus")?.takeIf { it.length <= 256 && it.none { char -> char.isISOControl() } }
         buildShell()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("state.page", currentPage)
+        outState.putString("state.content_tab", contentTab)
+        outState.putString("state.focus", languageOriginTag ?: currentFocus?.tag as? String)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun restoreInstanceFocus() {
+        val tag = pendingRestoredFocusTag ?: return
+        if (!active || isDestroyed) return
+        val target = window.decorView.findViewWithTag<View>(tag) ?: return
+        if (target.isShown && target.isAttachedToWindow && target.requestFocus()) pendingRestoredFocusTag = null
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         if (intent.action == Intent.ACTION_MAIN && intent.hasCategory(Intent.CATEGORY_HOME)) {
+            pendingRestoredFocusTag = null
             closeDialog()
             showPage("home")
         }
@@ -252,13 +285,13 @@ class LauncherActivity : Activity() {
         rail.addView(brand, LinearLayout.LayoutParams(-1, dp(64))); gap(rail, 10)
         val sidebar = column().apply { gravity = Gravity.TOP; setPadding(dp(10), dp(12), dp(10), dp(12)); safePanel(this) }
         rail.addView(sidebar, LinearLayout.LayoutParams(-1, 0, 1f))
-        listOf("Início" to "home", "Aplicativos" to "apps", "Atmosferas" to "scenes").forEach { (name, destination) ->
+        listOf(s(R.string.activity_nav_home) to "home", s(R.string.activity_nav_apps) to "apps", s(R.string.activity_nav_scenes) to "scenes").forEach { (name, destination) ->
             val icon = when (destination) { "home" -> R.drawable.ic_home; "apps" -> R.drawable.ic_apps; else -> R.drawable.ic_scenes }
-            sidebar.addView(navigation(name, icon) { showPage(destination) }, LinearLayout.LayoutParams(-1, dp(48))); gap(sidebar, 8)
+            sidebar.addView(navigation(name, icon) { showPage(destination) }.apply { tag = "navigation:$destination" }, LinearLayout.LayoutParams(-1, dp(48))); gap(sidebar, 8)
         }
-        sidebar.addView(navigation("Modo Cinema", R.drawable.ic_cinema) { showCinema() }, LinearLayout.LayoutParams(-1, dp(48)))
+        sidebar.addView(navigation(s(R.string.activity_cinema_title), R.drawable.ic_cinema) { showCinema() }, LinearLayout.LayoutParams(-1, dp(48)))
         sidebar.addView(View(this), LinearLayout.LayoutParams(1, 0, 1f))
-        sidebar.addView(text("SEU ESPAÇO.\nDO SEU JEITO.", 10f, true).apply { setPadding(dp(8), 0, 0, 0) })
+        sidebar.addView(text(s(R.string.activity_sidebar_motto), 10f, true).apply { setPadding(dp(8), 0, 0, 0) })
         gap(shell, 20)
         val main = column().apply { setPadding(dp(4), 0, dp(4), 0) }
         shell.addView(main, LinearLayout.LayoutParams(0, -1, 1f))
@@ -275,7 +308,7 @@ class LauncherActivity : Activity() {
         }
         top.addView(networkButton, LinearLayout.LayoutParams(dp(195), dp(48))); gap(top, 8)
         updateNetworkButton()
-        val gear = ImageButton(this).apply { id = View.generateViewId(); setImageResource(R.drawable.ic_settings); scaleType = ImageView.ScaleType.CENTER; contentDescription = "Configurações do launcher e Android TV"; setOnClickListener { showSettings() }; style(this) }
+        val gear = ImageButton(this).apply { id = View.generateViewId(); tag = "launcher-settings"; setImageResource(R.drawable.ic_settings); scaleType = ImageView.ScaleType.CENTER; contentDescription = s(R.string.activity_settings_a11y); setOnClickListener { showSettings() }; style(this) }
         top.addView(gear, LinearLayout.LayoutParams(dp(48), dp(48)))
         main.addView(top, LinearLayout.LayoutParams(-1, dp(64))); gap(main, 10)
         pageHost = FrameLayout(this)
@@ -313,7 +346,7 @@ class LauncherActivity : Activity() {
     }
     override fun onDestroy() { active = false; pageImageGeneration++; wallpaperGeneration++; cancelContent(); artwork.dispose(); handler.removeCallbacks(idle); setHomeBordersActive(window.decorView, false); closeAppMenu(false); openDialog?.dismiss(); worker.shutdownNow(); super.onDestroy() }
 
-    override fun onUserInteraction() { super.onUserInteraction(); restoreContentOnResume = false; resetScreensaverTimer() }
+    override fun onUserInteraction() { super.onUserInteraction(); pendingRestoredFocusTag = null; restoreContentOnResume = false; resetScreensaverTimer() }
 
     private fun resetScreensaverTimer() {
         handler.removeCallbacks(idle)
@@ -324,7 +357,7 @@ class LauncherActivity : Activity() {
     private fun startScreensaver() {
         if (!active) return
         handler.removeCallbacks(idle)
-        if (!actions.openScreensaver()) { message("Não foi possível iniciar a proteção de tela."); resetScreensaverTimer() }
+        if (!actions.openScreensaver()) { message(s(R.string.activity_screensaver_start_failed)); resetScreensaverTimer() }
     }
 
     private fun setHomeBordersActive(view: View, enabled: Boolean) {
@@ -347,7 +380,7 @@ class LauncherActivity : Activity() {
                     if (movingPackage == null || changed) {
                         if (movingPackage != null) {
                             movingPackage = null; moveOriginal = null
-                            message("A lista de aplicativos mudou. Movimento cancelado.")
+                            message(s(R.string.activity_apps_changed_move_canceled))
                         }
                         favoritePackages = if (saved == null) apps.take(8).map { it.packageName }
                             else LauncherRules.validFavorites(saved.split('|'), apps.map { it.packageName }.toSet())
@@ -358,7 +391,7 @@ class LauncherActivity : Activity() {
                         restoreContentOnResume = false
                         if (currentFocus?.tag != prefs.getString("content_focus_$contentTab", null)) enterActiveContent()
                     }
-                }.onFailure { message("Não foi possível ler os aplicativos. Tente reabrir o launcher.") }
+                }.onFailure { message(s(R.string.activity_apps_read_failed)) }
             }
         }
     }
@@ -396,13 +429,14 @@ class LauncherActivity : Activity() {
         firstControl(page)?.let { target ->
             if (target.id == View.NO_ID) target.id = View.generateViewId()
             val entry = if (currentPage == "home") page.findViewWithTag<View>("content-tab:next") ?: target else target
-            navigationControls.forEach { it.nextFocusRightId = entry.id }
-            target.nextFocusLeftId = navigationControls[when (currentPage) { "apps" -> 1; "scenes" -> 2; else -> 0 }].id
+            navigationControls.forEach { focusEnd(it, entry.id) }
+            focusStart(target, navigationControls[when (currentPage) { "apps" -> 1; "scenes" -> 2; else -> 0 }].id)
         }
         if (focusTag != null && (focusTag.startsWith("app:") || focusTag == "include-apps")) {
             val renderedPage = page
             pageHost.post { if (!isDestroyed && page === renderedPage) renderedPage.findViewWithTag<View>(focusTag)?.requestFocus() }
         }
+        pageHost.post { restoreInstanceFocus() }
     }
 
     private fun home(focusTag: String?) {
@@ -410,14 +444,14 @@ class LauncherActivity : Activity() {
         val welcome = column().apply { safePanel(this); setPadding(dp(20), dp(12), dp(20), dp(8)); gravity = Gravity.CENTER_VERTICAL }
         welcome.setPadding(dp(8), dp(6), dp(8), dp(6))
         val tabs = row()
-        listOf("next" to "Continuar assistindo", "suggestions" to "Sugestões").forEach { (key, label) ->
+        listOf("next" to s(R.string.activity_continue_watching), "suggestions" to s(R.string.activity_suggestions)).forEach { (key, label) ->
             tabs.addView(button(label) { activateContentTab(key, true) }.apply {
                 textSize = 13f; minHeight = dp(32); minimumHeight = dp(32); setPadding(dp(8), dp(2), dp(8), dp(2))
                 tag = "content-tab:$key"
                 style(this)
                 setOnKeyListener { _, code, event ->
                     if (event.action != KeyEvent.ACTION_DOWN) false
-                    else when (code) {
+                    else when (logicalKey(code)) {
                         KeyEvent.KEYCODE_DPAD_LEFT -> if (key == "next") navigationControls.first().requestFocus()
                             else page.findViewWithTag<View>("content-tab:next")?.requestFocus() ?: false
                         KeyEvent.KEYCODE_DPAD_RIGHT -> if (key == "next") page.findViewWithTag<View>("content-tab:suggestions")?.requestFocus() ?: false
@@ -450,25 +484,25 @@ class LauncherActivity : Activity() {
         val widgets = column()
         cinemaButton = button(cinemaLabel()) { toggleCinema() }.apply { gravity = Gravity.CENTER_VERTICAL; textSize = 12f; maxLines = 3; setPadding(dp(12), dp(6), dp(12), dp(6)) }
         cinemaButton?.setOnKeyListener { _, code, event ->
-            if (code == KeyEvent.KEYCODE_DPAD_LEFT && event.action == KeyEvent.ACTION_DOWN)
+            if (logicalKey(code) == KeyEvent.KEYCODE_DPAD_LEFT && event.action == KeyEvent.ACTION_DOWN)
                 page.findViewWithTag<View>("content-tab:suggestions")?.requestFocus() ?: false
             else false
         }
         widgets.addView(cinemaButton, LinearLayout.LayoutParams(-1, 0, 1f)); gap(widgets, 8)
-        atmosphereButton = button((if (prefs.getBoolean("daily", true)) "ATMOSFERA DO DIA\n" else "SUA ATMOSFERA\n") + scenes[sceneIndex()].title) { showPage("scenes") }.apply { textSize = 12f; maxLines = 3; setPadding(dp(12), dp(6), dp(12), dp(6)) }
+        atmosphereButton = button(s(if (prefs.getBoolean("daily", true)) R.string.activity_daily_atmosphere else R.string.activity_manual_atmosphere, scenes[sceneIndex()].title)) { showPage("scenes") }.apply { textSize = 12f; maxLines = 3; setPadding(dp(12), dp(6), dp(12), dp(6)) }
         widgets.addView(atmosphereButton, LinearLayout.LayoutParams(-1, 0, 1f))
         hero.addView(widgets, LinearLayout.LayoutParams(dp(152), -1))
         page.addView(hero, LinearLayout.LayoutParams(-1, 0, 1f)); gap(page, 8)
 
         val favoritesPanel = column().apply { safePanel(this); setPadding(dp(8), dp(4), dp(8), dp(4)) }
         val heading = row()
-        val favoriteHeading = if (movingPackage == null) text("Seus favoritos", 14f)
-            else text("Mover: ← →  ·  OK salva\nVoltar cancela", 12f).apply { maxLines = 2; contentDescription = "Mover favorito. Esquerda ou direita move. OK salva. Voltar cancela." }
+        val favoriteHeading = if (movingPackage == null) text(s(R.string.activity_favorites_heading), 14f)
+            else text(s(R.string.activity_move_hint), 12f).apply { maxLines = 2; contentDescription = s(R.string.activity_move_a11y) }
         heading.addView(favoriteHeading, LinearLayout.LayoutParams(0, -2, 1f))
-        heading.addView(button("+ Incluir aplicativos") { showPage("apps") }.apply { tag = "include-apps"; textSize = 11f; minHeight = dp(28); minimumHeight = dp(28); setPadding(dp(10), dp(3), dp(10), dp(3)) }, LinearLayout.LayoutParams(-2, dp(28)))
+        heading.addView(button(s(R.string.activity_include_apps)) { showPage("apps") }.apply { tag = "include-apps"; textSize = 11f; minHeight = dp(28); minimumHeight = dp(28); setPadding(dp(10), dp(3), dp(10), dp(3)) }, LinearLayout.LayoutParams(-2, dp(28)))
         favoritesPanel.addView(heading, LinearLayout.LayoutParams(-1, dp(28)))
         val favorites = favoritePackages.mapNotNull { key -> apps.find { it.packageName == key } }
-        if (favorites.isEmpty()) favoritesPanel.addView(text(if (loaded) "Inclua seus aplicativos preferidos." else "Carregando aplicativos…", 14f, true), LinearLayout.LayoutParams(-1, dp(80)))
+        if (favorites.isEmpty()) favoritesPanel.addView(text(if (loaded) s(R.string.activity_favorites_empty) else s(R.string.activity_apps_loading), 14f, true), LinearLayout.LayoutParams(-1, dp(80)))
         else {
             val strip = HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled = false; isFocusable = false; isFillViewport = false; clipToPadding = false }
             val line = row().apply { clipChildren = false; clipToPadding = false; setPadding(dp(6), dp(4), dp(6), 0) }
@@ -494,7 +528,7 @@ class LauncherActivity : Activity() {
                     line.addView(appCard(app, showFavorite = false), LinearLayout.LayoutParams(slotWidth, -1))
                 }
                 line.findViewWithTag<View>("app:${favorites.first().packageName}")?.let { first ->
-                    first.nextFocusLeftId = navigationControls.first().id
+                    focusStart(first, navigationControls.first().id)
                 }
                 if (focusedTag != null) line.findViewWithTag<View>(focusedTag)?.requestFocus()
             }
@@ -504,8 +538,8 @@ class LauncherActivity : Activity() {
         page.addView(favoritesPanel, LinearLayout.LayoutParams(-1, -2)); gap(page, 8)
         val previews = column(); scenePreview = previews
         val scenesHeading = row()
-        scenesHeading.addView(text("Uma nova perspectiva", 16f), LinearLayout.LayoutParams(0, -2, 1f))
-        scenesHeading.addView(button("Ver 30  ›") { showPage("scenes") }.apply { textSize = 12f; minHeight = dp(32); minimumHeight = dp(32); setPadding(dp(10), dp(4), dp(10), dp(4)) }, LinearLayout.LayoutParams(-2, dp(32)))
+        scenesHeading.addView(text(s(R.string.activity_scenes_heading), 16f), LinearLayout.LayoutParams(0, -2, 1f))
+        scenesHeading.addView(button(s(R.string.activity_view_all_scenes)) { showPage("scenes") }.apply { textSize = 12f; minHeight = dp(32); minimumHeight = dp(32); setPadding(dp(10), dp(4), dp(10), dp(4)) }, LinearLayout.LayoutParams(-2, dp(32)))
         previews.addView(scenesHeading, LinearLayout.LayoutParams(-1, dp(32)))
         val recommended = row()
         repeat(3) { offset ->
@@ -538,7 +572,7 @@ class LauncherActivity : Activity() {
         if (requestCode == 82) {
             val granted = grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED
             prefs.edit().putBoolean("shared_content", granted).apply()
-            if (!granted) message("Acesso não autorizado. Você ainda pode abrir suas plataformas.")
+            if (!granted) message(s(R.string.activity_content_permission_denied))
             loadContent(); renderContent()
         }
     }
@@ -605,13 +639,13 @@ class LauncherActivity : Activity() {
             host.post {
                 if (contentHost !== host || renderGeneration != contentRenderGeneration || !active) return@post
                 val first = firstControl(host)
-                first?.nextFocusLeftId = navigationControls.first().id
+                first?.let { focusStart(it, navigationControls.first().id) }
                 listOf("next", "suggestions").forEach { key ->
                     page.findViewWithTag<View>("content-tab:$key")?.nextFocusDownId = first?.id ?: View.NO_ID
                 }
                 val selectedTab = page.findViewWithTag<View>("content-tab:$contentTab")
                 if (selectedTab != null) {
-                    page.findViewWithTag<View>("content-tab:next")?.let { entry -> navigationControls.forEach { it.nextFocusRightId = entry.id } }
+                    page.findViewWithTag<View>("content-tab:next")?.let { entry -> navigationControls.forEach { focusEnd(it, entry.id) } }
                     fun returnToTab(view: View) {
                         if (view.isFocusable && view.isClickable) view.nextFocusUpId = selectedTab.id
                         if (view is ViewGroup) for (i in 0 until view.childCount) returnToTab(view.getChildAt(i))
@@ -623,14 +657,15 @@ class LauncherActivity : Activity() {
                 enterRequestedContent(host)
                 updateContentPreview()
                 artwork.refresh()
+                restoreInstanceFocus()
             }
         }
         val rows = if (contentTab == "next") contentSnapshot.next else contentSnapshot.suggestions
         val enabled = prefs.getBoolean("shared_content", false) && checkSelfPermission("android.permission.READ_TV_LISTINGS") == PackageManager.PERMISSION_GRANTED
         if (rows.isEmpty() && contentTab == "next") {
             val body = column()
-            body.addView(text(when { contentLoading -> "Buscando suas reproduções…"; !enabled -> "Continue conteúdos dos apps compatíveis."; contentSnapshot.unavailable -> "Conteúdo indisponível nesta TV agora."; else -> "Os apps ainda não compartilharam reproduções em andamento." }, 12f, true).apply { maxLines = 2 })
-            body.addView(button(if (enabled) "Atualizar conteúdo" else "Conectar conteúdo") { connectContent() }.apply { textSize = 12f; setPadding(dp(8), dp(2), dp(8), dp(2)); tag = "content-connect" }, LinearLayout.LayoutParams(-1, dp(36)))
+            body.addView(text(when { contentLoading -> s(R.string.activity_content_loading); !enabled -> s(R.string.activity_content_connect_hint); contentSnapshot.unavailable -> s(R.string.activity_content_unavailable); else -> s(R.string.activity_content_no_progress) }, 12f, true).apply { maxLines = 2 })
+            body.addView(button(if (enabled) s(R.string.activity_content_refresh) else s(R.string.activity_content_connect)) { connectContent() }.apply { textSize = 12f; setPadding(dp(8), dp(2), dp(8), dp(2)); tag = "content-connect" }, LinearLayout.LayoutParams(-1, dp(36)))
             host.addView(body, FrameLayout.LayoutParams(-1, -2)); finishContent(); return
         }
         val strip = HorizontalScrollView(this).apply { isHorizontalScrollBarEnabled = false; isFocusable = false; clipToPadding = false }
@@ -652,20 +687,20 @@ class LauncherActivity : Activity() {
                 contentInfoIcon?.setImageDrawable(catalog.icon(app))
                 contentInfoTitle?.text = title
                 contentInfoMeta?.text = listOfNotNull(subtitle,
-                    program?.season?.takeIf { it.isNotBlank() }?.let { "Temporada $it" },
-                    program?.episode?.takeIf { it.isNotBlank() }?.let { "Episódio $it" },
-                    program?.let { br.com.lume.launcher.core.ContentRules.playbackLabel(it) }?.takeIf { it.isNotBlank() }).joinToString(" · ")
+                    program?.season?.takeIf { it.isNotBlank() }?.let { s(R.string.activity_season, it) },
+                    program?.episode?.takeIf { it.isNotBlank() }?.let { s(R.string.activity_episode, it) },
+                    program?.let { LocalizedText.playback(this, it) }?.takeIf { it.isNotBlank() }).joinToString(" · ")
                 contentInfoDescription?.text = program?.description.orEmpty()
                 setContentDetailsVisible(true)
             }
             val body = FrameLayout(this).apply {
                 id = View.generateViewId(); tag = tagValue; isFocusable = true; isClickable = true; style(this)
-                contentDescription = "$title. $subtitle. OK abre."
+                contentDescription = s(R.string.activity_content_open_a11y, title, subtitle)
                 setOnClickListener { action() }
                 setOnKeyListener { view, key, event ->
                     if (key == KeyEvent.KEYCODE_DPAD_UP && event.action == KeyEvent.ACTION_DOWN) {
                         page.findViewWithTag<View>("content-tab:$contentTab")?.requestFocus() ?: false
-                    } else if (key == KeyEvent.KEYCODE_DPAD_LEFT && event.action == KeyEvent.ACTION_DOWN && firstControl(host) === view) {
+                    } else if (logicalKey(key) == KeyEvent.KEYCODE_DPAD_LEFT && event.action == KeyEvent.ACTION_DOWN && firstControl(host) === view) {
                         navigationControls.first().requestFocus()
                     } else false
                 }
@@ -693,7 +728,7 @@ class LauncherActivity : Activity() {
                         max = 100; progress = percent; isFocusable = false; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
                         progressTintList = android.content.res.ColorStateList.valueOf(Color.rgb(117, 211, 248))
                     }, FrameLayout.LayoutParams(-1, dp(3), Gravity.BOTTOM))
-                    body.contentDescription = "$title. $subtitle. $percent por cento assistido. OK continua."
+                    body.contentDescription = s(R.string.activity_content_continue_a11y, title, subtitle, percent)
                 }
             }
             body.addOnLayoutChangeListener { view, _, top, _, bottom, _, _, _, _ ->
@@ -708,23 +743,23 @@ class LauncherActivity : Activity() {
             line.addView(body, LinearLayout.LayoutParams(dp(232), -1)); gap(line, 18)
         }
         rows.forEach { program -> apps.find { it.packageName == program.packageName }?.let { app ->
-            card(app, program.title, (if (program.live) "AO VIVO · " else "") + app.label, "program:${program.key}", program) {
-                if (!actions.openProgram(program)) { message("Abrindo a plataforma; conteúdo direto indisponível."); if (!actions.openApp(app)) message("Aplicativo indisponível.") }
+            card(app, program.title, if (program.live) s(R.string.activity_live_platform, app.label) else app.label, "program:${program.key}", program) {
+                if (!actions.openProgram(program)) { message(s(R.string.activity_content_open_fallback)); if (!actions.openApp(app)) message(s(R.string.activity_app_unavailable)) }
             }
         } }
         if (rows.isEmpty()) {
             val platforms = apps.filter { it.packageName in setOf("com.netflix.ninja", "com.amazon.amazonvideo.livingroom", "com.disney.disneyplus", "com.globo.globoplay", "com.globo.globotv", "com.wbd.stream", "com.hbo.hbonow", "com.google.android.youtube.tv", "com.apple.atve.androidtv.appletv", "br.com.sbt.mais", "br.com.sbt.sbtvideos", "com.sbt.tv") }
-            platforms.take(8).forEach { app -> card(app, "Explorar ${app.label}", "Abrir plataforma", "platform:${app.packageName}") { if (!actions.openApp(app)) message("Aplicativo indisponível.") } }
-            if (platforms.isEmpty()) line.addView(text("Os apps ainda não compartilharam sugestões.", 12f, true))
+            platforms.take(8).forEach { app -> card(app, s(R.string.activity_explore_platform, app.label), s(R.string.activity_open_platform), "platform:${app.packageName}") { if (!actions.openApp(app)) message(s(R.string.activity_app_unavailable)) } }
+            if (platforms.isEmpty()) line.addView(text(s(R.string.activity_content_no_suggestions), 12f, true))
         }
         finishContent()
     }
 
     private fun library() {
-        page.addView(text("Seus aplicativos.", 28f)); gap(page, 8)
-        page.addView(button("Instalar aplicativos na Google Play  ›") { openStore() })
-        page.addView(text("OK inclui ou remove favorito · segure OK para ações rápidas", 12f, true)); gap(page, 12)
-        if (apps.isEmpty()) page.addView(text(if (loaded) "Nenhum aplicativo lançável foi encontrado." else "Lendo aplicativos da TV…", 16f))
+        page.addView(text(s(R.string.activity_apps_heading), 28f)); gap(page, 8)
+        page.addView(button(s(R.string.activity_install_google_play)) { openStore() })
+        page.addView(text(s(R.string.activity_apps_hint), 12f, true)); gap(page, 12)
+        if (apps.isEmpty()) page.addView(text(if (loaded) s(R.string.activity_apps_empty) else s(R.string.activity_apps_reading), 16f))
         val cols = if (resources.configuration.screenWidthDp >= 1100) 6 else 5
         apps.chunked(cols).forEach { group ->
             val line = row()
@@ -739,17 +774,16 @@ class LauncherActivity : Activity() {
         val tileHolder = FrameLayout(this).apply { clipChildren = false }
         val tile = (if (showFavorite) FrameLayout(this) else HomeAppTile(this)).apply {
             id = View.generateViewId(); tag = "app:${app.packageName}"; isFocusable = true; isClickable = true
-            contentDescription = app.label + if (showFavorite) {
-                if (app.packageName in favoritePackages) ". Favorito. OK remove dos favoritos. Segure OK para ações."
-                else ". OK inclui nos favoritos. Segure OK para ações."
-            } else ". OK abre. Segure OK para ações."
+            contentDescription = s(if (showFavorite) {
+                if (app.packageName in favoritePackages) R.string.activity_app_favorite_a11y else R.string.activity_app_add_favorite_a11y
+            } else R.string.activity_app_open_a11y, app.label)
             isSelected = showFavorite && app.packageName in favoritePackages
             if (this is HomeAppTile) setActivityActive(active)
             style(this)
             setOnClickListener {
                 if (movingPackage != null) finishMove(true)
                 else if (showFavorite) toggleFavorite(app)
-                else if (!actions.openApp(app)) message("Este aplicativo não pôde ser aberto.")
+                else if (!actions.openApp(app)) message(s(R.string.activity_app_open_failed))
             }
             setOnLongClickListener { if (movingPackage == null) showAppOptions(app, this); true }
             if (this is HomeAppTile) addOnLayoutChangeListener { view, _, _, _, _, _, _, _, _ -> if (view.hasFocus()) GlassUi.revealFocus(view) }
@@ -758,7 +792,7 @@ class LauncherActivity : Activity() {
                     key == KeyEvent.KEYCODE_DPAD_UP && event.action == KeyEvent.ACTION_DOWN) {
                     enterActiveContent(true)
                 } else if (!showFavorite && currentPage == "home" && movingPackage == null && appMenu == null &&
-                    key == KeyEvent.KEYCODE_DPAD_RIGHT && event.action == KeyEvent.ACTION_DOWN &&
+                    logicalKey(key) == KeyEvent.KEYCODE_DPAD_RIGHT && event.action == KeyEvent.ACTION_DOWN &&
                     app.packageName == favoritePackages.lastOrNull()) {
                     enterActiveContent()
                 } else if (event.action == KeyEvent.ACTION_DOWN && event.isLongPress && isSelectionKey(key)) {
@@ -816,14 +850,14 @@ class LauncherActivity : Activity() {
             }
             body.addView(option, LinearLayout.LayoutParams(-1, -2)); gap(body, 2)
         }
-        if (currentPage == "apps") item("Abrir aplicativo") { if (!actions.openApp(app)) message("Este aplicativo não pôde ser aberto.") }
+        if (currentPage == "apps") item(s(R.string.activity_app_open)) { if (!actions.openApp(app)) message(s(R.string.activity_app_open_failed)) }
         val saved = app.packageName in favoritePackages
-        if (saved) item("Mover") { beginMove(app) }
-        item(if (saved) "Remover dos favoritos" else "Incluir nos favoritos") { toggleFavorite(app) }
-        item("Instalar aplicativos  ›") { openStore() }
-        item("Informações do aplicativo") { if (!actions.openAppDetails(app)) message("Informações indisponíveis neste firmware.") }
-        if (actions.canUninstall(app)) item("Desinstalar…") {
-            if (!actions.requestUninstall(app)) message("Não foi possível abrir a confirmação de desinstalação.")
+        if (saved) item(s(R.string.activity_move)) { beginMove(app) }
+        item(if (saved) s(R.string.activity_favorite_remove) else s(R.string.activity_favorite_add)) { toggleFavorite(app) }
+        item(s(R.string.activity_install_apps_arrow)) { openStore() }
+        item(s(R.string.activity_app_information)) { if (!actions.openAppDetails(app)) message(s(R.string.activity_app_information_unavailable)) }
+        if (actions.canUninstall(app)) item(s(R.string.activity_uninstall)) {
+            if (!actions.requestUninstall(app)) message(s(R.string.activity_uninstall_confirmation_failed))
         }
         val panel = column().apply { background = GlassUi.panel(8, 30); setPadding(dp(8), dp(8), dp(8), dp(8)) }
         val title = text(app.label, 16f).apply { maxLines = 2; ellipsize = android.text.TextUtils.TruncateAt.END; setPadding(dp(8), dp(4), dp(8), dp(8)) }
@@ -898,7 +932,7 @@ class LauncherActivity : Activity() {
         if (!save) favoritePackages = moveOriginal ?: favoritePackages
         movingPackage = null; moveOriginal = null
         if (save) saveFavorites("app:$packageName") else renderPage("app:$packageName")
-        if (announce) message(if (save) "Posição salva." else "Movimento cancelado.")
+        if (announce) message(if (save) s(R.string.activity_position_saved) else s(R.string.activity_move_canceled))
     }
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         // The opening key-up may return to its original window before popup focus settles.
@@ -909,7 +943,7 @@ class LauncherActivity : Activity() {
             when (event.keyCode) {
                 KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT -> {
                     if (event.action == KeyEvent.ACTION_DOWN) {
-                        val delta = if (event.keyCode == KeyEvent.KEYCODE_DPAD_LEFT) -1 else 1
+                        val delta = if (logicalKey(event.keyCode) == KeyEvent.KEYCODE_DPAD_LEFT) -1 else 1
                         val reordered = LauncherRules.moveFavorite(favoritePackages, packageName, delta)
                         if (reordered != favoritePackages) { favoritePackages = reordered; renderPage("app:$packageName") }
                     }
@@ -928,7 +962,7 @@ class LauncherActivity : Activity() {
     private fun sceneIndex() = LauncherRules.sceneIndex(scenes.size, prefs.getBoolean("daily", true), prefs.getInt("scene", 0), LocalDate.now())
     private fun sceneCard(index: Int, compact: Boolean): View {
         val scene = scenes[index]
-        val card = column().apply { isFocusable = true; isClickable = true; style(this); setPadding(dp(3), dp(3), dp(3), dp(3)); contentDescription = "${scene.title}, ${scene.theme}" }
+        val card = column().apply { tag = "scene:${scene.id}"; isFocusable = true; isClickable = true; style(this); setPadding(dp(3), dp(3), dp(3), dp(3)); contentDescription = s(R.string.activity_scene_a11y, scene.title, scene.theme) }
         val image = ImageView(this).apply {
             scaleType = ImageView.ScaleType.CENTER_CROP; importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
             outlineProvider = object : ViewOutlineProvider() {
@@ -947,12 +981,12 @@ class LauncherActivity : Activity() {
         }
         card.addView(image, LinearLayout.LayoutParams(-1, 0, 1f))
         card.addView(text(scene.title, if (compact) 12f else 14f).apply { maxLines = 1; ellipsize = android.text.TextUtils.TruncateAt.END; setPadding(dp(6), 0, dp(4), 0) }, LinearLayout.LayoutParams(-1, dp(25)))
-        card.setOnClickListener { prefs.edit().putInt("scene", index).putBoolean("daily", false).apply(); refreshAmbient(); message("${scene.title} · escolha manual") }
+        card.setOnClickListener { prefs.edit().putInt("scene", index).putBoolean("daily", false).apply(); refreshAmbient(); message(s(R.string.activity_scene_selected, scene.title)) }
         return card
     }
     private fun gallery() {
-        page.addView(text("Suas atmosferas.", 28f)); page.addView(text("30 paisagens originais. Um novo cenário a cada dia.", 14f, true)); gap(page, 8)
-        dailyButton = button(if (prefs.getBoolean("daily", true)) "Troca diária ligada · desativar" else "Ativar troca diária") {
+        page.addView(text(s(R.string.activity_gallery_heading), 28f)); page.addView(text(s(R.string.activity_gallery_description), 14f, true)); gap(page, 8)
+        dailyButton = button(if (prefs.getBoolean("daily", true)) s(R.string.activity_daily_on) else s(R.string.activity_daily_enable)) {
             val daily = prefs.getBoolean("daily", true)
             prefs.edit().putInt("scene", sceneIndex()).putBoolean("daily", !daily).apply(); refreshAmbient(); renderPage()
         }
@@ -984,8 +1018,8 @@ class LauncherActivity : Activity() {
             restyle(window.decorView)
         }
         cinemaButton?.text = cinemaLabel()
-        atmosphereButton?.text = (if (prefs.getBoolean("daily", true)) "ATMOSFERA DO DIA\n" else "SUA ATMOSFERA\n") + scenes[index].title
-        dailyButton?.text = if (prefs.getBoolean("daily", true)) "Troca diária ligada · desativar" else "Ativar troca diária"
+        atmosphereButton?.text = s(if (prefs.getBoolean("daily", true)) R.string.activity_daily_atmosphere else R.string.activity_manual_atmosphere, scenes[index].title)
+        dailyButton?.text = if (prefs.getBoolean("daily", true)) s(R.string.activity_daily_on) else s(R.string.activity_daily_enable)
     }
 
     private fun restyle(view: View) {
@@ -993,51 +1027,82 @@ class LauncherActivity : Activity() {
         if (view.tag == "glass") safePanel(view)
         if (view is ViewGroup) for (i in 0 until view.childCount) restyle(view.getChildAt(i))
     }
-    private fun cinemaLabel() = "MODO CINEMA\n" + (if (cinema()) "Ligado · desligar" else "Desligado · ativar") + (if (prefs.getString("cinema", "off") == "auto") "\nAgenda 20h–6h" else "")
+    private fun cinemaLabel() = s(R.string.activity_cinema_label,
+        if (cinema()) s(R.string.activity_cinema_on) else s(R.string.activity_cinema_off),
+        if (prefs.getString("cinema", "off") == "auto") s(R.string.activity_cinema_schedule_label) else "")
     private fun toggleCinema() {
         val wasScheduled = prefs.getString("cinema", "off") == "auto"
         prefs.edit().putString("cinema", LauncherRules.toggleCinema(prefs.getString("cinema", "off"), hour())).apply()
-        refreshAmbient(); if (wasScheduled) message("Ajuste manual aplicado. Agendamento desligado.")
+        refreshAmbient(); if (wasScheduled) message(s(R.string.activity_cinema_manual_schedule_off))
     }
     private fun showCinema() {
         val body = column()
-        body.addView(text("Escurece o launcher, aquece o fundo e pausa reflexos e animações. Os ajustes da imagem da TV não mudam.", 15f, true)); gap(body, 12)
-        val toggle = button(if (cinema()) "Desativar Cinema agora" else "Ativar Cinema agora") { }
-        toggle.setOnClickListener { toggleCinema(); toggle.text = if (cinema()) "Desativar Cinema agora" else "Ativar Cinema agora"; showCinema() }
+        body.addView(text(s(R.string.activity_cinema_description), 15f, true)); gap(body, 12)
+        val toggle = button(if (cinema()) s(R.string.activity_cinema_disable_now) else s(R.string.activity_cinema_enable_now)) { }
+        toggle.setOnClickListener { toggleCinema(); toggle.text = if (cinema()) s(R.string.activity_cinema_disable_now) else s(R.string.activity_cinema_enable_now); showCinema() }
         body.addView(toggle); gap(body, 8)
         val scheduled = prefs.getString("cinema", "off") == "auto"
-        body.addView(button(if (scheduled) "Agenda 20h–6h ligada · desativar" else "Ativar agenda diária 20h–6h") {
+        body.addView(button(if (scheduled) s(R.string.activity_cinema_schedule_disable) else s(R.string.activity_cinema_schedule_enable)) {
             prefs.edit().putString("cinema", LauncherRules.scheduleCinema(prefs.getString("cinema", "off"), !scheduled, hour())).apply(); refreshAmbient(); showCinema()
         })
-        gap(body, 12); body.addView(text("Horário local da TV. Desativar a agenda mantém o visual atual; um toque manual também desliga a agenda.", 12f, true))
-        dialog("Modo Cinema", body)
+        gap(body, 12); body.addView(text(s(R.string.activity_cinema_schedule_description), 12f, true))
+        dialog(s(R.string.activity_cinema_title), body)
     }
 
     private fun openNetwork() {
         closeDialog()
-        if (!actions.openNetwork()) message("Menu de rede indisponível. Use Configurações da TV.")
+        if (!actions.openNetwork()) message(s(R.string.activity_network_unavailable))
     }
     private fun updateNetworkButton() {
         networkButton?.text = GlassUi.networkLabel(networkStatus)
-        networkButton?.contentDescription = "Rede. ${networkStatus.connection}. ${networkStatus.internet}. OK abre configurações de rede do Android."
+        networkButton?.contentDescription = s(R.string.activity_network_a11y, networkStatus.connection, networkStatus.internet)
     }
     private fun showSettings() {
         val body = column()
         listOf<Pair<String, () -> Unit>>(
-            "Configurações do Android TV  ›" to { closeDialog(); if (!actions.openSettings()) message("Configurações indisponíveis neste firmware.") },
-            "Rede e internet" to { openNetwork() }, "Instalar aplicativos" to { showStore() }, "Modo Cinema e agenda" to { showCinema() },
-            "Aparência" to { showAppearance() }, "Proteção de tela" to { showScreensaverSettings() }, "Entradas HDMI" to { showInputs() },
-            (if (prefs.getBoolean("shared_content", false)) "Desligar conteúdo compartilhado" else "Conectar conteúdo das plataformas") to {
+            s(R.string.activity_android_settings) to { closeDialog(); if (!actions.openSettings()) message(s(R.string.activity_android_settings_unavailable)) },
+            s(R.string.activity_network_settings) to { openNetwork() }, s(R.string.activity_install_apps) to { showStore() }, s(R.string.activity_cinema_settings) to { showCinema() },
+            s(R.string.activity_appearance_title) to { showAppearance() }, s(R.string.activity_screensaver_title) to { showScreensaverSettings() }, s(R.string.activity_hdmi_inputs) to { showInputs() },
+            s(R.string.activity_language_setting, languageName()) to { showLanguage() },
+            (if (prefs.getBoolean("shared_content", false)) s(R.string.activity_content_disable) else s(R.string.activity_content_enable)) to {
                 closeDialog()
                 if (prefs.getBoolean("shared_content", false)) {
                     prefs.edit().putBoolean("shared_content", false).apply(); cancelContent()
                     contentSnapshot = TvContentCatalog.Snapshot(emptyList(), emptyList(), false); renderContent()
                 } else connectContent()
             },
-            "Escolher tela inicial padrão…" to { showHomeChoice() }
+            s(R.string.activity_home_choose) to { showHomeChoice() }
         ).forEach { (label, action) -> body.addView(button(label, action), LinearLayout.LayoutParams(-1, -2)); gap(body, 6) }
-        dialog("Configurações", body)
+        dialog(s(R.string.activity_settings_title), body)
     }
+    private fun languageName(): String = AppLocales.languages.firstOrNull { it.tag == AppLocales.selected(this) }?.nativeName
+        ?: s(R.string.activity_language_system)
+
+    private fun showLanguage() {
+        val body = column()
+        val originTag = dialogOrigin?.tag as? String ?: currentFocus?.tag as? String
+        val selected = AppLocales.selected(this)
+        body.addView(text(s(R.string.activity_language_description), 14f, true)); gap(body, 12)
+        val options = listOf(LanguageOption(br.com.lume.launcher.core.LocaleRules.SYSTEM, s(R.string.activity_language_system))) + AppLocales.languages
+        var selectedControl: View? = null
+        options.forEach { option ->
+            val isCurrent = option.tag == selected
+            val control = button(if (isCurrent) s(R.string.activity_language_selected, option.nativeName) else option.nativeName) {
+                if (option.tag != selected) {
+                    languageOriginTag = originTag
+                    AppLocales.set(this, option.tag)
+                    closeDialog()
+                    recreate()
+                }
+            }.apply { tag = "language:${option.tag}"; isSelected = isCurrent }
+            body.addView(control, LinearLayout.LayoutParams(-1, -2)); gap(body, 6)
+            if (isCurrent) selectedControl = control
+        }
+        dialog(s(R.string.activity_language_title), body)
+        val languageDialog = openDialog
+        body.post { if (active && openDialog === languageDialog && body.isAttachedToWindow) selectedControl?.requestFocus() }
+    }
+
     private fun showScreensaverSettings(focusOption: Int = 0) {
         val body = column()
         val options = mutableListOf<View>()
@@ -1047,86 +1112,86 @@ class LauncherActivity : Activity() {
         val interval = ScreensaverRules.intervalMillis(prefs.getLong("screensaver_interval", 60000L))
         val dim = ScreensaverRules.dimPercent(prefs.getInt("screensaver_dim", 25))
         val clockEnabled = prefs.getBoolean("screensaver_clock", false)
-        option("Iniciar agora") { closeDialog(); startScreensaver() }
-        option(if (enabled) "No launcher · ligada" else "No launcher · desligada") {
+        option(s(R.string.activity_screensaver_start)) { closeDialog(); startScreensaver() }
+        option(if (enabled) s(R.string.activity_screensaver_on) else s(R.string.activity_screensaver_off)) {
             prefs.edit().putBoolean("screensaver_enabled", !enabled).apply(); resetScreensaverTimer(); showScreensaverSettings(1)
         }
-        option("Iniciar após · $minutes minutos") {
+        option(s(R.string.activity_screensaver_delay, minutes)) {
             val values = listOf(2, 5, 10, 15)
             prefs.edit().putInt("screensaver_idle_minutes", values[(values.indexOf(minutes) + 1) % values.size]).apply(); resetScreensaverTimer(); showScreensaverSettings(2)
         }
-        option("Trocar imagem · ${if (interval == 30000L) "30 segundos" else if (interval == 60000L) "1 minuto" else "${interval / 60000} minutos"}") {
+        option(s(R.string.activity_screensaver_interval, if (interval == 30000L) s(R.string.activity_duration_30_seconds) else if (interval == 60000L) s(R.string.activity_duration_one_minute) else s(R.string.activity_duration_minutes, interval / 60000))) {
             val values = listOf(30000L, 60000L, 180000L, 300000L)
             prefs.edit().putLong("screensaver_interval", values[(values.indexOf(interval) + 1) % values.size]).apply(); showScreensaverSettings(3)
         }
-        option("Escurecimento · $dim%") {
+        option(s(R.string.activity_screensaver_dim, dim)) {
             val values = listOf(10, 25, 40)
             prefs.edit().putInt("screensaver_dim", values[(values.indexOf(dim) + 1) % values.size]).apply(); showScreensaverSettings(4)
         }
-        option(if (clockEnabled) "Relógio · ligado" else "Relógio · desligado") {
+        option(if (clockEnabled) s(R.string.activity_clock_on) else s(R.string.activity_clock_off)) {
             prefs.edit().putBoolean("screensaver_clock", !clockEnabled).apply(); showScreensaverSettings(5)
         }
-        option("Proteção de tela do Android  ›") { closeDialog(); if (!actions.openScreensaverSettings()) message("Seleção indisponível neste firmware. A proteção no launcher continua disponível.") }
-        option("Créditos das imagens") { showScreensaverCredits() }
+        option(s(R.string.activity_android_screensaver)) { closeDialog(); if (!actions.openScreensaverSettings()) message(s(R.string.activity_android_screensaver_unavailable)) }
+        option(s(R.string.activity_photo_credits)) { showScreensaverCredits() }
         gap(body, 6)
-        body.addView(text("Paisagens gratuitas pela internet, somente na memória, sem salvar fotos na TV. Sem internet, fundo suave. No launcher, funciona por inatividade; o Android controla proteção em outros apps e o repouso da TV. Setas, OK ou Voltar encerram a visualização.", 12f, true))
-        dialog("Proteção de tela", body)
+        body.addView(text(s(R.string.activity_screensaver_description), 12f, true))
+        dialog(s(R.string.activity_screensaver_title), body)
         body.post { options.getOrNull(focusOption)?.requestFocus() }
     }
     private fun showScreensaverCredits() {
         val body = column()
-        body.addView(text("As fotos são redimensionadas e recortadas para preencher a tela, com o escurecimento escolhido. Os originais e suas licenças estão nos endereços abaixo.", 12f, true)); gap(body, 16)
+        body.addView(text(s(R.string.activity_photo_credits_description), 12f, true)); gap(body, 16)
         runCatching {
             val images = JSONArray(assets.open("screensaver.json").bufferedReader().use { it.readText() })
             for (i in 0 until images.length()) {
                 val image = images.getJSONObject(i)
-                body.addView(text("${image.getString("title")}\n${image.getString("artist")} · ${image.getString("license")}\n${image.getString("licenseUrl")}\n${image.getString("sourceUrl")}", 12f, true)); gap(body, 16)
+                body.addView(text(s(R.string.activity_photo_credit, LocalizedText.photoTitle(this, i), image.getString("artist"), image.getString("license"), image.getString("licenseUrl"), image.getString("sourceUrl")), 12f, true)); gap(body, 16)
             }
-        }.onFailure { body.addView(text("Créditos indisponíveis. Tente reabrir o launcher.", 14f)) }
-        dialog("Créditos das imagens", body)
+        }.onFailure { body.addView(text(s(R.string.activity_photo_credits_unavailable), 14f)) }
+        dialog(s(R.string.activity_photo_credits), body)
     }
     private fun showHomeChoice() {
         val body = column()
-        body.addView(text("Este passo pode mudar o destino do botão Home. Projectivy deve continuar instalado como opção de retorno. A agenda Cinema não controla o retorno do standby.", 15f, true)); gap(body, 12)
-        body.addView(button("Abrir seleção oficial de tela inicial") { closeDialog(); if (!actions.requestHome()) message("Seleção Home indisponível neste firmware.") })
-        gap(body, 8); body.addView(text("Para desfazer, escolha Projectivy nas configurações de aplicativos padrão antes de remover lume órbita.", 14f, true))
-        dialog("Tela inicial · escolha do usuário", body)
+        body.addView(text(s(R.string.activity_home_choice_description), 15f, true)); gap(body, 12)
+        body.addView(button(s(R.string.activity_home_open_selection)) { closeDialog(); if (!actions.requestHome()) message(s(R.string.activity_home_selection_unavailable)) })
+        gap(body, 8); body.addView(text(s(R.string.activity_home_restore), 14f, true))
+        dialog(s(R.string.activity_home_choice_title), body)
     }
     private fun showInputs() {
         val body = column()
         val inputs = actions.inputs()
-        if (inputs.isEmpty()) body.addView(text("Entradas não disponíveis aqui. Use Input no controle ou Configurações do Android TV.", 16f))
-        inputs.forEach { (id, label) -> body.addView(button(label) { closeDialog(); if (!actions.openInput(id)) message("Entrada indisponível por este caminho. Use Input no controle.") }); gap(body) }
-        dialog("Entradas", body)
+        if (inputs.isEmpty()) body.addView(text(s(R.string.activity_inputs_empty), 16f))
+        inputs.forEach { (id, label) -> body.addView(button(label) { closeDialog(); if (!actions.openInput(id)) message(s(R.string.activity_input_unavailable)) }); gap(body) }
+        dialog(s(R.string.activity_inputs_title), body)
     }
-    private fun openStore() { if (!actions.openStore()) message("Google Play indisponível nesta TV.") }
+    private fun openStore() { if (!actions.openStore()) message(s(R.string.activity_google_play_tv_unavailable)) }
     private fun showStore() {
         val body = column()
-        body.addView(text("A Google Play confirma compatibilidade e pede sua ação para instalar. Nenhum APK é baixado ou instalado pelo launcher.", 14f, true)); gap(body, 12)
-        body.addView(button("Abrir Google Play na TV  ›") { closeDialog(); if (!actions.openStore()) message("Google Play indisponível neste aparelho.") })
+        body.addView(text(s(R.string.activity_store_description), 14f, true)); gap(body, 12)
+        body.addView(button(s(R.string.activity_google_play_open)) { closeDialog(); if (!actions.openStore()) message(s(R.string.activity_google_play_device_unavailable)) })
         val suggestions = listOf("YouTube" to "com.google.android.youtube.tv", "Netflix" to "com.netflix.ninja", "Disney+" to "com.disney.disneyplus", "Prime Video" to "com.amazon.amazonvideo.livingroom", "Spotify" to "com.spotify.tv.android", "Plex" to "com.plexapp.android", "VLC" to "org.videolan.vlc")
-        suggestions.forEach { (name, packageName) -> gap(body, 6); body.addView(button(name + if (apps.any { it.packageName == packageName }) " · instalado" else " · ver na loja") { closeDialog(); if (!actions.openStore(packageName)) message("Não foi possível abrir a página deste app na loja.") }) }
-        dialog("Instalar aplicativos", body)
+        suggestions.forEach { (name, packageName) -> gap(body, 6); body.addView(button(s(if (apps.any { it.packageName == packageName }) R.string.activity_store_app_installed else R.string.activity_store_app_available, name)) { closeDialog(); if (!actions.openStore(packageName)) message(s(R.string.activity_store_app_failed)) }) }
+        dialog(s(R.string.activity_install_apps), body)
     }
     private fun showAppearance(focusKey: String? = null) {
         val body = column()
-        body.addView(text("Seus valores ficam guardados durante o Cinema. Desligá-lo restaura o visual.", 14f, true)); gap(body)
-        listOf("transparency" to "Transparência", "reflections" to "Reflexos").forEach { (key, name) ->
-            val label = text("$name · ${prefs.getInt(key, if (key == "transparency") 58 else 65)}%", 16f)
+        body.addView(text(s(R.string.activity_appearance_description), 14f, true)); gap(body)
+        listOf("transparency" to s(R.string.activity_transparency), "reflections" to s(R.string.activity_reflections)).forEach { (key, name) ->
+            val label = text(s(R.string.activity_appearance_value, name, prefs.getInt(key, if (key == "transparency") 58 else 65)), 16f)
             body.addView(label)
             val seek = SeekBar(this).apply { max = 100; progress = prefs.getInt(key, if (key == "transparency") 58 else 65); contentDescription = name; minimumHeight = dp(48) }
             seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(bar: SeekBar?, progress: Int, fromUser: Boolean) { if (fromUser) { prefs.edit().putInt(key, progress).apply(); label.text = "$name · $progress%"; restyle(window.decorView) } }
+                override fun onProgressChanged(bar: SeekBar?, progress: Int, fromUser: Boolean) { if (fromUser) { prefs.edit().putInt(key, progress).apply(); label.text = s(R.string.activity_appearance_value, name, progress); restyle(window.decorView) } }
                 override fun onStartTrackingTouch(bar: SeekBar?) = Unit
                 override fun onStopTrackingTouch(bar: SeekBar?) = Unit
             }); body.addView(seek, LinearLayout.LayoutParams(-1, dp(48)))
         }
-        listOf("animations" to "Animações", "lightweight" to "Modo leve").forEach { (key, name) ->
+        listOf("animations" to s(R.string.activity_animations), "lightweight" to s(R.string.activity_lightweight)).forEach { (key, name) ->
             val enabled = prefs.getBoolean(key, key == "animations")
-            body.addView(button("$name · ${if (enabled) "ligado" else "desligado"}") { prefs.edit().putBoolean(key, !enabled).apply(); restyle(window.decorView); showAppearance(key) }.apply { tag = "appearance:$key" }); gap(body, 6)
+            body.addView(button(s(if (enabled) R.string.activity_setting_on else R.string.activity_setting_off, name)) { prefs.edit().putBoolean(key, !enabled).apply(); restyle(window.decorView); showAppearance(key) }.apply { tag = "appearance:$key" }); gap(body, 6)
         }
-        body.addView(button("Escolher atmosferas  ›") { closeDialog(); showPage("scenes") })
-        dialog("Aparência", body)
+        body.addView(button(s(R.string.activity_choose_scenes)) { closeDialog(); showPage("scenes") })
+        dialog(s(R.string.activity_appearance_title), body)
         val appearanceDialog = openDialog
         if (focusKey != null) body.post {
             if (active && body.isAttachedToWindow && openDialog === appearanceDialog)
@@ -1140,7 +1205,7 @@ class LauncherActivity : Activity() {
         dialogOrigin = origin
         val outer = column().apply { setPadding(dp(24), dp(20), dp(24), dp(16)); background = GlassUi.panel(0, appearance().second) }
         val header = row()
-        val back = GlassUi.backButton(this, "‹ Voltar", { closeDialog() }, ::appearance).apply { id = View.generateViewId(); style(this) }
+        val back = GlassUi.backButton(this, s(R.string.activity_back), { closeDialog() }, ::appearance).apply { id = View.generateViewId(); style(this) }
         header.addView(back, LinearLayout.LayoutParams(-2, -2)); gap(header, 16)
         header.addView(text(title, 24f).apply { maxLines = 2; ellipsize = android.text.TextUtils.TruncateAt.END }, LinearLayout.LayoutParams(0, -2, 1f))
         outer.addView(header, LinearLayout.LayoutParams(-1, -2)); gap(outer, 12)
@@ -1156,14 +1221,14 @@ class LauncherActivity : Activity() {
         scroll.addView(content, FrameLayout.LayoutParams(-1, -2))
         outer.addView(scroll, LinearLayout.LayoutParams(-1, -2))
         fun linkBack(view: View) {
-            if (view is Button) view.nextFocusLeftId = back.id
+            if (view is Button) focusStart(view, back.id)
             if (view is ViewGroup) for (i in 0 until view.childCount) linkBack(view.getChildAt(i))
         }
         linkBack(content)
         firstControl(content)?.let { first ->
             if (first.id == View.NO_ID) first.id = View.generateViewId()
             first.nextFocusUpId = back.id
-            back.nextFocusRightId = first.id; back.nextFocusDownId = first.id
+            focusEnd(back, first.id); back.nextFocusDownId = first.id
         }
         val dialog = Dialog(this, android.R.style.Theme_Material_Dialog_NoActionBar)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

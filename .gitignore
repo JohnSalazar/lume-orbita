@@ -7,6 +7,7 @@
 *.iml
 .DS_Store
 Thumbs.db
+**/__pycache__/
 # Signing material and private configuration
 *.jks
 *.keystore

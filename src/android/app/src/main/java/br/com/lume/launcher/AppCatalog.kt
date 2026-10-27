@@ -46,15 +46,15 @@ class AppCatalog(context: Context) {
                     entry.loadLabel(packages).toString().ifBlank { info.packageName },
                     ComponentName(info.packageName, info.name),
                     when (info.applicationInfo.category) {
-                        ApplicationInfo.CATEGORY_VIDEO -> "Vídeo"
-                        ApplicationInfo.CATEGORY_AUDIO -> "Música"
-                        ApplicationInfo.CATEGORY_GAME -> "Jogos"
-                        else -> "Apps"
+                        ApplicationInfo.CATEGORY_VIDEO -> resources.getString(R.string.common_video)
+                        ApplicationInfo.CATEGORY_AUDIO -> resources.getString(R.string.common_music)
+                        ApplicationInfo.CATEGORY_GAME -> resources.getString(R.string.common_games)
+                        else -> resources.getString(R.string.common_apps)
                     }
                 )
             }
         }
-        val collator = Collator.getInstance(Locale.forLanguageTag("pt-BR"))
+        val collator = Collator.getInstance(resources.configuration.locales[0])
         return apps.values.sortedWith { first, second ->
             val compared = collator.compare(first.label, second.label)
             if (compared != 0) compared else first.packageName.compareTo(second.packageName)

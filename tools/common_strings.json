@@ -1,0 +1,494 @@
+{
+  "common_network": {
+    "en": "Network",
+    "pt": "Rede"
+  },
+  "common_checking_internet": {
+    "en": "Checking internet",
+    "pt": "Verificando internet"
+  },
+  "common_unavailable": {
+    "en": "Status unavailable",
+    "pt": "Estado indisponível"
+  },
+  "common_no_network": {
+    "en": "No network",
+    "pt": "Sem rede"
+  },
+  "common_connect_tv": {
+    "en": "Connect your TV",
+    "pt": "Conecte sua TV"
+  },
+  "common_unknown": {
+    "en": "Unknown status",
+    "pt": "Estado desconhecido"
+  },
+  "common_wifi": {
+    "en": "Wi-Fi",
+    "pt": "Wi-Fi"
+  },
+  "common_ethernet": {
+    "en": "Ethernet",
+    "pt": "Cabo"
+  },
+  "common_cellular": {
+    "en": "Mobile network",
+    "pt": "Móvel"
+  },
+  "common_vpn": {
+    "en": "%1$s (VPN)",
+    "pt": "%1$s (VPN)"
+  },
+  "common_login_required": {
+    "en": "Sign-in required",
+    "pt": "Login necessário"
+  },
+  "common_internet_connected": {
+    "en": "Internet connected",
+    "pt": "Internet conectada"
+  },
+  "common_internet_unverified": {
+    "en": "Internet not verified",
+    "pt": "Internet não verificada"
+  },
+  "common_video": {
+    "en": "Video",
+    "pt": "Vídeo"
+  },
+  "common_music": {
+    "en": "Music",
+    "pt": "Música"
+  },
+  "common_games": {
+    "en": "Games",
+    "pt": "Jogos"
+  },
+  "common_apps": {
+    "en": "Apps",
+    "pt": "Apps"
+  },
+  "common_back": {
+    "en": "Back",
+    "pt": "Voltar"
+  },
+  "common_screensaver": {
+    "en": "Screensaver",
+    "pt": "Proteção de tela"
+  },
+  "common_dream_label": {
+    "en": "Lume · Landscapes",
+    "pt": "Lume · Paisagens"
+  },
+  "common_photo_description": {
+    "en": "Screensaver · %1$s",
+    "pt": "Proteção de tela · %1$s"
+  },
+  "common_photo_caption": {
+    "en": "%1$s · %2$s",
+    "pt": "%1$s · %2$s"
+  },
+  "common_procedural_caption": {
+    "en": "%1$s · Procedural art · lume órbita",
+    "pt": "%1$s · Arte procedural · lume órbita"
+  },
+  "common_procedural_description": {
+    "en": "Screensaver · Procedural art · %1$s",
+    "pt": "Proteção de tela · Arte procedural · %1$s"
+  },
+  "common_less_second": {
+    "en": "Less than 1 s",
+    "pt": "Menos de 1 s"
+  },
+  "common_remaining": {
+    "en": "%1$s remaining",
+    "pt": "Tempo restante: %1$s"
+  },
+  "common_minutes_seconds": {
+    "en": "%1$s min %2$s s",
+    "pt": "%1$s min %2$s s"
+  },
+  "common_minutes": {
+    "en": "%1$s min",
+    "pt": "%1$s min"
+  },
+  "common_seconds": {
+    "en": "%1$s s",
+    "pt": "%1$s s"
+  },
+  "common_scene_01": {
+    "en": "Cosmic horizon",
+    "pt": "Horizonte cósmico"
+  },
+  "common_theme_01": {
+    "en": "Space",
+    "pt": "Espaço"
+  },
+  "common_scene_02": {
+    "en": "Sea of stars",
+    "pt": "Mar de estrelas"
+  },
+  "common_theme_02": {
+    "en": "Beaches",
+    "pt": "Praias"
+  },
+  "common_scene_03": {
+    "en": "Misty woods",
+    "pt": "Bosque de névoa"
+  },
+  "common_theme_03": {
+    "en": "Forests",
+    "pt": "Florestas"
+  },
+  "common_scene_04": {
+    "en": "Serene Alps",
+    "pt": "Alpes serenos"
+  },
+  "common_theme_04": {
+    "en": "Mountains",
+    "pt": "Montanhas"
+  },
+  "common_scene_05": {
+    "en": "Copper dunes",
+    "pt": "Dunas de cobre"
+  },
+  "common_theme_05": {
+    "en": "Deserts",
+    "pt": "Desertos"
+  },
+  "common_scene_06": {
+    "en": "Autumn garden",
+    "pt": "Jardim de outono"
+  },
+  "common_theme_06": {
+    "en": "Gardens",
+    "pt": "Jardins"
+  },
+  "common_scene_07": {
+    "en": "Northern lights",
+    "pt": "Luzes do norte"
+  },
+  "common_theme_07": {
+    "en": "Winter",
+    "pt": "Inverno"
+  },
+  "common_scene_08": {
+    "en": "Golden canals",
+    "pt": "Canais dourados"
+  },
+  "common_theme_08": {
+    "en": "Cities",
+    "pt": "Cidades"
+  },
+  "common_scene_09": {
+    "en": "Amber canyon",
+    "pt": "Cânion âmbar"
+  },
+  "common_theme_09": {
+    "en": "Landscapes",
+    "pt": "Paisagens"
+  },
+  "common_scene_10": {
+    "en": "Glass tide",
+    "pt": "Maré de vidro"
+  },
+  "common_theme_10": {
+    "en": "Abstract",
+    "pt": "Abstrato"
+  },
+  "common_scene_11": {
+    "en": "Azure coast",
+    "pt": "Costa azul"
+  },
+  "common_theme_11": {
+    "en": "Beaches",
+    "pt": "Praias"
+  },
+  "common_scene_12": {
+    "en": "Jade terraces",
+    "pt": "Terraços de jade"
+  },
+  "common_theme_12": {
+    "en": "Nature",
+    "pt": "Natureza"
+  },
+  "common_scene_13": {
+    "en": "Winter retreat",
+    "pt": "Refúgio de inverno"
+  },
+  "common_theme_13": {
+    "en": "Winter",
+    "pt": "Inverno"
+  },
+  "common_scene_14": {
+    "en": "Red road",
+    "pt": "Estrada vermelha"
+  },
+  "common_theme_14": {
+    "en": "Deserts",
+    "pt": "Desertos"
+  },
+  "common_scene_15": {
+    "en": "Blue nebula",
+    "pt": "Nebulosa azul"
+  },
+  "common_theme_15": {
+    "en": "Space",
+    "pt": "Espaço"
+  },
+  "common_scene_16": {
+    "en": "Rain city",
+    "pt": "Cidade da chuva"
+  },
+  "common_theme_16": {
+    "en": "Cities",
+    "pt": "Cidades"
+  },
+  "common_scene_17": {
+    "en": "Underwater garden",
+    "pt": "Jardim submerso"
+  },
+  "common_theme_17": {
+    "en": "Ocean",
+    "pt": "Oceano"
+  },
+  "common_scene_18": {
+    "en": "Lavender fields",
+    "pt": "Campos de lavanda"
+  },
+  "common_theme_18": {
+    "en": "Fields",
+    "pt": "Campos"
+  },
+  "common_scene_19": {
+    "en": "Forest falls",
+    "pt": "Cachoeira na floresta"
+  },
+  "common_theme_19": {
+    "en": "Nature",
+    "pt": "Natureza"
+  },
+  "common_scene_20": {
+    "en": "Lunar silence",
+    "pt": "Silêncio lunar"
+  },
+  "common_theme_20": {
+    "en": "Space",
+    "pt": "Espaço"
+  },
+  "common_scene_21": {
+    "en": "Crystal lake",
+    "pt": "Lago de cristal"
+  },
+  "common_theme_21": {
+    "en": "Winter",
+    "pt": "Inverno"
+  },
+  "common_scene_22": {
+    "en": "Amber hall",
+    "pt": "Salão âmbar"
+  },
+  "common_theme_22": {
+    "en": "Architecture",
+    "pt": "Arquitetura"
+  },
+  "common_scene_23": {
+    "en": "Savanna horizon",
+    "pt": "Horizonte do cerrado"
+  },
+  "common_theme_23": {
+    "en": "Fields",
+    "pt": "Campos"
+  },
+  "common_scene_24": {
+    "en": "Land of fire and ice",
+    "pt": "Terra de fogo e gelo"
+  },
+  "common_theme_24": {
+    "en": "Landscapes",
+    "pt": "Paisagens"
+  },
+  "common_scene_25": {
+    "en": "Sunlit orchard",
+    "pt": "Pomar ao sol"
+  },
+  "common_theme_25": {
+    "en": "Gardens",
+    "pt": "Jardins"
+  },
+  "common_scene_26": {
+    "en": "Atlantic lighthouse",
+    "pt": "Farol do Atlântico"
+  },
+  "common_theme_26": {
+    "en": "Ocean",
+    "pt": "Oceano"
+  },
+  "common_scene_27": {
+    "en": "Mineral silk",
+    "pt": "Seda mineral"
+  },
+  "common_theme_27": {
+    "en": "Abstract",
+    "pt": "Abstrato"
+  },
+  "common_scene_28": {
+    "en": "Spring on the river",
+    "pt": "Primavera no rio"
+  },
+  "common_theme_28": {
+    "en": "Gardens",
+    "pt": "Jardins"
+  },
+  "common_scene_29": {
+    "en": "Beneath infinity",
+    "pt": "Sob o infinito"
+  },
+  "common_theme_29": {
+    "en": "Deserts",
+    "pt": "Desertos"
+  },
+  "common_scene_30": {
+    "en": "Sky islands",
+    "pt": "Ilhas do céu"
+  },
+  "common_theme_30": {
+    "en": "Fantasy",
+    "pt": "Fantasia"
+  },
+  "common_photo_01": {
+    "en": "Green woodland in Armenia",
+    "pt": "Bosque verde da Armênia"
+  },
+  "common_photo_02": {
+    "en": "Waters of Cheow Lan",
+    "pt": "Águas de Cheow Lan"
+  },
+  "common_photo_03": {
+    "en": "Lang Co coast",
+    "pt": "Costa de Lang Co"
+  },
+  "common_photo_04": {
+    "en": "Zagedan lakes",
+    "pt": "Lagos de Zagedan"
+  },
+  "common_photo_05": {
+    "en": "Merzouga dunes",
+    "pt": "Dunas de Merzouga"
+  },
+  "common_photo_06": {
+    "en": "Winter in Styria",
+    "pt": "Inverno na Estíria"
+  },
+  "common_photo_07": {
+    "en": "Clouds in deep blue",
+    "pt": "Nuvens no azul profundo"
+  },
+  "common_photo_08": {
+    "en": "Mist in Ella valley",
+    "pt": "Névoa no vale de Ella"
+  },
+  "common_photo_09": {
+    "en": "Fjallsárlón glacial lake",
+    "pt": "Lago glacial de Fjallsárlón"
+  },
+  "common_photo_10": {
+    "en": "Ergaki mountains",
+    "pt": "Montanhas de Ergaki"
+  },
+  "common_photo_11": {
+    "en": "Silence of the dunes",
+    "pt": "Silêncio das dunas"
+  },
+  "common_photo_12": {
+    "en": "Winter trees in Gorce",
+    "pt": "Árvores de inverno em Gorce"
+  },
+  "common_photo_13": {
+    "en": "Lake beneath the clouds",
+    "pt": "Lago sob as nuvens"
+  },
+  "common_photo_14": {
+    "en": "Green Bali",
+    "pt": "Verde de Bali"
+  },
+  "common_procedural_01": {
+    "en": "Dawn sea",
+    "pt": "Mar de aurora"
+  },
+  "common_procedural_02": {
+    "en": "Serene mountains",
+    "pt": "Montanhas serenas"
+  },
+  "common_procedural_03": {
+    "en": "Dunes of light",
+    "pt": "Dunas de luz"
+  },
+  "common_procedural_04": {
+    "en": "Valley mist",
+    "pt": "Brumas do vale"
+  },
+  "common_procedural_05": {
+    "en": "Green hills",
+    "pt": "Colinas verdes"
+  },
+  "common_procedural_06": {
+    "en": "Quiet night",
+    "pt": "Noite tranquila"
+  },
+  "common_procedural_07": {
+    "en": "City lights",
+    "pt": "Luzes da cidade"
+  },
+  "common_procedural_08": {
+    "en": "Whale song",
+    "pt": "Canto das baleias"
+  },
+  "common_procedural_09": {
+    "en": "Sky routes",
+    "pt": "Rotas no céu"
+  },
+  "common_procedural_10": {
+    "en": "Galaxy garden",
+    "pt": "Jardim de galáxias"
+  },
+  "common_procedural_11": {
+    "en": "Our Milky Way",
+    "pt": "Nossa Via Láctea"
+  },
+  "common_procedural_12": {
+    "en": "Coral garden",
+    "pt": "Jardim de corais"
+  },
+  "common_procedural_13": {
+    "en": "Golden road",
+    "pt": "Estrada dourada"
+  },
+  "common_procedural_14": {
+    "en": "Balloons at dawn",
+    "pt": "Balões ao amanhecer"
+  },
+  "common_procedural_15": {
+    "en": "Deer sanctuary",
+    "pt": "Refúgio dos cervos"
+  },
+  "common_procedural_16": {
+    "en": "Enchanted forest",
+    "pt": "Floresta encantada"
+  },
+  "common_procedural_17": {
+    "en": "Butterfly garden",
+    "pt": "Jardim das borboletas"
+  },
+  "common_procedural_18": {
+    "en": "Bees and flowers",
+    "pt": "Abelhas e flores"
+  },
+  "common_procedural_19": {
+    "en": "Water lily lake",
+    "pt": "Lago dos nenúfares"
+  },
+  "common_procedural_20": {
+    "en": "Lighthouse of serenity",
+    "pt": "Farol da serenidade"
+  }
+}

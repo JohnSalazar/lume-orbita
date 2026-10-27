@@ -85,7 +85,7 @@ class ScreenSaverView(context: Context) : FrameLayout(context) {
     private val tick = object : Runnable {
         override fun run() {
             if (running) {
-                if (clockEnabled) clock.text = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
+                if (clockEnabled) clock.text = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm", AppLocales.formattingLocale(context)))
                 sizeLabels()
                 handler.postDelayed(this, 60_000L - System.currentTimeMillis() % 60_000L)
             }
@@ -98,7 +98,7 @@ class ScreenSaverView(context: Context) : FrameLayout(context) {
         addView(caption, LayoutParams(-2, -2, Gravity.BOTTOM or Gravity.END).apply { setMargins(dp(24), dp(24), dp(24), dp(24)) })
         addView(clock, LayoutParams(-2, -2, Gravity.BOTTOM or Gravity.START).apply { setMargins(dp(24), dp(24), dp(24), dp(24)) })
         caption.visibility = GONE; clock.visibility = GONE
-        contentDescription = "Proteção de tela"
+        contentDescription = context.getString(R.string.common_screensaver)
     }
 
     private fun dp(value: Int) = GlassUi.dp(context, value)
@@ -139,7 +139,7 @@ class ScreenSaverView(context: Context) : FrameLayout(context) {
         photos = emptyList(); previous = -1; lastAttempt = -1
         lastProceduralSeed = null
         clearImage(); caption.text = ""; caption.visibility = GONE; clock.text = ""; clock.visibility = GONE
-        contentDescription = "Proteção de tela"
+        contentDescription = context.getString(R.string.common_screensaver)
     }
 
     private fun clearImage() {
@@ -157,7 +157,7 @@ class ScreenSaverView(context: Context) : FrameLayout(context) {
             val artist = entry.optString("artist").take(140)
             val license = entry.optString("license").take(80)
             if (!ScreensaverRules.isAllowedImageUrl(address) || title.isBlank() || artist.isBlank() || license.isBlank()) null
-            else Photo(title, artist, license, address)
+            else Photo(LocalizedText.photoTitle(context, index), artist, license, address)
         }.distinctBy { it.imageUrl }
     } catch (_: Exception) { emptyList() }
 
@@ -204,8 +204,9 @@ class ScreenSaverView(context: Context) : FrameLayout(context) {
                             handler.removeCallbacks(nextProcedural)
                             clearImage(); bitmap = loaded; image.setImageBitmap(loaded)
                             previous = index; attempts.markDisplayed()
-                            contentDescription = "Proteção de tela · ${photo.title}"
-                            caption.text = "${photo.title} · ${photo.artist}"
+                            contentDescription = context.getString(R.string.common_photo_description, photo.title)
+                            val bidi = android.text.BidiFormatter.getInstance(resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL)
+                            caption.text = context.getString(R.string.common_photo_caption, bidi.unicodeWrap(photo.title), bidi.unicodeWrap(photo.artist))
                             caption.visibility = VISIBLE
                             handler.postDelayed(next, interval)
                         }
@@ -228,11 +229,12 @@ class ScreenSaverView(context: Context) : FrameLayout(context) {
         if (wasProcedural && !forceNew) return
         val seed = ProceduralSceneRules.nextSeed(lastProceduralSeed, Random.nextLong())
         val landscape = ProceduralLandscapeDrawable(seed)
+        val title = LocalizedText.proceduralTitle(context, br.com.lume.launcher.core.ProceduralSceneRules.themeIndex(seed))
         clearImage(); image.setImageDrawable(landscape)
         lastProceduralSeed = seed
-        caption.text = "${landscape.title} · Arte procedural · lume órbita"
+        caption.text = context.getString(R.string.common_procedural_caption, title)
         caption.visibility = VISIBLE
-        contentDescription = "Proteção de tela · Arte procedural · ${landscape.title}"
+        contentDescription = context.getString(R.string.common_procedural_description, title)
         handler.removeCallbacks(nextProcedural)
         handler.postDelayed(nextProcedural, interval)
     }

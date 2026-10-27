@@ -149,7 +149,7 @@ object GlassUi {
         }
 
     fun backButton(context: Context, onClick: () -> Unit): TextView =
-        backButton(context, "Voltar", onClick)
+        backButton(context, context.getString(R.string.common_back), onClick)
 
     fun backButton(
         context: Context,

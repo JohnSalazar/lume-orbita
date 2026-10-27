@@ -102,7 +102,7 @@ class DeviceActions(private val activity: Activity) {
     fun inputs(): List<Pair<String, String>> {
         val manager = activity.getSystemService(TvInputManager::class.java) ?: return emptyList()
         return try {
-            val collator = Collator.getInstance(Locale.forLanguageTag("pt-BR"))
+            val collator = Collator.getInstance(AppLocales.currentLocale(activity))
             manager.tvInputList.filter { it.isPassthroughInput && !it.isHidden(activity) }
                 .map { input ->
                     input.id to (input.loadCustomLabel(activity) ?: input.loadLabel(activity)).toString()

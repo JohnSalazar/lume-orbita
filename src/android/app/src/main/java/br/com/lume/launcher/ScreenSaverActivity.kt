@@ -1,6 +1,7 @@
 package br.com.lume.launcher
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -11,6 +12,8 @@ import android.view.WindowManager
 /** A separate secure window prevents online photos from entering launcher/task snapshots. */
 class ScreenSaverActivity : Activity() {
     private lateinit var renderer: ScreenSaverView
+
+    override fun attachBaseContext(newBase: Context) { super.attachBaseContext(AppLocales.wrap(newBase)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

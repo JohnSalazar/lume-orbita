@@ -8,7 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import br.com.lume.launcher.core.NetworkStatus
 
-class NetworkMonitor(context: Context, private val onUpdate: (NetworkStatus) -> Unit) {
+class NetworkMonitor(private val context: Context, private val onUpdate: (NetworkStatus) -> Unit) {
     private val manager = context.applicationContext.getSystemService(ConnectivityManager::class.java)
     private val main = Handler(Looper.getMainLooper())
     private var callback: ConnectivityManager.NetworkCallback? = null
@@ -21,7 +21,7 @@ class NetworkMonitor(context: Context, private val onUpdate: (NetworkStatus) -> 
         if (callback != null) return
         val connectivity = manager
         if (connectivity == null) {
-            onUpdate(NetworkStatus("Rede", "Estado indisponível"))
+            onUpdate(NetworkStatus(context.getString(R.string.common_network), context.getString(R.string.common_unavailable)))
             return
         }
         var current: Network? = null
@@ -29,7 +29,7 @@ class NetworkMonitor(context: Context, private val onUpdate: (NetworkStatus) -> 
             override fun onAvailable(network: Network) {
                 if (callback !== this) return
                 current = network
-                onUpdate(NetworkStatus("Rede", "Verificando internet"))
+                onUpdate(NetworkStatus(context.getString(R.string.common_network), context.getString(R.string.common_checking_internet)))
             }
 
             override fun onCapabilitiesChanged(network: Network, capabilities: NetworkCapabilities) {
@@ -39,13 +39,13 @@ class NetworkMonitor(context: Context, private val onUpdate: (NetworkStatus) -> 
             override fun onLost(network: Network) {
                 if (callback !== this || current != network) return
                 current = null
-                onUpdate(NetworkStatus("Sem rede", "Conecte sua TV"))
+                onUpdate(NetworkStatus(context.getString(R.string.common_no_network), context.getString(R.string.common_connect_tv)))
             }
 
             override fun onUnavailable() {
                 if (callback !== this) return
                 current = null
-                onUpdate(NetworkStatus("Sem rede", "Conecte sua TV"))
+                onUpdate(NetworkStatus(context.getString(R.string.common_no_network), context.getString(R.string.common_connect_tv)))
             }
         }
         callback = listener
@@ -53,19 +53,19 @@ class NetworkMonitor(context: Context, private val onUpdate: (NetworkStatus) -> 
             connectivity.registerDefaultNetworkCallback(listener, main)
         } catch (_: RuntimeException) {
             callback = null
-            onUpdate(NetworkStatus("Rede", "Estado indisponível"))
+            onUpdate(NetworkStatus(context.getString(R.string.common_network), context.getString(R.string.common_unavailable)))
             return
         }
         try {
             current = connectivity.activeNetwork
             val capabilities = current?.let { connectivity.getNetworkCapabilities(it) }
             onUpdate(when {
-                current == null -> NetworkStatus("Sem rede", "Conecte sua TV")
-                capabilities == null -> NetworkStatus("Rede", "Estado desconhecido")
+                current == null -> NetworkStatus(context.getString(R.string.common_no_network), context.getString(R.string.common_connect_tv))
+                capabilities == null -> NetworkStatus(context.getString(R.string.common_network), context.getString(R.string.common_unknown))
                 else -> description(capabilities)
             })
         } catch (_: SecurityException) {
-            onUpdate(NetworkStatus("Rede", "Estado indisponível"))
+            onUpdate(NetworkStatus(context.getString(R.string.common_network), context.getString(R.string.common_unavailable)))
         }
     }
 
@@ -85,15 +85,20 @@ class NetworkMonitor(context: Context, private val onUpdate: (NetworkStatus) -> 
 
     private fun description(capabilities: NetworkCapabilities): NetworkStatus {
         val transport = when {
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> "Wi-Fi"
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> "Cabo"
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> "Móvel"
-            else -> "Rede"
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> context.getString(R.string.common_wifi)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> context.getString(R.string.common_ethernet)
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> context.getString(R.string.common_cellular)
+            else -> context.getString(R.string.common_network)
         }
-        val network = if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) "$transport (VPN)" else transport
-        return NetworkStatus.connected(network,
-            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET),
-            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED),
-            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_CAPTIVE_PORTAL))
+        val network = if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)) context.getString(R.string.common_vpn, transport) else transport
+        val captive = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_CAPTIVE_PORTAL)
+        val online = !captive && capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+        val label = when {
+            captive -> R.string.common_login_required
+            online -> R.string.common_internet_connected
+            else -> R.string.common_internet_unverified
+        }
+        return NetworkStatus(network, context.getString(label), online)
     }
 }

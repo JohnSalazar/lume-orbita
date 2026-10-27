@@ -11,7 +11,7 @@ class LumeDreamService : DreamService() {
         super.onAttachedToWindow()
         isInteractive = false; isFullscreen = true
         window?.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        renderer = ScreenSaverView(this).also { setContentView(it) }
+        renderer = ScreenSaverView(AppLocales.wrap(this)).also { setContentView(it) }
     }
 
     override fun onDreamingStarted() {

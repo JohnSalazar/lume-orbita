@@ -150,6 +150,8 @@ class ProgramArtworkBinder(private val active: () -> Boolean) {
         binding.displayed = true
         binding.image.scaleType = ImageView.ScaleType.CENTER_CROP
         binding.image.setImageBitmap(bitmap)
-        binding.image.contentDescription = "Imagem do conteúdo"
+        // The focusable parent already announces the title and playback details.
+        binding.image.contentDescription = null
+        binding.image.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
     }
 }

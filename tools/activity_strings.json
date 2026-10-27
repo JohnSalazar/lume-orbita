@@ -1,0 +1,550 @@
+{
+  "activity_nav_home": {
+    "en": "Home",
+    "pt": "Início"
+  },
+  "activity_nav_apps": {
+    "en": "Apps",
+    "pt": "Aplicativos"
+  },
+  "activity_nav_scenes": {
+    "en": "Atmospheres",
+    "pt": "Atmosferas"
+  },
+  "activity_cinema_title": {
+    "en": "Cinema mode",
+    "pt": "Modo Cinema"
+  },
+  "activity_sidebar_motto": {
+    "en": "YOUR SPACE.\nYOUR WAY.",
+    "pt": "SEU ESPAÇO.\nDO SEU JEITO."
+  },
+  "activity_settings_a11y": {
+    "en": "Launcher and Android TV settings",
+    "pt": "Configurações do launcher e Android TV"
+  },
+  "activity_screensaver_start_failed": {
+    "en": "Couldn't start the screensaver.",
+    "pt": "Não foi possível iniciar a proteção de tela."
+  },
+  "activity_apps_changed_move_canceled": {
+    "en": "The app list changed. Move canceled.",
+    "pt": "A lista de aplicativos mudou. Movimento cancelado."
+  },
+  "activity_apps_read_failed": {
+    "en": "Couldn't read apps. Try reopening the launcher.",
+    "pt": "Não foi possível ler os aplicativos. Tente reabrir o launcher."
+  },
+  "activity_continue_watching": {
+    "en": "Continue watching",
+    "pt": "Continuar assistindo"
+  },
+  "activity_suggestions": {
+    "en": "Suggestions",
+    "pt": "Sugestões"
+  },
+  "activity_daily_atmosphere": {
+    "en": "ATMOSPHERE OF THE DAY\n%1$s",
+    "pt": "ATMOSFERA DO DIA\n%1$s"
+  },
+  "activity_manual_atmosphere": {
+    "en": "YOUR ATMOSPHERE\n%1$s",
+    "pt": "SUA ATMOSFERA\n%1$s"
+  },
+  "activity_favorites_heading": {
+    "en": "Your favorites",
+    "pt": "Seus favoritos"
+  },
+  "activity_move_hint": {
+    "en": "Move: ← →  ·  OK saves\nBack cancels",
+    "pt": "Mover: ← →  ·  OK salva\nVoltar cancela"
+  },
+  "activity_move_a11y": {
+    "en": "Move favorite. Left or right moves it. OK saves. Back cancels.",
+    "pt": "Mover favorito. Esquerda ou direita move. OK salva. Voltar cancela."
+  },
+  "activity_include_apps": {
+    "en": "+ Add apps",
+    "pt": "+ Incluir aplicativos"
+  },
+  "activity_favorites_empty": {
+    "en": "Add your favorite apps.",
+    "pt": "Inclua seus aplicativos preferidos."
+  },
+  "activity_apps_loading": {
+    "en": "Loading apps…",
+    "pt": "Carregando aplicativos…"
+  },
+  "activity_scenes_heading": {
+    "en": "A new perspective",
+    "pt": "Uma nova perspectiva"
+  },
+  "activity_view_all_scenes": {
+    "en": "View 30  ›",
+    "pt": "Ver 30  ›"
+  },
+  "activity_content_permission_denied": {
+    "en": "Access not granted. You can still open your platforms.",
+    "pt": "Acesso não autorizado. Você ainda pode abrir suas plataformas."
+  },
+  "activity_content_loading": {
+    "en": "Finding your playback…",
+    "pt": "Buscando suas reproduções…"
+  },
+  "activity_content_connect_hint": {
+    "en": "Continue content from compatible apps.",
+    "pt": "Continue assistindo a conteúdos de apps compatíveis."
+  },
+  "activity_content_unavailable": {
+    "en": "Content is unavailable on this TV right now.",
+    "pt": "Conteúdo indisponível nesta TV agora."
+  },
+  "activity_content_no_progress": {
+    "en": "Apps haven't shared any playback in progress yet.",
+    "pt": "Os apps ainda não compartilharam reproduções em andamento."
+  },
+  "activity_content_refresh": {
+    "en": "Refresh content",
+    "pt": "Atualizar conteúdo"
+  },
+  "activity_content_connect": {
+    "en": "Connect content",
+    "pt": "Conectar conteúdo"
+  },
+  "activity_season": {
+    "en": "Season %1$s",
+    "pt": "Temporada %1$s"
+  },
+  "activity_episode": {
+    "en": "Episode %1$s",
+    "pt": "Episódio %1$s"
+  },
+  "activity_content_open_a11y": {
+    "en": "%1$s. %2$s. OK opens.",
+    "pt": "%1$s. %2$s. OK abre."
+  },
+  "activity_content_continue_a11y": {
+    "en": "%1$s. %2$s. %3$d percent watched. OK continues.",
+    "pt": "%1$s. %2$s. %3$d por cento assistido. OK continua."
+  },
+  "activity_live_platform": {
+    "en": "LIVE · %1$s",
+    "pt": "AO VIVO · %1$s"
+  },
+  "activity_content_open_fallback": {
+    "en": "Opening the platform; direct content is unavailable.",
+    "pt": "Abrindo a plataforma; conteúdo direto indisponível."
+  },
+  "activity_app_unavailable": {
+    "en": "App unavailable.",
+    "pt": "Aplicativo indisponível."
+  },
+  "activity_explore_platform": {
+    "en": "Explore %1$s",
+    "pt": "Explorar %1$s"
+  },
+  "activity_open_platform": {
+    "en": "Open platform",
+    "pt": "Abrir plataforma"
+  },
+  "activity_content_no_suggestions": {
+    "en": "Apps haven't shared suggestions yet.",
+    "pt": "Os apps ainda não compartilharam sugestões."
+  },
+  "activity_apps_heading": {
+    "en": "Your apps.",
+    "pt": "Seus aplicativos."
+  },
+  "activity_install_google_play": {
+    "en": "Install apps from Google Play  ›",
+    "pt": "Instalar aplicativos na Google Play  ›"
+  },
+  "activity_apps_hint": {
+    "en": "OK adds or removes a favorite · hold OK for quick actions",
+    "pt": "OK inclui ou remove favorito · segure OK para ações rápidas"
+  },
+  "activity_apps_empty": {
+    "en": "No launchable apps were found.",
+    "pt": "Nenhum aplicativo lançável foi encontrado."
+  },
+  "activity_apps_reading": {
+    "en": "Reading apps on the TV…",
+    "pt": "Lendo aplicativos da TV…"
+  },
+  "activity_app_favorite_a11y": {
+    "en": "%1$s. Favorite. OK removes it from favorites. Hold OK for actions.",
+    "pt": "%1$s. Favorito. OK remove dos favoritos. Segure OK para ações."
+  },
+  "activity_app_add_favorite_a11y": {
+    "en": "%1$s. OK adds it to favorites. Hold OK for actions.",
+    "pt": "%1$s. OK inclui nos favoritos. Segure OK para ações."
+  },
+  "activity_app_open_a11y": {
+    "en": "%1$s. OK opens. Hold OK for actions.",
+    "pt": "%1$s. OK abre. Segure OK para ações."
+  },
+  "activity_app_open_failed": {
+    "en": "This app couldn't be opened.",
+    "pt": "Este aplicativo não pôde ser aberto."
+  },
+  "activity_app_open": {
+    "en": "Open app",
+    "pt": "Abrir aplicativo"
+  },
+  "activity_move": {
+    "en": "Move",
+    "pt": "Mover"
+  },
+  "activity_favorite_remove": {
+    "en": "Remove from favorites",
+    "pt": "Remover dos favoritos"
+  },
+  "activity_favorite_add": {
+    "en": "Add to favorites",
+    "pt": "Incluir nos favoritos"
+  },
+  "activity_install_apps_arrow": {
+    "en": "Install apps  ›",
+    "pt": "Instalar aplicativos  ›"
+  },
+  "activity_app_information": {
+    "en": "App information",
+    "pt": "Informações do aplicativo"
+  },
+  "activity_app_information_unavailable": {
+    "en": "Information unavailable on this firmware.",
+    "pt": "Informações indisponíveis neste firmware."
+  },
+  "activity_uninstall": {
+    "en": "Uninstall…",
+    "pt": "Desinstalar…"
+  },
+  "activity_uninstall_confirmation_failed": {
+    "en": "Couldn't open uninstall confirmation.",
+    "pt": "Não foi possível abrir a confirmação de desinstalação."
+  },
+  "activity_position_saved": {
+    "en": "Position saved.",
+    "pt": "Posição salva."
+  },
+  "activity_move_canceled": {
+    "en": "Move canceled.",
+    "pt": "Movimento cancelado."
+  },
+  "activity_scene_a11y": {
+    "en": "%1$s, %2$s",
+    "pt": "%1$s, %2$s"
+  },
+  "activity_scene_selected": {
+    "en": "%1$s · manual choice",
+    "pt": "%1$s · escolha manual"
+  },
+  "activity_gallery_heading": {
+    "en": "Your atmospheres.",
+    "pt": "Suas atmosferas."
+  },
+  "activity_gallery_description": {
+    "en": "30 original landscapes. A new scene every day.",
+    "pt": "30 paisagens originais. Um novo cenário a cada dia."
+  },
+  "activity_daily_on": {
+    "en": "Daily rotation on · turn off",
+    "pt": "Troca diária ligada · desativar"
+  },
+  "activity_daily_enable": {
+    "en": "Enable daily rotation",
+    "pt": "Ativar troca diária"
+  },
+  "activity_cinema_label": {
+    "en": "CINEMA MODE\n%1$s%2$s",
+    "pt": "MODO CINEMA\n%1$s%2$s"
+  },
+  "activity_cinema_on": {
+    "en": "On · turn off",
+    "pt": "Ligado · desligar"
+  },
+  "activity_cinema_off": {
+    "en": "Off · turn on",
+    "pt": "Desligado · ativar"
+  },
+  "activity_cinema_schedule_label": {
+    "en": "\nSchedule 8 PM–6 AM",
+    "pt": "\nAgenda 20h–6h"
+  },
+  "activity_cinema_manual_schedule_off": {
+    "en": "Manual setting applied. Schedule turned off.",
+    "pt": "Ajuste manual aplicado. Agendamento desligado."
+  },
+  "activity_cinema_description": {
+    "en": "Dims the launcher, warms the background, and pauses reflections and animations. The TV's picture settings don't change.",
+    "pt": "Escurece o launcher, aquece o fundo e pausa reflexos e animações. Os ajustes da imagem da TV não mudam."
+  },
+  "activity_cinema_disable_now": {
+    "en": "Turn Cinema off now",
+    "pt": "Desativar Cinema agora"
+  },
+  "activity_cinema_enable_now": {
+    "en": "Turn Cinema on now",
+    "pt": "Ativar Cinema agora"
+  },
+  "activity_cinema_schedule_disable": {
+    "en": "8 PM–6 AM schedule on · turn off",
+    "pt": "Agenda 20h–6h ligada · desativar"
+  },
+  "activity_cinema_schedule_enable": {
+    "en": "Enable daily 8 PM–6 AM schedule",
+    "pt": "Ativar agenda diária 20h–6h"
+  },
+  "activity_cinema_schedule_description": {
+    "en": "Uses the TV's local time. Turning off the schedule keeps the current appearance; a manual toggle also turns off the schedule.",
+    "pt": "Horário local da TV. Desativar a agenda mantém o visual atual; um toque manual também desliga a agenda."
+  },
+  "activity_network_unavailable": {
+    "en": "Network menu unavailable. Use the TV's Settings.",
+    "pt": "Menu de rede indisponível. Use Configurações da TV."
+  },
+  "activity_network_a11y": {
+    "en": "Network. %1$s. %2$s. OK opens Android network settings.",
+    "pt": "Rede. %1$s. %2$s. OK abre configurações de rede do Android."
+  },
+  "activity_android_settings": {
+    "en": "Android TV settings  ›",
+    "pt": "Configurações do Android TV  ›"
+  },
+  "activity_android_settings_unavailable": {
+    "en": "Settings unavailable on this firmware.",
+    "pt": "Configurações indisponíveis neste firmware."
+  },
+  "activity_network_settings": {
+    "en": "Network and internet",
+    "pt": "Rede e internet"
+  },
+  "activity_install_apps": {
+    "en": "Install apps",
+    "pt": "Instalar aplicativos"
+  },
+  "activity_cinema_settings": {
+    "en": "Cinema mode and schedule",
+    "pt": "Modo Cinema e agenda"
+  },
+  "activity_appearance_title": {
+    "en": "Appearance",
+    "pt": "Aparência"
+  },
+  "activity_screensaver_title": {
+    "en": "Screensaver",
+    "pt": "Proteção de tela"
+  },
+  "activity_hdmi_inputs": {
+    "en": "HDMI inputs",
+    "pt": "Entradas HDMI"
+  },
+  "activity_content_disable": {
+    "en": "Turn shared content off",
+    "pt": "Desligar conteúdo compartilhado"
+  },
+  "activity_content_enable": {
+    "en": "Connect platform content",
+    "pt": "Conectar conteúdo das plataformas"
+  },
+  "activity_home_choose": {
+    "en": "Choose default home screen…",
+    "pt": "Escolher tela inicial padrão…"
+  },
+  "activity_settings_title": {
+    "en": "Settings",
+    "pt": "Configurações"
+  },
+  "activity_screensaver_start": {
+    "en": "Start now",
+    "pt": "Iniciar agora"
+  },
+  "activity_screensaver_on": {
+    "en": "In launcher · on",
+    "pt": "No launcher · ligada"
+  },
+  "activity_screensaver_off": {
+    "en": "In launcher · off",
+    "pt": "No launcher · desligada"
+  },
+  "activity_screensaver_delay": {
+    "en": "Start after · %1$d minutes",
+    "pt": "Iniciar após · %1$d minutos"
+  },
+  "activity_screensaver_interval": {
+    "en": "Change image · %1$s",
+    "pt": "Trocar imagem · %1$s"
+  },
+  "activity_duration_30_seconds": {
+    "en": "30 seconds",
+    "pt": "30 segundos"
+  },
+  "activity_duration_one_minute": {
+    "en": "1 minute",
+    "pt": "1 minuto"
+  },
+  "activity_duration_minutes": {
+    "en": "%1$d minutes",
+    "pt": "%1$d minutos"
+  },
+  "activity_screensaver_dim": {
+    "en": "Dimming · %1$d%%",
+    "pt": "Escurecimento · %1$d%%"
+  },
+  "activity_clock_on": {
+    "en": "Clock · on",
+    "pt": "Relógio · ligado"
+  },
+  "activity_clock_off": {
+    "en": "Clock · off",
+    "pt": "Relógio · desligado"
+  },
+  "activity_android_screensaver": {
+    "en": "Android screensaver  ›",
+    "pt": "Proteção de tela do Android  ›"
+  },
+  "activity_android_screensaver_unavailable": {
+    "en": "Selection unavailable on this firmware. The launcher screensaver is still available.",
+    "pt": "Seleção indisponível neste firmware. A proteção no launcher continua disponível."
+  },
+  "activity_photo_credits": {
+    "en": "Image credits",
+    "pt": "Créditos das imagens"
+  },
+  "activity_screensaver_description": {
+    "en": "Free online landscapes, kept only in memory, without saving photos on the TV. Offline, a soft background is shown. In the launcher, it starts after inactivity; Android controls the screensaver in other apps and TV sleep. Arrows, OK, or Back end the view.",
+    "pt": "Paisagens gratuitas pela internet, somente na memória, sem salvar fotos na TV. Sem internet, fundo suave. No launcher, funciona por inatividade; o Android controla proteção em outros apps e o repouso da TV. Setas, OK ou Voltar encerram a visualização."
+  },
+  "activity_photo_credits_description": {
+    "en": "Photos are resized and cropped to fill the screen, with the selected dimming. Originals and their licenses are at the addresses below.",
+    "pt": "As fotos são redimensionadas e recortadas para preencher a tela, com o escurecimento escolhido. Os originais e suas licenças estão nos endereços abaixo."
+  },
+  "activity_photo_credit": {
+    "en": "%1$s\n%2$s · %3$s\n%4$s\n%5$s",
+    "pt": "%1$s\n%2$s · %3$s\n%4$s\n%5$s"
+  },
+  "activity_photo_credits_unavailable": {
+    "en": "Credits unavailable. Try reopening the launcher.",
+    "pt": "Créditos indisponíveis. Tente reabrir o launcher."
+  },
+  "activity_home_choice_description": {
+    "en": "This step may change where the Home button takes you. Keep another compatible launcher installed as a way back. The Cinema schedule doesn't control return from standby.",
+    "pt": "Este passo pode mudar o destino do botão Home. Mantenha outro launcher compatível instalado como opção de retorno. A agenda Cinema não controla o retorno do standby."
+  },
+  "activity_home_open_selection": {
+    "en": "Open official home screen selection",
+    "pt": "Abrir seleção oficial de tela inicial"
+  },
+  "activity_home_selection_unavailable": {
+    "en": "Home selection unavailable on this firmware.",
+    "pt": "Seleção Home indisponível neste firmware."
+  },
+  "activity_home_restore": {
+    "en": "To undo this, choose another compatible launcher in default app settings before removing lume órbita.",
+    "pt": "Para desfazer, escolha outro launcher compatível nas configurações de aplicativos padrão antes de remover lume órbita."
+  },
+  "activity_home_choice_title": {
+    "en": "Home screen · your choice",
+    "pt": "Tela inicial · escolha do usuário"
+  },
+  "activity_inputs_empty": {
+    "en": "Inputs aren't available here. Use Input on the remote or Android TV settings.",
+    "pt": "Entradas não disponíveis aqui. Use Input no controle ou Configurações do Android TV."
+  },
+  "activity_input_unavailable": {
+    "en": "Input unavailable this way. Use Input on the remote.",
+    "pt": "Entrada indisponível por este caminho. Use Input no controle."
+  },
+  "activity_inputs_title": {
+    "en": "Inputs",
+    "pt": "Entradas"
+  },
+  "activity_google_play_tv_unavailable": {
+    "en": "Google Play unavailable on this TV.",
+    "pt": "Google Play indisponível nesta TV."
+  },
+  "activity_store_description": {
+    "en": "Google Play confirms compatibility and requires your action to install. The launcher doesn't download or install APKs.",
+    "pt": "A Google Play confirma compatibilidade e pede sua ação para instalar. Nenhum APK é baixado ou instalado pelo launcher."
+  },
+  "activity_google_play_open": {
+    "en": "Open Google Play on the TV  ›",
+    "pt": "Abrir Google Play na TV  ›"
+  },
+  "activity_google_play_device_unavailable": {
+    "en": "Google Play unavailable on this device.",
+    "pt": "Google Play indisponível neste aparelho."
+  },
+  "activity_store_app_installed": {
+    "en": "%1$s · installed",
+    "pt": "%1$s · instalado"
+  },
+  "activity_store_app_available": {
+    "en": "%1$s · view in store",
+    "pt": "%1$s · ver na loja"
+  },
+  "activity_store_app_failed": {
+    "en": "Couldn't open this app's store page.",
+    "pt": "Não foi possível abrir a página deste app na loja."
+  },
+  "activity_appearance_description": {
+    "en": "Your values are saved during Cinema mode. Turning it off restores the appearance.",
+    "pt": "Seus valores ficam guardados durante o Cinema. Desligá-lo restaura o visual."
+  },
+  "activity_transparency": {
+    "en": "Transparency",
+    "pt": "Transparência"
+  },
+  "activity_reflections": {
+    "en": "Reflections",
+    "pt": "Reflexos"
+  },
+  "activity_appearance_value": {
+    "en": "%1$s · %2$d%%",
+    "pt": "%1$s · %2$d%%"
+  },
+  "activity_animations": {
+    "en": "Animations",
+    "pt": "Animações"
+  },
+  "activity_lightweight": {
+    "en": "Lightweight mode",
+    "pt": "Modo leve"
+  },
+  "activity_setting_on": {
+    "en": "%1$s · on",
+    "pt": "%1$s · sim"
+  },
+  "activity_setting_off": {
+    "en": "%1$s · off",
+    "pt": "%1$s · não"
+  },
+  "activity_choose_scenes": {
+    "en": "Choose atmospheres  ›",
+    "pt": "Escolher atmosferas  ›"
+  },
+  "activity_back": {
+    "en": "‹ Back",
+    "pt": "‹ Voltar"
+  },
+  "activity_language_selected": {
+    "en": "%1$s · selected",
+    "pt": "%1$s · selecionado"
+  },
+  "activity_language_title": {
+    "en": "Language",
+    "pt": "Idioma"
+  },
+  "activity_language_system": {
+    "en": "Automatic (TV language)",
+    "pt": "Automático (idioma da TV)"
+  },
+  "activity_language_setting": {
+    "en": "Language · %1$s",
+    "pt": "Idioma · %1$s"
+  },
+  "activity_language_description": {
+    "en": "Automatic follows the TV's supported language, with English (United States) as the fallback. A manual choice changes only this launcher.",
+    "pt": "Automático acompanha o idioma compatível da TV, usando inglês dos Estados Unidos como alternativa. A escolha manual muda somente este launcher."
+  }
+}

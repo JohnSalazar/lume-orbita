@@ -1,5 +1,7 @@
 # Validação da versão0.3.4
 
+Registro histórico da base anterior. Para a versão multilíngue 0.4.0, consulte [a validação de idiomas](qa/i18n-validation.md).
+
 Estado antes da primeira publicação:129 testes JVM aprovados, sem falhas/erros/skips. JaCoCo do core:349/350 linhas(99,71%),570/600 ramos(95%); lint release:0 erros/11 avisos preexistentes. O gate não é cobertura de toda a UI.
 
 Em uma KONKA AndroidTV11/720p foram observadas navegação por controle/ADB, abertura de apps e Settings, seleção como Home, retorno de Home, favorito/ordem, cards de plataformas e proteção. A revisão034 verificou títulos focados com card ampliado sem foco real, cadeia horizontal e entrada explícita na prévia. Standby físico com mesma capa foi confirmado na revisão032; não foi repetido fisicamente na034. Outros modelos/4K, uso prolongado e todos os casos extremos não estão certificados.
