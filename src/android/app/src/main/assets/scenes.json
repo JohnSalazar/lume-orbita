@@ -1,0 +1,212 @@
+[
+  {
+    "id": "scene-01",
+    "title": "Horizonte cósmico",
+    "theme": "Espaço",
+    "file": "atmospheres/scene-01.jpg",
+    "thumb": "atmospheres/thumb-01.jpg"
+  },
+  {
+    "id": "scene-02",
+    "title": "Mar de estrelas",
+    "theme": "Praias",
+    "file": "atmospheres/scene-02.jpg",
+    "thumb": "atmospheres/thumb-02.jpg"
+  },
+  {
+    "id": "scene-03",
+    "title": "Bosque de névoa",
+    "theme": "Florestas",
+    "file": "atmospheres/scene-03.jpg",
+    "thumb": "atmospheres/thumb-03.jpg"
+  },
+  {
+    "id": "scene-04",
+    "title": "Alpes serenos",
+    "theme": "Montanhas",
+    "file": "atmospheres/scene-04.jpg",
+    "thumb": "atmospheres/thumb-04.jpg"
+  },
+  {
+    "id": "scene-05",
+    "title": "Dunas de cobre",
+    "theme": "Desertos",
+    "file": "atmospheres/scene-05.jpg",
+    "thumb": "atmospheres/thumb-05.jpg"
+  },
+  {
+    "id": "scene-06",
+    "title": "Jardim de outono",
+    "theme": "Jardins",
+    "file": "atmospheres/scene-06.jpg",
+    "thumb": "atmospheres/thumb-06.jpg"
+  },
+  {
+    "id": "scene-07",
+    "title": "Luzes do norte",
+    "theme": "Inverno",
+    "file": "atmospheres/scene-07.jpg",
+    "thumb": "atmospheres/thumb-07.jpg"
+  },
+  {
+    "id": "scene-08",
+    "title": "Canais dourados",
+    "theme": "Cidades",
+    "file": "atmospheres/scene-08.jpg",
+    "thumb": "atmospheres/thumb-08.jpg"
+  },
+  {
+    "id": "scene-09",
+    "title": "Cânion âmbar",
+    "theme": "Paisagens",
+    "file": "atmospheres/scene-09.jpg",
+    "thumb": "atmospheres/thumb-09.jpg"
+  },
+  {
+    "id": "scene-10",
+    "title": "Maré de vidro",
+    "theme": "Abstrato",
+    "file": "atmospheres/scene-10.jpg",
+    "thumb": "atmospheres/thumb-10.jpg"
+  },
+  {
+    "id": "scene-11",
+    "title": "Costa azul",
+    "theme": "Praias",
+    "file": "atmospheres/scene-11.jpg",
+    "thumb": "atmospheres/thumb-11.jpg"
+  },
+  {
+    "id": "scene-12",
+    "title": "Terraços de jade",
+    "theme": "Natureza",
+    "file": "atmospheres/scene-12.jpg",
+    "thumb": "atmospheres/thumb-12.jpg"
+  },
+  {
+    "id": "scene-13",
+    "title": "Refúgio de inverno",
+    "theme": "Inverno",
+    "file": "atmospheres/scene-13.jpg",
+    "thumb": "atmospheres/thumb-13.jpg"
+  },
+  {
+    "id": "scene-14",
+    "title": "Estrada vermelha",
+    "theme": "Desertos",
+    "file": "atmospheres/scene-14.jpg",
+    "thumb": "atmospheres/thumb-14.jpg"
+  },
+  {
+    "id": "scene-15",
+    "title": "Nebulosa azul",
+    "theme": "Espaço",
+    "file": "atmospheres/scene-15.jpg",
+    "thumb": "atmospheres/thumb-15.jpg"
+  },
+  {
+    "id": "scene-16",
+    "title": "Cidade da chuva",
+    "theme": "Cidades",
+    "file": "atmospheres/scene-16.jpg",
+    "thumb": "atmospheres/thumb-16.jpg"
+  },
+  {
+    "id": "scene-17",
+    "title": "Jardim submerso",
+    "theme": "Oceano",
+    "file": "atmospheres/scene-17.jpg",
+    "thumb": "atmospheres/thumb-17.jpg"
+  },
+  {
+    "id": "scene-18",
+    "title": "Campos de lavanda",
+    "theme": "Campos",
+    "file": "atmospheres/scene-18.jpg",
+    "thumb": "atmospheres/thumb-18.jpg"
+  },
+  {
+    "id": "scene-19",
+    "title": "Queda da floresta",
+    "theme": "Natureza",
+    "file": "atmospheres/scene-19.jpg",
+    "thumb": "atmospheres/thumb-19.jpg"
+  },
+  {
+    "id": "scene-20",
+    "title": "Silêncio lunar",
+    "theme": "Espaço",
+    "file": "atmospheres/scene-20.jpg",
+    "thumb": "atmospheres/thumb-20.jpg"
+  },
+  {
+    "id": "scene-21",
+    "title": "Lago de cristal",
+    "theme": "Inverno",
+    "file": "atmospheres/scene-21.jpg",
+    "thumb": "atmospheres/thumb-21.jpg"
+  },
+  {
+    "id": "scene-22",
+    "title": "Salão âmbar",
+    "theme": "Arquitetura",
+    "file": "atmospheres/scene-22.jpg",
+    "thumb": "atmospheres/thumb-22.jpg"
+  },
+  {
+    "id": "scene-23",
+    "title": "Horizonte do cerrado",
+    "theme": "Campos",
+    "file": "atmospheres/scene-23.jpg",
+    "thumb": "atmospheres/thumb-23.jpg"
+  },
+  {
+    "id": "scene-24",
+    "title": "Terra de fogo e gelo",
+    "theme": "Paisagens",
+    "file": "atmospheres/scene-24.jpg",
+    "thumb": "atmospheres/thumb-24.jpg"
+  },
+  {
+    "id": "scene-25",
+    "title": "Pomar ao sol",
+    "theme": "Jardins",
+    "file": "atmospheres/scene-25.jpg",
+    "thumb": "atmospheres/thumb-25.jpg"
+  },
+  {
+    "id": "scene-26",
+    "title": "Farol do atlântico",
+    "theme": "Oceano",
+    "file": "atmospheres/scene-26.jpg",
+    "thumb": "atmospheres/thumb-26.jpg"
+  },
+  {
+    "id": "scene-27",
+    "title": "Seda mineral",
+    "theme": "Abstrato",
+    "file": "atmospheres/scene-27.jpg",
+    "thumb": "atmospheres/thumb-27.jpg"
+  },
+  {
+    "id": "scene-28",
+    "title": "Primavera no rio",
+    "theme": "Jardins",
+    "file": "atmospheres/scene-28.jpg",
+    "thumb": "atmospheres/thumb-28.jpg"
+  },
+  {
+    "id": "scene-29",
+    "title": "Sob o infinito",
+    "theme": "Desertos",
+    "file": "atmospheres/scene-29.jpg",
+    "thumb": "atmospheres/thumb-29.jpg"
+  },
+  {
+    "id": "scene-30",
+    "title": "Ilhas do céu",
+    "theme": "Fantasia",
+    "file": "atmospheres/scene-30.jpg",
+    "thumb": "atmospheres/thumb-30.jpg"
+  }
+]

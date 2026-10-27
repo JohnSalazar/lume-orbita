@@ -1,0 +1,142 @@
+[
+  {
+    "id": "nature-01",
+    "title": "Bosque verde da Armênia",
+    "theme": "Floresta",
+    "artist": "Mar Mkrtchyan",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dense_green_woodland.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Dense_green_woodland.jpg/1920px-Dense_green_woodland.jpg"
+  },
+  {
+    "id": "nature-02",
+    "title": "Águas de Cheow Lan",
+    "theme": "Lago",
+    "artist": "Vyacheslav Argenberg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Karst_landscape_of_Cheow_Lan_Lake,_Thailand.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Karst_landscape_of_Cheow_Lan_Lake%2C_Thailand.jpg/1920px-Karst_landscape_of_Cheow_Lan_Lake%2C_Thailand.jpg"
+  },
+  {
+    "id": "nature-03",
+    "title": "Costa de Lang Co",
+    "theme": "Mar",
+    "artist": "Vyacheslav Argenberg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_coast_of_South_China_Sea,_Lang_Co_beach,_Vietnam.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/The_coast_of_South_China_Sea%2C_Lang_Co_beach%2C_Vietnam.jpg/1920px-The_coast_of_South_China_Sea%2C_Lang_Co_beach%2C_Vietnam.jpg"
+  },
+  {
+    "id": "nature-04",
+    "title": "Lagos de Zagedan",
+    "theme": "Montanha",
+    "artist": "Vyacheslav Argenberg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zagedan_Lakes,_Mountain_cirque,_Caucasus_Mountains.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Zagedan_Lakes%2C_Mountain_cirque%2C_Caucasus_Mountains.jpg/1920px-Zagedan_Lakes%2C_Mountain_cirque%2C_Caucasus_Mountains.jpg"
+  },
+  {
+    "id": "nature-05",
+    "title": "Dunas de Merzouga",
+    "theme": "Deserto",
+    "artist": "Mustang Joe",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Merzouga_dunes_of_Morocco.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/The_Merzouga_dunes_of_Morocco.jpg/1920px-The_Merzouga_dunes_of_Morocco.jpg"
+  },
+  {
+    "id": "nature-06",
+    "title": "Inverno na Estíria",
+    "theme": "Neve",
+    "artist": "Eligiusz Jakimowicz",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Winter_landscape_of_Styria.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Winter_landscape_of_Styria.jpg/1920px-Winter_landscape_of_Styria.jpg"
+  },
+  {
+    "id": "nature-07",
+    "title": "Nuvens no azul profundo",
+    "theme": "Céu",
+    "artist": "SavidgeMichael",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Clouds_Float_on_the_Deep_Blue_Sky.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Clouds_Float_on_the_Deep_Blue_Sky.jpg/1920px-Clouds_Float_on_the_Deep_Blue_Sky.jpg"
+  },
+  {
+    "id": "nature-08",
+    "title": "Névoa no vale de Ella",
+    "theme": "Floresta",
+    "artist": "Vyacheslav Argenberg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ella_Valley,_Sri_Lanka,_Cloud_forest_in_fog.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Ella_Valley%2C_Sri_Lanka%2C_Cloud_forest_in_fog.jpg/1920px-Ella_Valley%2C_Sri_Lanka%2C_Cloud_forest_in_fog.jpg"
+  },
+  {
+    "id": "nature-09",
+    "title": "Lago glacial de Fjallsárlón",
+    "theme": "Lago",
+    "artist": "Jakub Hałun",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Fjalls%C3%A1rl%C3%B3n_glacier_lake,_Iceland,_20240719_1720_2774.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Fjalls%C3%A1rl%C3%B3n_glacier_lake%2C_Iceland%2C_20240719_1720_2774.jpg/1920px-Fjalls%C3%A1rl%C3%B3n_glacier_lake%2C_Iceland%2C_20240719_1720_2774.jpg"
+  },
+  {
+    "id": "nature-11",
+    "title": "Montanhas de Ergaki",
+    "theme": "Montanha",
+    "artist": "Vyacheslav Argenberg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mountain_landscape,_Ergaki,_Sayan_Mountains,_Siberia.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Mountain_landscape%2C_Ergaki%2C_Sayan_Mountains%2C_Siberia.jpg/1920px-Mountain_landscape%2C_Ergaki%2C_Sayan_Mountains%2C_Siberia.jpg"
+  },
+  {
+    "id": "nature-12",
+    "title": "Silêncio das dunas",
+    "theme": "Deserto",
+    "artist": "Aleksandr Serebrennikov",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dunes_in_the_desert.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Dunes_in_the_desert.jpg/1920px-Dunes_in_the_desert.jpg"
+  },
+  {
+    "id": "nature-13",
+    "title": "Árvores de inverno em Gorce",
+    "theme": "Neve",
+    "artist": "Jakub Hałun",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Snow-covered_trees_on_the_summit_of_Obidowiec_in_the_Gorce_Mountains,_20260103_1202_6765.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Snow-covered_trees_on_the_summit_of_Obidowiec_in_the_Gorce_Mountains%2C_20260103_1202_6765.jpg/1920px-Snow-covered_trees_on_the_summit_of_Obidowiec_in_the_Gorce_Mountains%2C_20260103_1202_6765.jpg"
+  },
+  {
+    "id": "nature-14",
+    "title": "Lago sob as nuvens",
+    "theme": "Lago",
+    "artist": "Mshuang2",
+    "license": "CC0 1.0",
+    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Landscape_of_lake_and_clouds.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Landscape_of_lake_and_clouds.jpg/1920px-Landscape_of_lake_and_clouds.jpg"
+  },
+  {
+    "id": "nature-15",
+    "title": "Verde de Bali",
+    "theme": "Floresta",
+    "artist": "Vyacheslav Argenberg",
+    "license": "CC BY 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bali,_Forest,_Trees,_East_Bali,_Indonesia.jpg",
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Bali%2C_Forest%2C_Trees%2C_East_Bali%2C_Indonesia.jpg/1920px-Bali%2C_Forest%2C_Trees%2C_East_Bali%2C_Indonesia.jpg"
+  }
+]

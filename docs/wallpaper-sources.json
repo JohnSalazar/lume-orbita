@@ -1,0 +1,537 @@
+[
+  {
+    "id": "scene-01",
+    "title": "Horizonte cósmico",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-02",
+    "title": "Mar de estrelas",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-03",
+    "title": "Bosque de névoa",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-04",
+    "title": "Alpes serenos",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-05",
+    "title": "Dunas de cobre",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-06",
+    "title": "Jardim de outono",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: An elegant Japanese garden in autumn, crimson maple canopy, stone lantern, mirror pond and fine mist; no people.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-07",
+    "title": "Luzes do norte",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: Emerald and violet aurora over a Norwegian fjord with snow-covered peaks and peaceful dark water.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-08",
+    "title": "Canais dourados",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A quiet historic Venice canal at sunrise, golden reflections and warm stone facades, no people or readable signs.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-09",
+    "title": "Cânion âmbar",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A dramatic immense red sandstone canyon with winding river, late afternoon golden light and dramatic yet peaceful clouds.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-10",
+    "title": "Maré de vidro",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: An original refined abstract sculpture of translucent cobalt glass ribbons flowing like ocean waves over a dark background, elegant amber rim lighting.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-11",
+    "title": "Costa azul",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: Mediterranean sea cliffs with cypress trees and a secluded cove, pale azure morning sky, pristine water, no houses with signs.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-12",
+    "title": "Terraços de jade",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: Balinese rice terraces cascading into misty tropical jungle at sunrise with soft amber light and dark green palms.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-13",
+    "title": "Refúgio de inverno",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A tiny warm Scandinavian timber cabin on a snowy lakeshore under a deep navy starry sky, cozy windows, no text.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-14",
+    "title": "Estrada vermelha",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A sweeping empty road through monumental red sandstone desert mesas at twilight, dramatic cinematic sky, no cars or road signs.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-15",
+    "title": "Nebulosa azul",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: An astrophotographic deep cobalt and lavender emission nebula with luminous delicate star clouds and elegant dark negative space, no planet.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-16",
+    "title": "Cidade da chuva",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A cinematic rainy futuristic Japanese city street at blue hour, reflected cyan and warm amber lights on wet paving, no people, no readable letters, no logos.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-17",
+    "title": "Jardim submerso",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A serene pristine coral reef seen underwater with soft sun rays filtering down, turquoise water, small colorful fish, realistic environmental photography.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-18",
+    "title": "Campos de lavanda",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: Endless lavender rows in Provence with a distant lone stone cottage, warm sunset sky and gentle pale mist, no text.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-19",
+    "title": "Queda da floresta",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A majestic tropical waterfall cascading into a dark emerald pool amid lush jungle with morning mist, no people.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-20",
+    "title": "Silêncio lunar",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: The peaceful rugged lunar surface under black sky, a luminous small Earth above the far horizon, soft sidelight across craters, no machinery.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-21",
+    "title": "Lago de cristal",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: An icy frozen alpine lake with translucent cracked ice in the foreground and snowy mountains at rosy dawn, realistic and serene.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-22",
+    "title": "Salão âmbar",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: An original luxurious art deco lounge interior with sculptural arches, dark walnut, soft warm amber lighting and large window overlooking quiet night sky; no people or logos.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-23",
+    "title": "Horizonte do cerrado",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: Brazilian cerrado grasslands in warm golden evening light with beautiful native trees, dramatic purple sky and peaceful expansive horizon.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-24",
+    "title": "Terra de fogo e gelo",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: An Icelandic black volcanic sand landscape with brilliant blue glacial river braids, misty mountains and moody cold sunset light.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-25",
+    "title": "Pomar ao sol",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A fragrant citrus orchard at golden hour with vivid orange fruit among glossy leaves and soft sunbeams, distant rolling hills, no people.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-26",
+    "title": "Farol do atlântico",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A solitary white lighthouse on a rugged Atlantic headland in a majestic approaching storm, deep navy ocean and warm gap of sunlight, no text.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-27",
+    "title": "Seda mineral",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: Original sophisticated flowing folds of pearlescent silk and polished stone, muted jade blue ivory and pale copper, soft realistic studio lighting, calm abstract composition.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-28",
+    "title": "Primavera no rio",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: Japanese cherry blossom trees arching over a tranquil river at early sunrise, soft pink petals on water, subtle mist and dark indigo reflections, no people.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-29",
+    "title": "Sob o infinito",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: A vast desert beneath the Milky Way at night, distant rugged silhouettes, a tiny warm glowing canvas tent as a quiet accent, realistic astrophotography, no people.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  },
+  {
+    "id": "scene-30",
+    "title": "Ilhas do céu",
+    "origin": "Original artwork generated with OpenAI image generation on 2026-10-25",
+    "prompt": "Original premium smart-TV wallpaper, one standalone landscape, 16:9 widescreen 1280x720 or larger. Cinematic realistic photographic texture; subtle controlled highlights and calmer darker left and lower edges for glass UI readability. Distinct composition with beautiful atmosphere. NO text, logos, watermarks, borders, user interface or identifiable people. No collage. Scene: An original breathtaking fantasy landscape of lush floating islands above a sea of soft clouds at sunrise, distant waterfalls and warm light, realistic cinematic environmental art.",
+    "background": {
+      "width": 1280,
+      "height": 720,
+      "format": "JPEG",
+      "quality": 88
+    },
+    "thumbnail": {
+      "width": 320,
+      "height": 180,
+      "format": "JPEG",
+      "quality": 82
+    }
+  }
+]
