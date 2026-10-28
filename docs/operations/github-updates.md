@@ -1,53 +1,55 @@
-# Atualizações manuais pelo GitHub
+# Manual updates through GitHub
 
-## Estado e escopo
+## Status and scope
 
-Recurso implementado na linha de desenvolvimento **0.4.3/code29**, para Android TV e Google TV 11/API30 ou posterior. Esta documentação descreve o fluxo e as barreiras de segurança; não certifica a instalação de uma release futura nem publica a0.4.3. Uma instalação0.4.3 não deve oferecer a release pública0.4.2 como atualização ou downgrade.
+Implemented in **0.4.3 / versionCode 29**, for Android TV and Google TV 11/API 30 or later. This procedure documents the implemented flow and limits; it does not certify a completed update to a future release.
 
-Fontes: [PRD](../01-updater-prd.md), [contrato de segurança](../design/update-security.md) e [plano de testes](../qa/updater-test-plan.md). Os resultados efetivamente executados precisam ser registrados separadamente pela operação. Testes de regras e adapters não equivalem à confirmação de uma instalação pelo Android.
+During recorded validation, installed 0.4.3 queried the then-public 0.4.2 release and correctly reported no newer version. No source permission was granted and no future-release PackageInstaller installation was performed. After 0.4.3 is published, that installed version should still report no newer version until a legitimate higher release appears. Publication is not proof that the in-app installer has completed an upgrade.
 
-## Uso na TV
+Sources: [PRD](../01-updater-prd.md), [security contract](../design/update-security.md), [validation report](../qa/updater-validation-043.md) and [test plan](../qa/updater-test-plan.md). Pure tests and adapter fixtures do not replace Android installation confirmation on the device.
 
-1. Pela engrenagem, abra **Sobre > Verificar atualizações**. A consulta ocorre somente após esse clique; não há verificação periódica, no boot, ou instalação silenciosa.
-2. O Lume consulta apenas as releases do repositório público fixo `JohnSalazar/lume-orbita`. Mostra ausência de versão nova, erro recuperável ou candidato compatível. Versões de avaliação são identificadas como tais. O histórico consultado é limitado, não uma varredura completa de todas as releases.
-3. Se uma versão nova estiver disponível, escolha **Baixar atualização**. A consulta não inicia automaticamente o download. O APK e o arquivo de checksums pertencem à mesma release esperada. O progresso aparece no painel; Voltar cancela a operação do Lume.
-4. Depois do download e da validação, escolha **Instalar atualização**. Esse é um novo clique do usuário, separado de baixar. Somente o APK validado segue para o instalador.
-5. Se o Android exigir autorização para instalar dessa origem, abra **Permitir esta origem** e decida pessoalmente nos ajustes do Android. O aplicativo não concede o acesso por código, ADB ou root. Retorne ao Lume para confirmar a instalação; abrir a tela de autorização não instala nada.
-6. O fluxo usa **PackageInstaller** e a confirmação oficial do Android. O usuário pode recusar ou cancelar. A disponibilidade e a aparência desse diálogo dependem do Android e do fabricante; não há garantia de instalação silenciosa ou universal.
-7. Após uma atualização, confira o Lume e o botão Home. Atualizar o mesmo pacote com assinatura compatível preserva os dados pelo mecanismo padrão do Android. Se o fabricante alterar a Home, o Lume oferece **Revisar tela inicial**, com acesso à escolha oficial para o usuário decidir manualmente. O aplicativo não redefine Home automaticamente.
+## TV workflow
 
-Não desinstale o Lume nem limpe os dados para atualizar. Mantenha um launcher alternativo funcional disponível antes de depender de um aplicativo como Home. A autorização para instalar fontes e a escolha de Home são decisões diferentes; uma não deve alterar a outra.
+1. Open the gear, then **About > Check for updates**. Only this user action initiates discovery. There are no periodic checks, boot-time checks or silent installations.
+2. Lume checks releases from the fixed public `JohnSalazar/lume-orbita` repository. It shows no newer version, a recoverable error or an available candidate. Evaluation versions are identified. The query covers a bounded release window rather than the entire history.
+3. If a newer version is available, choose **Download update**. Checking does not start downloading automatically. The expected APK and checksum manifest belong to the same release. Progress is displayed; Back cancels the application's operation.
+4. After download and validation, choose **Install update**. This is a separate user click. Only the verified APK can proceed to the installer.
+5. If Android requires source authorization, open **Allow this source** and decide personally in Android settings. Lume does not grant access through code, ADB or root. Return to Lume to continue; opening the page does not install anything or prove permission was granted.
+6. The flow uses **PackageInstaller** and Android's own confirmation. The user may refuse or cancel. Availability and appearance depend on the Android/OEM implementation; silent or universal installation is not guaranteed.
+7. After updating, verify Lume and Home. Android's normal same-package update preserves application data with a compatible signing identity. If the OEM changes Home, **Review Home selection** opens the official settings for a manual choice. Lume does not reset Home automatically.
 
-## Limites de rede, disco e concorrência
+Do not uninstall Lume or clear data to update. Keep another working launcher available before relying on one application as Home. Source authorization and default-Home selection are separate decisions; one must not change the other.
 
-| Limite | Implementação prevista no fluxo |
+## Network, storage and concurrency limits
+
+| Boundary | Implemented limit |
 |---|---|
-| Releases | Até30 registros na listagem; drafts e metadados inválidos não viram autorização de instalação |
-| JSON | Até1MiB |
-| Checksums | Até64KiB |
-| APK | Até32MiB, com contagem dos bytes realmente lidos e verificação do tamanho completo |
-| Redirects | Até3, por HTTPS e somente nas origens/CDNs aprovadas |
-| Tempo | Deadline de60s por transferência e watchdog de60s da UI para cada operação de consulta ou download/validação |
-| Concorrência | Um worker e fila limitada; respostas de gerações antigas são descartadas |
+| Release discovery | At most 30 entries; drafts and invalid metadata do not authorize installation |
+| Release JSON | 1 MiB |
+| Checksum manifest | 64 KiB |
+| APK | 32 MiB, checking actual bytes read and complete length |
+| Redirects | At most three, through HTTPS and approved origins/CDNs only |
+| Time | 60 seconds per transport request and a separate 60-second UI watchdog per check or download/validation operation |
+| Concurrency | One worker with a bounded queue; superseded callbacks are discarded |
 
-Os60s não são uma promessa de concluir a instalação: o tempo gasto pelo usuário na autorização e no diálogo do PackageInstaller é separado. O watchdog cancela logicamente a operação e devolve um estado recuperável mesmo se uma resolução DNS demorar; a thread pode continuar ocupada até a chamada de plataforma retornar. O limite de concorrência evita abrir workers sem controle para contornar esse bloqueio. Não faça consultas repetidas em sequência para tentar ultrapassar limites do GitHub.
+The 60-second limits do not promise installation completion: time spent on source authorization and native confirmation is separate. The watchdog logically cancels an operation and returns a recoverable UI state even if DNS is delayed. The worker can remain occupied until the platform call returns; concurrency remains bounded instead of spawning more workers. Do not repeatedly retry to bypass GitHub limits.
 
-O APK precisa de um temporário em cache interno privado para a instalação, diferentemente das fotos online da proteção de tela, que continuam em RAM. Não usar Downloads, caminho escolhido pela release, permissão genérica de armazenamento ou URI pública. Falha, cancelamento e término do staging limpam apenas os temporários próprios; o cliente também identifica resíduos antigos com seu padrão privado. A sessão do Android ocupa espaço adicional. Não apagar preferências, papéis de parede, arquivos de terceiros ou sessões desconhecidas para liberar espaço.
+Installation requires a temporary APK in private internal cache. This differs from online screensaver photographs, which retain their RAM-only application behavior. Do not use Downloads, a release-controlled path, broad storage permission or a public URI. Failure, cancellation and completed staging remove only owned temporary files; the client also recognizes expired files matching its private naming pattern. An Android session needs additional storage. Do not delete preferences, wallpapers, unrelated caches or unknown sessions to free space.
 
-## Validação e privacidade
+## Validation and privacy
 
-O download usa TLS normal e URLs fixas do projeto, sem redirecionamento permissivo. O fluxo confere os bytes e o SHA-256 do asset, a versão anunciada contra a versão real do APK, pacote exato `br.com.lume.launcher`, `versionCode` estritamente maior, SDK mínimo compatível e o conjunto exato dos certificados dos signatários atuais. `PackageManager` examina o APK e `PackageInstaller` verifica o pacote ao instalar. Arquivos inválidos, ambíguos, adulterados ou assinados de forma incompatível devem ser bloqueados.
+Downloads use standard TLS and fixed project URLs with restricted redirects. Validation checks byte counts, SHA-256, advertised versus actual APK version, exact package `br.com.lume.launcher`, a strictly higher `versionCode`, compatible minimum SDK and exact equality of the current signer-certificate sets. `PackageManager` inspects the archive and `PackageInstaller` verifies the package when installing. Invalid, ambiguous, modified or incompatibly signed archives are rejected.
 
-O checksum do mesmo repositório detecta corrupção, mas não é autenticação independente; a conferência da assinatura local permanece obrigatória. O APK não é descompactado para executar classes ou layouts no processo atual. Os mesmos bytes validados são reconferidos antes do staging.
+A checksum from the same repository detects corruption but is not independent authentication; comparison with the installed signing identity remains mandatory. The updater does not extract and execute downloaded classes or layouts in its process. Validated bytes are rechecked before staging.
 
-Não há credenciais GitHub, cookies, telemetria própria ou envio de configurações, favoritos, histórico e contas de streaming. O GitHub e sua CDN recebem naturalmente o IP e a requisição de rede; isso não equivale a anonimato. Não registrar consultas assinadas de CDN, dados pessoais ou respostas brutas em logs públicos.
+There are no GitHub credentials, cookies, application telemetry or uploads of settings, favorites, history or streaming accounts. GitHub and its CDN naturally receive the IP address and ordinary request; this is not anonymity. Do not publish signed CDN query strings, personal data or raw HTTP errors in logs.
 
-## Tentativas, callbacks tardios e recuperação
+## Attempts, delayed callbacks and recovery
 
-O instalador mantém uma tentativa própria identificada por owner, sessão e token. `InstallerAttemptRules` correlaciona esses valores com o estado ativo. Um callback tardio ou uma Activity antiga não pode confirmar, limpar ou abandonar uma tentativa posterior. A Activity de instalação é privada; apenas o retorno correlacionado à sessão ativa pode avançar a confirmação do Android. A decisão de Home é registrada separadamente para ser conferida após uma versão nova realmente instalada.
+An installation attempt has its own owner, session and token. `InstallerAttemptRules` correlates them with the active state. A delayed callback or old Activity must not confirm, clear or abandon a later attempt. The installation Activity is private; only a callback correlated with its active session can advance Android confirmation. The previous Home choice is recorded separately for comparison after a genuinely newer version is installed.
 
-Cancelar ou falhar não autoriza desinstalar, limpar dados, conceder acesso especial ou mudar Home para tentar novamente. A limpeza abandona somente uma sessão cuja propriedade foi confirmada. Se o processo for encerrado entre criar a sessão e registrar seu identificador, o código não deve adivinhar nem abandonar outra sessão; uma nova tentativa pode ser bloqueada até que a situação seja resolvida. Reabra o Lume e verifique o estado oficial no Android antes de insistir.
+Cancellation or failure does not authorize uninstalling, clearing data, granting source access or changing Home to retry. Cleanup abandons only a session with confirmed ownership. If the process stops between session creation and persistence of its ID, the code must not guess or abandon another session. The owned orphan can conservatively block new attempts until cleanup or expiration. Reopen Lume and inspect Android's official state before retrying. Session recovery is distinct from expiration of old temporary APK files.
 
-Antes de uma validação física, registre a versão, Home, acesso a fontes e um backup recente de todas as preferências. Compare os mesmos tipos, valores e ausências de chaves depois do teste; não restaure um snapshot antigo por conveniência. Guarde os backups e as evidências em local privado. O [procedimento de validação do aparelho](device-validation.md) explica o journal tipado e a cópia segura.
+Before physical validation, record the version, Home, source access and a recent complete configuration backup. Compare types, values and absent keys afterward; do not restore an older snapshot merely for convenience. Keep backups and detailed evidence private. The [device-validation procedure](device-validation.md) covers typed journals and safe export.
 
-Uma versão antiga de APK não garante downgrade com preservação de dados. Se a Home mudar por ação do fabricante, use a seleção oficial manual e mantenha uma alternativa funcional. O sucesso no caminho “nenhuma versão nova” comprova a consulta e a UI desse caso, não uma instalação completa. Não publicar release fictícia, conceder permissões por shell ou confirmar a instalação de um APK inválido para produzir um resultado de teste.
+An older APK does not guarantee a data-preserving downgrade. If the OEM changes Home, recover through the official manual selector and keep an alternative available. A successful no-update query proves discovery and that UI path, not a complete installation. Do not publish fictitious releases, grant access through shell commands or approve an invalid package to manufacture a passing test.

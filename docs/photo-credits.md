@@ -1,115 +1,115 @@
-# Créditos das fotografias remotas
+# Remote photo attribution
 
-As fotografias não são empacotadas no APK. São obtidas em memória quando a função online está ativa. Os arquivos originais permanecem sob as licenças abaixo, fora da licença MIT do código. O app pode redimensionar, recortar e escurecer a exibição; os créditos completos também estão em Ajustes > Proteção de tela > Créditos das imagens.
+Remote photos are not packaged in the APK. The online screensaver loads them into memory. Original images retain their listed licenses, independently of the code's MIT license. The app can resize, crop, and dim the display. Complete credits are also available under Settings > Screensaver > Photo credits. Display titles below use the English application catalog; author names, source URLs, and license URLs are unchanged.
 
-## Bosque verde da Armênia
+## Green woodland in Armenia
 
-Autor: Mar Mkrtchyan
+Author: Mar Mkrtchyan
 
-Licença: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+License: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
 
-Original: [Bosque verde da Armênia](https://commons.wikimedia.org/wiki/File:Dense_green_woodland.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Dense_green_woodland.jpg)
 
-## Águas de Cheow Lan
+## Waters of Cheow Lan
 
-Autor: Vyacheslav Argenberg
+Author: Vyacheslav Argenberg
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Águas de Cheow Lan](https://commons.wikimedia.org/wiki/File:Karst_landscape_of_Cheow_Lan_Lake,_Thailand.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Karst_landscape_of_Cheow_Lan_Lake,_Thailand.jpg)
 
-## Costa de Lang Co
+## Lang Co coast
 
-Autor: Vyacheslav Argenberg
+Author: Vyacheslav Argenberg
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Costa de Lang Co](https://commons.wikimedia.org/wiki/File:The_coast_of_South_China_Sea,_Lang_Co_beach,_Vietnam.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:The_coast_of_South_China_Sea,_Lang_Co_beach,_Vietnam.jpg)
 
-## Lagos de Zagedan
+## Zagedan lakes
 
-Autor: Vyacheslav Argenberg
+Author: Vyacheslav Argenberg
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Lagos de Zagedan](https://commons.wikimedia.org/wiki/File:Zagedan_Lakes,_Mountain_cirque,_Caucasus_Mountains.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Zagedan_Lakes,_Mountain_cirque,_Caucasus_Mountains.jpg)
 
-## Dunas de Merzouga
+## Merzouga dunes
 
-Autor: Mustang Joe
+Author: Mustang Joe
 
-Licença: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+License: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
 
-Original: [Dunas de Merzouga](https://commons.wikimedia.org/wiki/File:The_Merzouga_dunes_of_Morocco.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:The_Merzouga_dunes_of_Morocco.jpg)
 
-## Inverno na Estíria
+## Winter in Styria
 
-Autor: Eligiusz Jakimowicz
+Author: Eligiusz Jakimowicz
 
-Licença: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+License: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
 
-Original: [Inverno na Estíria](https://commons.wikimedia.org/wiki/File:Winter_landscape_of_Styria.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Winter_landscape_of_Styria.jpg)
 
-## Nuvens no azul profundo
+## Clouds in deep blue
 
-Autor: SavidgeMichael
+Author: SavidgeMichael
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Nuvens no azul profundo](https://commons.wikimedia.org/wiki/File:Clouds_Float_on_the_Deep_Blue_Sky.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Clouds_Float_on_the_Deep_Blue_Sky.jpg)
 
-## Névoa no vale de Ella
+## Mist in Ella valley
 
-Autor: Vyacheslav Argenberg
+Author: Vyacheslav Argenberg
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Névoa no vale de Ella](https://commons.wikimedia.org/wiki/File:Ella_Valley,_Sri_Lanka,_Cloud_forest_in_fog.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Ella_Valley,_Sri_Lanka,_Cloud_forest_in_fog.jpg)
 
-## Lago glacial de Fjallsárlón
+## Fjallsárlón glacial lake
 
-Autor: Jakub Hałun
+Author: Jakub Hałun
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Lago glacial de Fjallsárlón](https://commons.wikimedia.org/wiki/File:Fjalls%C3%A1rl%C3%B3n_glacier_lake,_Iceland,_20240719_1720_2774.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Fjalls%C3%A1rl%C3%B3n_glacier_lake,_Iceland,_20240719_1720_2774.jpg)
 
-## Montanhas de Ergaki
+## Ergaki mountains
 
-Autor: Vyacheslav Argenberg
+Author: Vyacheslav Argenberg
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Montanhas de Ergaki](https://commons.wikimedia.org/wiki/File:Mountain_landscape,_Ergaki,_Sayan_Mountains,_Siberia.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Mountain_landscape,_Ergaki,_Sayan_Mountains,_Siberia.jpg)
 
-## Silêncio das dunas
+## Silence of the dunes
 
-Autor: Aleksandr Serebrennikov
+Author: Aleksandr Serebrennikov
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Silêncio das dunas](https://commons.wikimedia.org/wiki/File:Dunes_in_the_desert.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Dunes_in_the_desert.jpg)
 
-## Árvores de inverno em Gorce
+## Winter trees in Gorce
 
-Autor: Jakub Hałun
+Author: Jakub Hałun
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Árvores de inverno em Gorce](https://commons.wikimedia.org/wiki/File:Snow-covered_trees_on_the_summit_of_Obidowiec_in_the_Gorce_Mountains,_20260103_1202_6765.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Snow-covered_trees_on_the_summit_of_Obidowiec_in_the_Gorce_Mountains,_20260103_1202_6765.jpg)
 
-## Lago sob as nuvens
+## Lake beneath the clouds
 
-Autor: Mshuang2
+Author: Mshuang2
 
-Licença: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
+License: [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/)
 
-Original: [Lago sob as nuvens](https://commons.wikimedia.org/wiki/File:Landscape_of_lake_and_clouds.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Landscape_of_lake_and_clouds.jpg)
 
-## Verde de Bali
+## Green Bali
 
-Autor: Vyacheslav Argenberg
+Author: Vyacheslav Argenberg
 
-Licença: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-Original: [Verde de Bali](https://commons.wikimedia.org/wiki/File:Bali,_Forest,_Trees,_East_Bali,_Indonesia.jpg)
+Source: [Original image](https://commons.wikimedia.org/wiki/File:Bali,_Forest,_Trees,_East_Bali,_Indonesia.jpg)

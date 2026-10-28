@@ -1,83 +1,81 @@
-# Plano QA — atualização pelo GitHub
+# QA test plan — GitHub updates
 
-Estado: **contratos e fontes de teste congelados; execução nativa pendente de repetição com variante compatível**. Helena não executou Gradle/ADB nem uma instalação futura. Este plano não transforma fixtures em release real ou autoriza publicar/instalar APK de versão inventada. Clara é a operadora de build, TV e GitHub.
+Status: **test sources and contracts are frozen; the matching release-variant native run has completed**. See [0.4.3 validation](updater-validation-043.md) for observed results and remaining gaps. Helena reviewed source and existing artifacts; Clara operated Gradle, the TV, and GitHub. This plan does not authorize publishing or installing a fabricated future version.
 
-## Variante da instrumentação
+Scope: About can check the public repository and offer a newer release for explicit download, validation, and Android-confirmed installation while preserving settings and Home. The historical live check ran installed 0.4.3/code 29 against public release 0.4.2 and correctly reported no update. Publishing 0.4.3 afterward does not retroactively turn that check into an installation test.
 
-O app instalado na TV é release. O módulo configura `testBuildType = "release"`; a instrumentação deve ser compilada com `assembleReleaseAndroidTest`, a partir de `src/android`. Os testes JVM continuam usando `testDebugUnitTest`. A execução e a instalação do APK auxiliar ficam com Clara.
+## Instrumentation variant
+
+The installed target is a release build. The module sets `testBuildType = "release"`; build the auxiliary APK with `assembleReleaseAndroidTest` from `src/android`. JVM tests continue to use `testDebugUnitTest`. Clara runs and installs the auxiliary APK.
 
 ```powershell
 .\gradlew.bat testDebugUnitTest verifyRulesCoverage assembleRelease assembleReleaseAndroidTest lintRelease
 ```
 
-A primeira tentativa nativa, relatada por Clara, encerrou antes do bloco de snapshot com `NoSuchMethodError` em `UpdateInstaller.currentHome$app_debug`, pois o app instalado fornece a variante `$app_release`. Isso é incompatibilidade do artefato de teste com o alvo, não demonstra defeito do updater. `parseReleases` e outros acessos `internal` também precisam da mesma variante Kotlin. Não criar métodos públicos de produção nem resolver nomes mangled manualmente para contornar o problema. A nova execução deve comprovar restauração e estados; esta falha não concede PASS nativo. A confirmação externa de preferências/Home preservados cabe às leituras de Clara.
+The first native attempt stopped before the preference snapshot block with `NoSuchMethodError` for `UpdateInstaller.currentHome$app_debug`, while the installed app exposed `$app_release`. This was a test-artifact variant mismatch, not evidence of an updater defect. Other Kotlin `internal` calls, including `parseReleases`, require the same matching variant. Do not add public production hooks or manually resolve mangled method names to bypass this mismatch. Rebuilding the release instrumentation and repeating the complete run resolved it; independent device checks confirmed the original settings remained intact.
 
-Escopo solicitado: em Sobre, consultar o repositório público e permitir instalação de versão nova confirmada pelo usuário, preservando configurações e Home. O primeiro ensaio real proposto é app0.4.3/code29 consultar a release pública0.4.2: resultado esperado sem atualização, sem solicitar acesso especial nem abrir o instalador. Se a release pública mudar antes da execução, registrar o estado real e reavaliar esse pressuposto.
+## Frozen contracts
 
-## Contratos a congelar antes dos testes
+- The synchronous client runs off the UI thread, with injectable connections, DNS resolution, and a monotonic clock. Cancellation must not block the UI. The Activity controller bounds concurrency and rejects callbacks from obsolete generations.
+- Metadata comes only from the fixed repository. Selection uses the releases list, explicitly includes evaluation/prerelease releases, skips drafts, and chooses the newest valid semantic version. Incomplete or ambiguous assets fail closed. A displayed tag cannot replace the APK's actual versionCode.
+- Initial HTTPS asset URLs must match the repository, tag, and filename exactly. Allow at most three manually validated redirects to approved CDN hosts, port 443/default, without credentials or fragments. Reject private DNS destinations at every hop. Do not forward tokens, cookies, Authorization, or other sensitive headers.
+- Require the complete APK's exact declared size, the configured size cap, and SHA-256 matching the single exact filename entry in `SHA256SUMS.txt`. Require the exact package, a genuinely newer versionCode, a compatible minSdk, and the same set of current signing certificates. Historical signers alone are insufficient. Android validates the package again during installation.
+- Stream downloads to an owned private APK file. Remove partial files on failure/cancellation and define cleanup of prepared files. This differs from screensaver photos, which remain in RAM only. Never modify unrelated preferences, wallpapers, sources, or files.
+- Limits: release metadata 1 MiB and 30 releases; checksums 64 KiB; APK 32 MiB; three redirects; a cooperative 60-second transport deadline per request and a read timeout of at most 10 seconds, with connection time bounded by the remaining budget. The controller also has an independent 60-second UI deadline. Blocking DNS can outlive logical cancellation, so bounded workers remain necessary.
 
-Proposta atual dos especialistas, ainda sujeita ao contrato final:
+A checksum hosted beside the APK detects corruption but is not an independent authentication root. Matching the installed app's current signing certificates remains mandatory. A fake PackageInfo cannot establish cryptographic verification by Android's PackageManager.
 
-- Cliente síncrono fora da UI, conexões/resolução DNS/relógio monotônico injetáveis, cancelamento por flag e sem executor particular por consulta. O controlador da Activity deve limitar concorrência e descartar callbacks de geração antiga.
-- Metadados somente do repositório fixo; lista de releases, política explícita de prerelease e seleção determinística. Draft não publicável/response incompleto nunca vira autorização de instalação. Tag exibida não substitui versionCode real do APK.
-- HTTPS inicial no caminho exato do repositório/tag/arquivo; redirects manuais, até3, somente hosts CDN aprovados, porta443, sem credenciais/fragmentos ou endereço privado. Sem token, cookie, Authorization ou outro header sensível repassado.
-- Arquivo completo com tamanho exato/cap e SHA256 igual à entrada única do nome correto em SHA256SUMS; pacote exato, versionCode real maior que instalado, minSdk compatível e conjunto dos signers atuais idêntico ao instalado. Certificado histórico isolado não satisfaz igualdade dos signers atuais. Android revalida ao instalar.
-- Download em arquivo privado próprio, com streaming; remover parciais em erro/cancelamento e definir o ciclo de vida do arquivo validado. Isso é distinto das fotos da proteção, que continuam somente em RAM. Nenhuma escrita deve atingir preferências, wallpapers, fontes ou arquivos alheios ao updater.
-- Limites sugeridos por Davi: metadados1MiB/30 releases, checksums64KiB, APK32MiB, deadline total60s e read10s com connect limitado pelo tempo restante. Os testes usarão os valores finais de contrato, não números ajustados para a implementação passar.
+## JVM and local integration tests without a network
 
-O checksum hospedado junto do APK detecta corrupção, mas não é uma raiz independente de autenticidade. A comparação da assinatura com a instalação atual é obrigatória. Leitura de PackageManager com flags adequadas precisa de integração Android; um PackageInfo fake não prova verificação criptográfica do APK.
+Use the existing fake HttpURLConnection pattern, injectable clocks, bounded streams, controlled exceptions/latches, and JUnit 4.13.2. Use TemporaryFolder or an exclusive temporary updater directory. Routine tests need no external service or additional package. The following matrix defines intended coverage; the validation report distinguishes executed tests from pending platform flows.
 
-## Testes JVM/integração local sem rede
-
-Reaproveitar o padrão já presente em MemoryImageLoaderTest e ProgramArtworkLoaderTest: HttpURLConnection fake, relógio injetado, streams limitados, exceções/latches controlados e JUnit4.13.2. Usar TemporaryFolder/diretório temporário exclusivo para os arquivos do updater. Nenhuma infraestrutura, pacote novo ou consulta real é necessária nesses testes.
-
-| Área | Casos mínimos que devem falhar ou preservar invariantes |
+| Area | Minimum rejection or preservation cases |
 |---|---|
-| Consulta/seleção | Sem releases; atual/mais antiga; superior; tag malformada; duplicatas/ordem; prerelease conforme política; assets/checksum ausentes ou ambíguos; metadado truncado/oversize |
-| HTTP |200 válido;401/403/404/429/5xx; MIME inválido; gzip/comprimento conforme contrato; stream vazio; read failure; Content-Length ausente/mentiroso; limite real de bytes e deadline |
-| Origem | HTTP; host parecido/subdomínio não autorizado; userInfo/porta/fragmento; repo/tag/nome incorretos; redirect relativo/absoluto válido, fuga de allowlist, DNS privado em qualquer salto e loop além do limite |
-| Checksum | SHA exato aceito; linha duplicada/nome diferente; caminho relativo/traversal; bytes corrompidos; tamanho declarado diferente; nenhum arquivo preparado retornado em falha |
-| Compatibilidade | Mesmo package/code/signers atuais conforme contrato; rejeitar downgrade/mesmo code, package diferente, minSdk alto, signer errado, conjunto extra ou apenas histórico; APK inválido/truncado |
-| Cancelamento | Antes de conectar, antes/depois de criar arquivo, durante read, após validar e antes de publicar resultado; cancelar não bloqueia UI com I/O; remover parcial e não emitir sucesso tardio |
-| Concorrência/controlador | Toque duplo não duplica job/instalação; worker bloqueado não cria threads sem limite; timeout visual independe de callback; sair/voltar/recriar não publica estado antigo |
-| Arquivos | Diretório próprio; tentativa com nome não confiável não escapa; erro/cancel remove só o próprio arquivo; último arquivo válido não é confundido com parcial de outra geração |
-| Instalador/adapter | Apenas arquivo validado pode seguir; ausência de acesso especial não faz commit; cancelamento não instala; encaminhamento de user-action seguro; falha encerra/abandona sessão e limpa recursos |
+| Selection | Empty list; current/older/newer versions; malformed tags; duplicates/order; prerelease policy; missing or ambiguous assets/checksums; truncated or oversized metadata |
+| HTTP | Valid 200; 401/403/404/429/5xx; format/encoding policy; empty stream; read failure; missing or misleading Content-Length; actual byte cap and deadline |
+| Origin | HTTP; look-alike/unapproved hosts; userInfo/port/fragment; wrong repository/tag/name; allowed relative/absolute redirects; allowlist escape; private DNS at any hop; redirect overflow |
+| Checksums | Exact SHA accepted; duplicate/wrong-name entries; path traversal; corrupted bytes; size mismatch; no prepared result on failure |
+| Compatibility | Exact package; newer code; compatible SDK; exact current signers; reject downgrade/equal code, wrong package, high minSdk, wrong/extra/history-only signers, and invalid/truncated APKs |
+| Cancellation | Before connection/file creation, during reading, after validation, and before publication; nonblocking UI cancellation; partial cleanup; no late success |
+| Controller | Repeated actions cannot create unbounded work; blocked worker has bounded thread/queue counts; UI timeout does not depend on worker completion; navigation/recreation cannot publish obsolete state |
+| Files | Owned directory/prefix; no path escape; failure/cancel deletes only the attempt's files; prepared and partial files are not confused across generations |
+| Installer adapter | Only a validated file may proceed; no commit without required special access; cancellation does not install; safe user-action forwarding; owned-session cleanup |
 
-Os testes do adapter usam fake de sessão/installer; não criam nem confirmam uma sessão Android real. Se não houver seam no contrato final, separar lógica pura e marcar o fluxo PackageInstaller como integração nativa pendente. Não escrever teste que apenas espelhe cada linha do cliente.
+Do not create or commit a real PackageInstaller session merely to satisfy routine test coverage. Separate pure attempt-identity policy from Android installation integration. Document pending native confirmation/installation rather than claiming a fake session proves it.
 
-Meta: pelo menos90% de linhas/ramos na lógica relevante incluída no gate, com relatório separado para cliente/arquivo/instalador. O gate atual só inclui core; não usar sua cobertura para anunciar cobertura de todos os novos componentes Android/HTTP. Build/lint e testes anteriores precisam continuar passando.
+Target at least 90% coverage of relevant gated logic, with component-specific evidence. The existing JaCoCo gate covers core rules; its percentage does not represent coverage of all Android client, filesystem, Activity, or PackageInstaller code. Preserve earlier tests, build, and lint gates.
 
-## Instrumentação focada: consulta sem atualização
+## Focused native no-update check
 
-Planejar AboutCheckNoUpdateInstrumentation com entrada adicional explícita no manifest androidTest, preservando o runner padrão. Só implementar após os nomes/estados/tags da UI e contratos finais estarem definidos.
+`UpdaterCheckInstrumentation` has an additional explicit test-manifest entry; the original default runner remains first.
 
-1. Snapshot tipado integral antes de qualquer mutação, journal recuperável e comparação com backup atual; não restaurar snapshots de sessões antigas. Capturar Home/role e estado do acesso a instalação de fontes desconhecidas por leitura.
-2. Abrir Sobre e acionar o botão real de consulta por OK. Registrar origem pública/versionCode instalado e resultado real. Não modificar versão do servidor ou publicar release de fixture para produzir sucesso.
-3. Exigir estado verificando e resultado sem atualização quando a fonte pública continuar0.4.2 contra app0.4.3. Não baixar APK, criar sessão/commit, pedir permissão especial ou alterar configurações nesse caminho.
-4. Testar Back/cancelamento com latência controlada em outro cenário de fixture, sem desligar rede da TV. Fixture de erro/timeout comprova UI correspondente, não indisponibilidade real do GitHub.
-5. Estacionar em Android Settings, confirmar foreground e app pausado, encerrar Activities acompanhadas e esperar destruição antes da restauração. finally deve tentar restaurar mesmo se cleanup falhar; salvar erro original e erro de restauração.
-6. Comparar mapa completo/tipos/ausências, digests e Home depois do retorno normal. Remover somente APK auxiliar/artefatos próprios conforme o procedimento de Clara. Nenhuma alteração de rede, SO locale, Dream ou grant é necessária.
+1. Capture and persist a complete typed preference snapshot before mutation; retain recoverable before/after journals and compare the current baseline, not an old session's snapshot. Read Home and unknown-source installation access without changing them. Require an empty updater-attempt namespace and no owned installer sessions before the run.
+2. Open About, focus the real check button, and activate it with OK. Record the actual repository result. Never change server metadata or publish a fixture to manufacture success.
+3. For the historical 0.4.3-versus-0.4.2 check, require the no-newer-version state. Do not download a live APK, create/commit a session, request special access, or change system settings.
+4. Exercise cancellation, bounded queue/rejection, a logically invoked watchdog, and an actual late controller callback through clearly labeled local fake transport/latches. These establish controlled behavior, not a real 60-second wait or GitHub outage.
+5. Park in Android Settings, confirm foreground/paused state, finish tracked Activities, and wait for destruction before restoration. In finally, attempt restoration even if cleanup fails and retain both the original and restoration errors.
+6. Compare the entire typed preference map, missing keys, digests, updater namespace, owned sessions, installation access, and Home. Clara removes only auxiliary artifacts and returns to Home. No network, OS locale, Dream, or permission changes are required.
 
-Uma consulta real é suficiente para o contrato de rede básico. Repetir a API pública21 vezes pode consumir quota e introduzir falhas por rate limit. Para os21 idiomas, conferir recursos/strings compiladas e renderizar estados via fakes explícitos do cliente/controlador, distinguindo-os do ensaio real.
+One real public API check is sufficient for this path. Calling it 21 times adds quota and rate-limit noise. For the 21 languages, compare compiled strings with the same build's catalogs and render explicitly synthetic updater states separately.
 
-## Idiomas, foco e estados da UI
+## Languages, focus, and UI states
 
-- Todos os novos textos em base+20 catálogos, sem vazios/fallback acidental, parâmetros de versão/tamanho/progresso corretos. Comparar compilados com JSONs da mesma build; não presumir contagem antiga de267 chaves após adicionar o updater.
-- Revisar Sobre e seus estados: parado, verificando, sem atualização, disponível, baixando/progresso, validando, acesso especial necessário, confirmação Android, cancelado e erro. Estados inexistentes no contrato não devem gerar feature especulativa.
-- D-pad/OK/Back: indicador de andamento não rouba foco; toque repetido não dispara duas consultas; Back cancela/fecha conforme contrato e devolve foco ao botão de origem; key-up de abertura não confirma instalação.
-- RTL ar/ur/pnb: versão/hash/percentuais e nomes de arquivo preservam ordem legível; ações inteiras, sem sobreposição ou texto de erro cortado; strings longas europeias/índicas/CJK também precisam de amostras.
-- Não abrir automaticamente links de release, configurações especiais ou instalador. A tela de confirmação pertence ao Android e pode variar por OEM; não tratá-la como View própria do Lume.
+- Cover base plus 20 localized catalogs: no empty values or accidental fallback; preserve version/size/progress arguments. Compare compiled values against the matching source catalogs rather than assuming a historical key count.
+- Render checking, current, available/evaluation, progress, verification, required source access, errors, and installation-related labels. A fixture label saying installed/canceled is not an actual Android installation outcome.
+- D-pad/OK/Back must preserve usable focus and cancellation. Repeated input must not start duplicate work. Closing a panel must not allow a late result to replace the current dialog or trigger installation.
+- Review RTL Arabic/Urdu/Punjabi and long European, Indic, and CJK strings for ordering, overlap, clipping, and complete actions. Geometry assertions are not native-speaker certification.
+- Do not automatically open release links, special-access settings, or the installer. Android owns its confirmation screen, which can differ by OEM.
 
-## Fluxo de versão futura: prova separada
+## Future-version installation is a separate proof
 
-Para exercer a validação, usar candidato/PackageInfo fake nos testes de contrato. Metadado fake de versão maior com APK real de code28 deve ser rejeitado; não é uma forma legítima de alcançar o instalador.
+Use fake metadata/identities for isolated policy tests. The native archive test wraps the actual installed code-29 APK in future-version metadata and requires rejection: a tag cannot make an old binary newer.
 
-Um eventual ensaio nativo de confirmação/CANCEL exige APK local de fixture com **versionCode realmente maior, mesmo package e mesmo certificado**, identificado como fixture e nunca publicado. Abrir apenas a confirmação e cancelar não prova atualização instalada. Não instalar essa versão inventada nem confirmar commit sem nova autorização humana específica.
+A future confirmation/CANCEL experiment would require a clearly identified local fixture with a truly higher versionCode, the same package, and the same certificate. It must never be published to manufacture a release test. Opening and canceling a confirmation does not prove a completed upgrade. Do not install a fabricated version or confirm a commit without the required human authorization.
 
-Se canRequestPackageInstalls for false, apenas ler/registrar esse estado: não conceder acesso por ADB, não tocar no toggle de fontes desconhecidas e não chamar isso de fluxo de instalação testado. A instalação real de uma futura release oficial e a persistência de dados após essa troca ficam pendentes até existir a versão/autorização correspondente.
+If canRequestPackageInstalls is false, record it without granting access through ADB or toggling system settings. A completed upgrade from a legitimate newer official release, including preservation of settings/Home across that upgrade, remains pending until the actual release and authorization exist. Publishing 0.4.3 alone supplies no such proof.
 
-## Entrega e riscos residuais
+## Evidence and residual risk
 
-Registrar comandos/logs reais, SHA do APK, assinatura, testes/cobertura por componente, check público observado, fixtures usadas, cancelamentos, preferências/Home e estados não ensaiados. Não publicar journals, dados do TvProvider, identificadores da TV ou arquivos privados. Não afirmar updater pronto para qualquer OEM com apenas mocks/um caminho sem atualização.
+Record actual commands/logs, APK hash and signer, component coverage, the live result, fixture methods, cancellation, preference/Home preservation, and untested states. Keep journals, TvProvider data, device identifiers, and private files out of public packages. One device and controlled mocks cannot certify every OEM.
 
-Próxima etapa: Clara recompilará a instrumentação release e executará os gates e ensaios autorizados. Os 14 testes JVM do cliente e a instrumentação `UpdaterCheckInstrumentation` estão preparados; resultados e limitações precisam ser registrados após execução. Este documento não concede PASS ao recurso.
+Next step: publish the validated 0.4.3 artifact and QA documents within the user's authorized release scope. Validate a future legitimate upgrade separately; do not relabel the historical no-update check or installation-state fixtures as that upgrade.

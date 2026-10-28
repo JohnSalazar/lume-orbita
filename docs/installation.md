@@ -1,41 +1,45 @@
-# Instalar, escolher Home e restaurar
+# Installation, Home selection, and recovery
 
-Instale somente em Android TV/Google TV11+; confirme o sistema e método de depuração oficial do seu aparelho. ADB precisa estar autorizado ou pareado. Exemplos usam `SERIAL` e `USUARIO` como marcadores: substitua pelos valores reais, nunca deixe o alvo implícito quando houver mais de um dispositivo.
+Install only on Android TV or Google TV 11 or later. Confirm the device OS and its official debugging method. ADB must be authorized or paired. `SERIAL` and `USER_ID` below are placeholders; replace them explicitly, especially when multiple devices are connected.
 
 ```sh
 adb devices
 adb -s SERIAL shell am get-current-user
 adb -s SERIAL shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME
-adb -s SERIAL install -r lume-orbita-0.4.2.apk
+adb -s SERIAL install -r lume-orbita-0.4.3.apk
 adb -s SERIAL shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME
 ```
 
-Guarde o componente Home anterior antes de instalar. Alguns firmwares podem limpar sua preferência ao adicionar outro launcher. Atualizações precisam manter pacote e assinatura; não desinstale para forçar atualização incompatível.
+Record the previous Home component before installing. Some firmware can reset the preference when another launcher is added. An update must retain the package and signing certificate. Never uninstall Lume to force an incompatible update.
 
-Compare o Home antes e depois da instalação. Se a preferência desapareceu ou mudou inesperadamente, pare e restaure a escolha anterior pelo método oficial do aparelho; não aceite uma troca automática como autorização. Somente após confirmar uma Home funcional, abra o Lume para avaliação:
+Compare Home before and after installation. If the choice unexpectedly changes or disappears, restore the previous selection through the device's official settings. A reset is not authorization to select another launcher automatically. After confirming a working Home, open Lume for evaluation:
 
 ```sh
 adb -s SERIAL shell am start -n br.com.lume.launcher/.LauncherActivity
 ```
 
-## Tela inicial padrão
+## Default Home
 
-Teste o aplicativo como app primeiro. Se estiver confortável, use Ajustes do Lume > seleção de tela inicial, ou a configuração oficial de apps padrão do Android. Confirme a escolha na TV. Disponibilidade depende do OEM; a instalação por si só não deve ser tratada como garantia de Home.
+Evaluate the application first. To select it as Home, use Lume's Home-selection option or Android's default-app settings and confirm on the TV. OEM support varies; installation alone does not guarantee Home integration.
 
-Em um aparelho que ofereça o comando abaixo, após autorização do proprietário, o método avançado é:
+If supported, the following advanced command requires explicit owner authorization:
 
 ```sh
-adb -s SERIAL shell cmd package set-home-activity --user USUARIO br.com.lume.launcher/.LauncherActivity
+adb -s SERIAL shell cmd package set-home-activity --user USER_ID br.com.lume.launcher/.LauncherActivity
 ```
 
-Leia novamente o resolvedor e teste Home no controle, Voltar, configurações, HDMI, apps e standby separadamente. Mantenha o launcher anterior instalado durante a avaliação. Não são necessários root, acessibilidade, desativação de apps do sistema ou alteração de firmware.
+Recheck the resolver and test Home, Back, Android settings, HDMI, apps, and standby separately. Keep the previous launcher available during evaluation. Root, accessibility interception, system-app disabling, and firmware changes are not required.
 
-## Recuperação
+## Updates from About
 
-Para voltar, escolha o launcher anterior nas configurações oficiais. Se a tela do Lume falhar e ADB ainda estiver autorizado, abra o componente anterior registrado e escolha-o como Home pelo método disponível no seu aparelho. Confirme uma Home funcional antes de remover Lume.
+Version 0.4.3 adds **About > Check for updates**. Download and verify a newer compatible APK, select **Install update**, and confirm Android's prompt. If requested, the user must grant installation-source access personally in Android settings, then return and continue. Lume does not grant this permission itself. See the [GitHub update guide](operations/github-updates.md).
 
-Não desinstale componentes do sistema. Este repositório não distribui backups de launchers de terceiros nem scripts ligados a uma TV particular.
+## Recovery and removal
 
-## Conteúdo compartilhado e privacidade
+Choose the previous launcher in official settings and verify Home before uninstalling Lume. If Lume cannot open but ADB remains authorized, start the previously recorded Home component and select it using the device's supported method. Never remove system components. The repository does not distribute backups of third-party launchers or scripts tied to a particular TV.
 
-Continuar assistindo/Sugestões dependem dos registros Android publicados por outros apps e da permissão opcional READ_TV_LISTINGS. Autorize pela TV se desejar. Não há login de plataforma, servidor próprio ou telemetria. A biblioteca usa somente atividades habilitadas/exportadas com LAUNCHER/LEANBACK_LAUNCHER; serviços sem tela e apps desativados não são importados como atalhos.
+An older APK is not a guaranteed data-preserving downgrade for a non-debuggable app. A recovery build may need the retained certificate and a compatible version code. Preserve a private backup and follow the [device validation procedure](operations/device-validation.md).
+
+## Shared content and privacy
+
+Continue Watching and Suggestions depend on Android records supplied by installed apps and optional `READ_TV_LISTINGS` access. The user grants access on the TV. Lume has no platform login, application backend, or telemetry. Its app catalog uses enabled, exported LAUNCHER/LEANBACK_LAUNCHER activities; disabled apps and services without a launchable screen are not imported as shortcuts.

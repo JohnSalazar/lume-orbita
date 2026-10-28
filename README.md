@@ -1,69 +1,74 @@
 # lume órbita
 
-Launcher original para **Android TV e Google TV 11 ou posterior**, escrito em Kotlin com Views nativas. Interface de vidro translúcido, navegação por controle remoto e personalização sem root.
+An original launcher for **Android TV and Google TV 11 or later**, implemented in Kotlin with native Views. It combines a translucent glass interface, remote-control navigation, and local customization without root access.
 
-## Funcionalidades
+## Release 0.4.3
 
-- Biblioteca dos apps iniciáveis instalados, ícones do próprio aparelho e favoritos reordenáveis.
-- Continuar assistindo e Sugestões com os dados que as plataformas disponibilizam ao Android.
-- Navegação livre nos títulos; prévia destacada da última capa sem transferir foco. Baixo/OK entram na capa.
-- Materiais leves, foco com halo, favoritos RGB, modo Cinema local e agenda opcional.
-- 30 atmosferas, rotação diária e proteção de tela com fotos online ou arte procedural offline.
-- Acesso às configurações Android, rede, Google Play e entradas disponibilizadas pelo fabricante.
-- Seleção como Home pelas possibilidades do Android/OEM, sem interceptação global ou firmware modificado.
+**Evaluation prerelease** — package `br.com.lume.launcher`, version code `29`, minimum SDK `30`.
 
-Versão de avaliação **0.4.2**, com 21 idiomas, Sobre, temas procedurais aleatórios e relógios no formato padrão do idioma. [Baixar APK](https://github.com/JohnSalazar/lume-orbita/releases/download/v0.4.2/lume-orbita-0.4.2.apk) · [Release, documentação e checksums](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.2) · [Notas das correções](docs/releases/0.4.2.md).
+[Download APK](https://github.com/JohnSalazar/lume-orbita/releases/download/v0.4.3/lume-orbita-0.4.3.apk) · [Release assets and SHA-256 checksums](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.3) · [Release notes](docs/releases/0.4.3.md) · [US English release guide](docs/releases/0.4.3-guide.md)
 
-Instalada e testada na KONKA preservando preferências e Home. [Validação física0.4.1](docs/qa/konka-041-validation.md) · [correção do relógio0.4.2](docs/qa/clock-locale-042.md) · [validação anterior em emulador](docs/qa/i18n-validation.md). A tradução não implica certificação linguística nativa.
+This release adds **Settings > About > Check for updates**. Checks run only when requested. A newer compatible release can be downloaded, verified, and handed to Android for explicit installation confirmation. If Android requires installation-source access, the user must grant it in Android settings. The app never grants that access itself, silently installs a package, uninstalls the launcher, clears its data, or automatically changes Home.
 
-A linha de desenvolvimento **0.4.3** acrescenta **Sobre > Verificar atualizações**: consulta manual ao GitHub, download validado e instalação com confirmação do Android. [Uso e autorização de fontes](docs/operations/github-updates.md) · [validação0.4.3 e limites](docs/qa/updater-validation-043.md). A release pública0.4.2 acima permanece separada desse código.
+The existing evaluation signing certificate is retained. A custom build signed with a different key cannot update the official installation in place. See [build and signing](docs/build.md).
 
-## Idiomas / Languages
+## Features
 
-Em Configurações > Idioma, escolha Automático ou uma língua manual. Automático usa a primeira preferência compatível da TV; fallback **English (United States)**. A escolha afeta somente o Lume. Nomes e descrições de conteúdo publicados pelas plataformas mantêm o idioma de origem.
+- Installed launchable apps with device-provided icons, reorderable favorites, and long-press actions.
+- Continue Watching and Suggestions based on content providers exposed by installed platforms.
+- Header navigation with an independent preview of the remembered card; Down or OK enters the card.
+- Lightweight glass materials, focus halos, animated RGB favorites, and an optional local Cinema schedule.
+- Thirty packaged atmospheres with daily rotation; online screensaver photos or randomly selected procedural scenes.
+- Locale-default clocks, including the US 12-hour cycle with AM/PM and localized digits where applicable.
+- Android settings, network settings, app-store access, and manufacturer-exposed inputs.
+- Home integration through Android/OEM facilities, with no global interception or firmware changes.
+- Manual GitHub updates with bounded downloads, checksum and certificate verification, and user confirmation.
 
-Guias de uso, instalação, atualização, recuperação, build e limitações:
+## Updating from About
 
-[English US](docs/i18n/en-US/README.md) · [English UK](docs/i18n/en-GB/README.md) · [English Canada](docs/i18n/en-CA/README.md) · [Português Brasil](docs/i18n/pt-BR/README.md) · [Português Portugal](docs/i18n/pt-PT/README.md) · [Español](docs/i18n/es-ES/README.md) · [Français](docs/i18n/fr-FR/README.md) · [简体中文](docs/i18n/zh-CN/README.md) · [हिन्दी](docs/i18n/hi-IN/README.md) · [العربية](docs/i18n/ar/README.md) · [বাংলা](docs/i18n/bn-BD/README.md) · [Русский](docs/i18n/ru-RU/README.md) · [اردو](docs/i18n/ur-PK/README.md) · [日本語](docs/i18n/ja-JP/README.md) · [پنجابی شاہ مکھی](docs/i18n/pnb-Arab-PK/README.md) · [मराठी](docs/i18n/mr-IN/README.md) · [Deutsch](docs/i18n/de-DE/README.md) · [Italiano](docs/i18n/it-IT/README.md) · [한국어](docs/i18n/ko-KR/README.md) · [Bahasa Indonesia](docs/i18n/id-ID/README.md) · [Türkçe](docs/i18n/tr-TR/README.md).
+1. Select **Check for updates** in **About**.
+2. If a newer compatible version is available, select **Download update**.
+3. After verification, select **Install update**. If prompted, open **Allow this source**, grant access yourself, and return to confirm.
+4. Complete Android's installation prompt. Verify the launcher configuration and Home selection afterward.
 
-Mandarim usa escrita simplificada; punjabi ocidental usa Shahmukhi. Árabe, urdu e punjabi ocidental usam RTL. O seletor fica dentro do aplicativo; não modifica o idioma global do Android.
+Updates preserve app data through Android's same-package update mechanism. If an OEM changes the Home preference, Lume reports the change and offers access to the official selector. It does not silently change protected settings. See the [update operations guide](docs/operations/github-updates.md), [security contract](docs/design/update-security.md), and [installation and recovery guide](docs/installation.md).
 
-## Compilar e testar
+## Localization
 
-Requisitos: JDK 17, Android SDK Platform 35 e Build Tools 36.0.0. Gradle 8.11.1 vem pelo wrapper; não é necessária instalação global.
+The application supports 21 locales: English (US, UK, Canada), Portuguese (Brazil, Portugal), Spanish, French, Simplified Chinese, Hindi, Modern Standard Arabic, Bengali, Russian, Urdu, Japanese, Western Punjabi (Shahmukhi), Marathi, German, Italian, Korean, Indonesian, and Turkish.
 
-Configure `JAVA_HOME` e `ANDROID_HOME` para as suas instalações. No Windows PowerShell:
+Automatic selection uses the first supported device language, with **English (United States)** as the fallback. Manual selection changes only the launcher. Platform-supplied titles and descriptions retain their original language.
 
-```powershell
-cd src/android
-.\gradlew.bat --no-daemon --max-workers=1 testDebugUnitTest verifyRulesCoverage assembleRelease lintRelease
-```
+[US English user and contributor guide](docs/i18n/en-US/README.md) · [Localized guides in the repository](https://github.com/JohnSalazar/lume-orbita/tree/v0.4.3/docs/i18n)
 
-Linux/macOS:
+## Build and test
+
+Requirements: JDK 17, Android SDK Platform 35, and Build Tools 36.0.0. The Gradle wrapper supplies Gradle 8.11.1. Configure `JAVA_HOME` and `ANDROID_HOME`, then run from `src/android`:
 
 ```sh
-cd src/android
 ./gradlew --no-daemon --max-workers=1 testDebugUnitTest verifyRulesCoverage assembleRelease lintRelease
 ```
 
-APK local: `src/android/app/build/outputs/apk/release/app-release.apk`.
+On Windows, use `gradlew.bat`. Release output: `app/build/outputs/apk/release/app-release.apk`.
 
-Instrumentação do APK de avaliação: `assembleReleaseAndroidTest`. O projeto usa `testBuildType = "release"` para que os testes nativos tenham o mesmo vínculo de APIs Kotlin internal do APK instalado. Os testes JVM continuam em `testDebugUnitTest`.
+Build the auxiliary native test APK with `assembleReleaseAndroidTest`. `testBuildType = "release"` keeps Kotlin internal API linkage compatible with the installed release APK. JVM tests continue to use `testDebugUnitTest`. Test APKs are not release assets.
 
-Na raiz, `python tools/build_locale_resources.py` regenera os recursos a partir dos catálogos revisáveis; `python tools/verify_locales.py` verifica cobertura de chaves, placeholders e guias. `python tools/verify_locales.py --self-check` testa o próprio verificador com fixtures isoladas.
+From the repository root, `python tools/build_locale_resources.py` generates Android resources, and `python tools/verify_locales.py` validates catalogs, placeholders, and guides. `--self-check` exercises the verifier with isolated fixtures.
 
-[Build e assinatura](docs/build.md) · [Instalação, Home e restauração](docs/installation.md) · [Validação e limites](docs/validation.md) · [Arquitetura](docs/architecture.md)
+[Architecture](docs/architecture.md) · [Build and signing](docs/build.md) · [Update validation report](docs/qa/updater-validation-043.md) · [Physical-device validation procedure](docs/operations/device-validation.md)
 
-## Limites importantes
+## Validation and limitations
 
-Validado em uma KONKA com Android TV 11 e interface 720p. Outros modelos, resoluções e versões precisam de testes; não é uma garantia universal. Home e retorno do standby são comportamentos distintos e dependem do fabricante.
+The 0.4.3 validation recorded 172 passing JVM tests, eight Android contract cases, one real public GitHub check, and 294 updater-state panels across 21 locales. All 483 new compiled strings matched their catalogs. Sixteen typed preferences, Home, installer access, and installer-session state were preserved. See the [validation report](docs/qa/updater-validation-043.md) for exact scope and limitations.
 
-O app não acessa contas privadas de streaming. Cards, progresso, imagens e links dependem do que cada plataforma compartilha; podem estar ausentes ou desatualizados. A permissão opcional para conteúdo compartilhado exige autorização no Android.
+**A future release has not been installed end to end through PackageInstaller.** Installation-state fixtures are not proof of a completed update. The no-update check was performed when the installed 0.4.3 was newer than the public 0.4.2. Publication of 0.4.3 does not turn that historical check into an installation test.
 
-Imagens online são carregadas em RAM, sem cache de fotos em disco pelo aplicativo. Após encerramento do processo, precisam ser carregadas novamente. O limite da LRU não representa toda a memória usada por Views e decodificação.
+Validation on one KONKA Android TV 11 device does not certify other OEMs, resolutions, physical remotes, standby behavior, or performance. Translations have not been certified by native-language reviewers. Home and resume from standby are separate OEM-dependent behaviors.
 
-## Licença
+Screensaver photos are loaded into RAM without an app-managed disk photo cache. Update APKs require separate temporary private storage. Shared recommendations, artwork, progress, and links depend on what each platform exposes; Lume does not access private streaming accounts.
 
-Código original sob [MIT](LICENSE), copyright 2026 Joao Salazar. Fotografias, bibliotecas, ferramentas e marcas de terceiros mantêm seus próprios direitos: [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+## License
 
-Esta publicação contém a versão Android. Protótipos antigos, registros particulares de testes, chaves de assinatura e backups de aplicativos de terceiros não fazem parte do repositório.
+Original code and documentation: [MIT](LICENSE), copyright 2026 Joao Salazar. Third-party photos, libraries, tools, trademarks, and publisher content retain their own rights: [third-party notices](THIRD_PARTY_NOTICES.md).
+
+Signing keys, personal backups, private test evidence, and third-party application backups are not distributed in this repository or its release assets.

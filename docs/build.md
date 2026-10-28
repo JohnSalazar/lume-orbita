@@ -1,25 +1,31 @@
-# Build e assinatura
+# Build and signing
 
-Requisitos: JDK17, Android SDK/API35, BuildTools36.0.0; AGP8.9.2 e Kotlin2.1.20 fixados nos fontes. O wrapper fixa Gradle8.11.1 e seu SHA256.
+Requirements: JDK 17, Android SDK Platform 35, and Build Tools 36.0.0. The source pins AGP 8.9.2 and Kotlin 2.1.20. The wrapper pins Gradle 8.11.1 and its distribution SHA-256.
 
-Use `JAVA_HOME`/`ANDROID_HOME`, ou um `src/android/local.properties` particular com `sdk.dir` apropriado. Não versione esse arquivo. Aceite as licenças do SDK pelas ferramentas oficiais.
+Configure `JAVA_HOME` and `ANDROID_HOME`, or use a private `src/android/local.properties` with the appropriate `sdk.dir`. Do not commit local SDK configuration. Accept SDK licenses through the official tools.
 
-No diretório `src/android`, execute:
+From `src/android`:
 
 ```sh
 ./gradlew --no-daemon --max-workers=1 testDebugUnitTest verifyRulesCoverage assembleRelease lintRelease
 ```
 
-No Windows substitua `./gradlew` por `.\gradlew.bat`.
+On Windows, use `gradlew.bat`. Release output: `app/build/outputs/apk/release/app-release.apk`.
 
-Para o APK auxiliar de testes nativos, execute `assembleReleaseAndroidTest`; saída `app/build/outputs/apk/androidTest/release/app-release-androidTest.apk`. `testBuildType = "release"` mantém os nomes internos Kotlin compatíveis com o APK de avaliação. Instalar uma instrumentação compilada contra debug no APK release pode causar `NoSuchMethodError` em acessos internal, sem representar falha do launcher normal. Os testes JVM continuam usando debug.
+## Native instrumentation
 
-O gate JaCoCo exige pelo menos90% de linhas e ramos do pacote `core/**`. Relatórios em `app/build/reports/jacoco/rulesCoverage` e `app/build/reports/lint-results-release.*`. A cobertura do core não mede toda a Activity, renderização, rede real ou o controle físico.
+Run `assembleReleaseAndroidTest` to build `app/build/outputs/apk/androidTest/release/app-release-androidTest.apk`. The project sets `testBuildType = "release"` so Kotlin internal names match the installed evaluation APK. A debug instrumentation APK can produce `NoSuchMethodError` when it calls release-internal methods; that mismatch is not a launcher runtime failure. JVM tests still use the debug variant.
 
-## Assinatura
+Use an explicit ADB serial and inspect the [physical-device validation procedure](operations/device-validation.md) before testing. Auxiliary APKs and private evidence are not release assets.
 
-O build local usa a configuração de assinatura de desenvolvimento do Android, com `isDebuggable=false` no release. O APK publicado é uma versão de avaliação, assinada pela chave particular mantida pelo autor; não é publicação na Google Play nem assinatura de produção gerenciada pela loja.
+## Coverage
 
-Chaves, senhas e configuração local não estão no Git. Um clone pode gerar outra chave e outro certificado, portanto compilar não garante APK byte a byte idêntico nem permissão para atualizar o APK oficial existente. Para uma atualização compatível, o mantenedor precisa usar a mesma chave. Um fork deve manter sua própria identidade/assinatura; não apague dados ou desinstale a única Home só para contornar erro de certificado.
+The JaCoCo gate requires at least 90% line and branch coverage for `core/**`. Reports are written under `app/build/reports/jacoco/rulesCoverage` and `app/build/reports/lint-results-release.*`. Core coverage does not measure the entire Activity, graphics pipeline, network, PackageInstaller, or physical remote behavior.
 
-Downloads oficiais devem ser conferidos pelo SHA256 fornecido na release. A impressão digital do certificado é pública; a chave privada nunca deve ser publicada.
+## Signing
+
+The local release configuration uses Android's development signing configuration with `isDebuggable = false`. The official APK is an evaluation build signed with the author's retained private key. It is not a Google Play deployment or a store-managed production-signing claim.
+
+Keys, passwords, and local signing configuration are not in Git. A clone can generate a different key and certificate; a successful build does not imply byte-for-byte reproducibility or permission to update an official installation. Compatible updates require the same signing key. Forks should use their own identity and signing setup. Do not clear app data or uninstall the only working Home launcher to bypass a certificate mismatch.
+
+Verify official downloads against the release SHA-256 checksums. The certificate fingerprint is public; the private key must never be published.

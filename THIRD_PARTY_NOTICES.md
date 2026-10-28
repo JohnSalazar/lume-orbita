@@ -1,12 +1,12 @@
-# Licenças e direitos de terceiros
+# Third-party licenses and rights
 
-A licença MIT em LICENSE cobre o código original e documentação do Lume. Não substitui licenças de terceiros nem concede direitos sobre marcas, logos, títulos ou imagens das plataformas.
+The MIT license in LICENSE covers Lume's original code and documentation. It does not replace third-party licenses or grant rights to platform trademarks, logos, titles, or images.
 
-- **Gradle Wrapper**: distribuído sob sua licença Apache 2.0. Texto original preservado em `third_party/gradle-wrapper-LICENSE.txt`; headers dos scripts e JAR preservados. A distribuição Gradle é obtida separadamente e verificada pelo SHA fixado no wrapper.
-- **Kotlin 2.1.20 / runtime**: Apache 2.0, com copyright e notices de JetBrains e contribuidores. Textos oficiais da tag v2.1.20 preservados em `third_party/kotlin-*`. As dependências mantêm suas licenças próprias.
-- **Android SDK / Android Gradle Plugin / JUnit / JaCoCo**: ferramentas e dependências obtidas separadamente pelos gerenciadores oficiais; não se tornam MIT pelo uso neste projeto. JUnit e JaCoCo são usados em testes/relatórios, não na interface do aplicativo.
-- **30 atmosferas empacotadas**: arte original criada para o Lume com geração de imagens OpenAI, com proveniência em `docs/wallpaper-sources.json`. Disponibilizada junto do projeto sob MIT na extensão dos direitos aplicáveis; não é fotografia dos autores listados na seção de proteção de tela.
-- **Fotografias remotas de proteção de tela**: CC0 1.0 ou CC BY 4.0 conforme cada imagem. Autores, fontes e links de licença em `docs/photo-credits.md` e no asset `screensaver.json`. Redimensionamento, recorte e escurecimento são alterações de exibição. Nenhuma dessas fotografias foi incorporada a este repositório.
-- **Ícones e recomendações de apps instalados**: consultados em tempo de execução no aparelho. Pertencem aos respectivos titulares; não são redistribuídos como assets deste repositório. Os protótipos privados que continham ícones extraídos foram excluídos da publicação.
+- **Gradle Wrapper**: distributed under its Apache 2.0 license. The original text is preserved in `third_party/gradle-wrapper-LICENSE.txt`; script headers and the JAR are preserved. The Gradle distribution is obtained separately and verified against the SHA pinned in the wrapper.
+- **Kotlin 2.1.20 / runtime**: Apache 2.0, with copyright and notices from JetBrains and contributors. Official texts from tag v2.1.20 are preserved in `third_party/kotlin-*`. Dependencies retain their own licenses.
+- **Android SDK / Android Gradle Plugin / JUnit / JaCoCo**: tools and dependencies obtained separately through their official package managers; using them in this project does not relicense them under MIT. JUnit and JaCoCo are used for tests and reports, not in the application interface.
+- **30 bundled atmospheres**: original artwork created for Lume using OpenAI image generation, with provenance in `docs/wallpaper-sources.json`. Included with the project under MIT to the extent of the applicable rights; these are not photographs by the authors listed in the screensaver section.
+- **Remote screensaver photographs**: CC0 1.0 or CC BY 4.0, depending on the image. Authors, sources, and license links are listed in `docs/photo-credits.md` and the `screensaver.json` asset. Resizing, cropping, and dimming are display modifications. None of these photographs has been incorporated into this repository.
+- **Installed app icons and recommendations**: queried on the device at runtime. They belong to their respective rights holders and are not redistributed as repository assets. Private prototypes containing extracted icons were excluded from publication.
 
-Lume é independente e não é afiliado a Apple, Google, KONKA ou serviços de streaming. A referência estética a vidro líquido não implica vínculo ou uso de ícones proprietários dessas interfaces.
+Lume is independent and is not affiliated with Apple, Google, KONKA, or streaming services. Its liquid-glass aesthetic reference does not imply affiliation or use of those interfaces' proprietary icons.

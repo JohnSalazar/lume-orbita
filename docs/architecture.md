@@ -1,10 +1,13 @@
-# Arquitetura
+# Architecture
 
-- `src/android/app/src/main/java/br/com/lume/launcher`: Activity, componentes visuais, catálogo de apps, ações Android, conteúdo compartilhado, imagens em memória e proteção de tela.
-- `core/`: regras puras testáveis sem dispositivo.
-- `app/src/test`: testes JVM de regras, limites, cancelamento e transporte falso.
-- `app/src/main/assets`: atmosferas próprias e metadados/créditos de fotografias remotas.
+- `src/android/app/src/main/java/br/com/lume/launcher`: Activity, shared UI, app catalog, Android actions, shared content, in-memory images, screensaver, and manual updates.
+- `core/`: pure rules that can be tested without a device.
+- `app/src/test`: JVM tests for policies, limits, cancellation, and fake transport.
+- `app/src/androidTest`: separate device-only instrumentation; not distributed in the release APK.
+- `app/src/main/assets`: original atmospheres and remote-photo metadata/attribution.
 
-Kotlin+Views, sem WebView, NDK, backend ou serviço permanente de automação. Manifesto declara Home e Leanback; Android decide o papel Home. D-pad mantém foco real nos cabeçalhos, com prévia visual independente no card lembrado. Metadados de prévia não gravam a escolha do card; somente foco real o faz. Preferências privadas guardam guia e dois identificadores, não histórico de títulos/URIs.
+The application uses Kotlin and native Views, with no WebView, NDK, application server, or persistent automation service. The manifest declares Home and Leanback; Android determines the Home selection. D-pad navigation retains real focus on content headers while previewing the remembered card independently. Preview metadata does not update the remembered selection; real card focus does. Persistent identifiers and platform content caches remain private app data.
 
-Materiais estáticos e transformações nativas evitam blur pesado no Android11. Cache de imagens é limitado em RAM, preservado na pausa e liberado na destruição; conteúdo fora da tela pode ser descartado. Processos encerrados precisam recarregar as fotos. Proteção procedural é renderizada localmente; fotos remotas mantêm atribuição acessível nos Ajustes.
+Static materials and native transforms avoid expensive blur on Android 11. Image caches are bounded in RAM, paused with the UI, and released on destruction; offscreen content can be evicted. A terminated process must reload remote photos. Procedural scenes are rendered locally. Photo attribution remains accessible in screensaver settings.
+
+The updater runs only after a user action. `GitHubUpdater` checks a fixed repository, downloads a bounded private temporary APK, and verifies the checksum, package, version, SDK, and current signing certificates. A separate bounded worker and UI watchdog isolate network stalls. `UpdateInstallActivity` uses a private, session-correlated PackageInstaller flow with Android confirmation. APK staging requires disk storage and does not change the screensaver's RAM-only photo policy. See the [security contract](design/update-security.md) and [operations guide](operations/github-updates.md).

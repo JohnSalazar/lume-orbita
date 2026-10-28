@@ -1,46 +1,60 @@
-# Validação do atualizador —0.4.3
+# Updater validation — 0.4.3
 
-## Entrega
+## Delivery and historical test context
 
-Versão0.4.3/code29 instalada na KONKA Android11/API30, com o certificado existente e atualização com-r. Sobre ganhou verificação manual de releases do GitHub. Uma atualização disponível exige download/validação, clique para instalar e confirmação do Android. A autorização especial de fontes é decisão do usuário nas configurações oficiais; nenhum grant foi aplicado por ADB.
+Version 0.4.3/code 29 was installed on the KONKA running Android 11/API 30 using replacement installation (`-r`) and the existing signing certificate. About now supports a manual GitHub release check. A newer release requires download/validation, an explicit install action, and Android's confirmation. Unknown-source installation access remains the user's decision in official Android settings; no access was granted through ADB.
 
-O código não desinstala o pacote, apaga configurações, força Home ou solicita root. Home e permissão de conteúdo existentes foram preservados. A release pública permanece0.4.2; nenhuma versão fictícia ou0.4.3 foi publicada para forçar um ensaio de autoatualização.
+The updater does not uninstall the package, clear user settings, force the default Home, or request root. Existing Home and TV-content access were preserved. **At the time of the live native test, the newest public release was 0.4.2**, so installed 0.4.3 correctly reported no newer version. No fabricated future release was published to force an update test. Publishing 0.4.3 afterward does not prove a future APK installation or change that historical result.
 
-## Gates executados
+## Executed gates
 
-| Gate | Observação real |
+| Gate | Observed result |
 |---|---|
-| JVM |172 testes aprovados, sem falhas: inclui14 contratos de transporte/download e4 regressões de identidade de tentativa |
-| JaCoCo core |441/442 linhas e817/859 ramos; gate90% passou |
-| Regras de update |40/40 linhas,113/120 ramos; tentativas de instalação3/3 linhas,22/22 ramos |
-| Build e lint | Release e instrumentação compilados;0 erros de lint/18 avisos |
-| Recursos |21 catálogos/guias,290 textos por locale; verificador sem erros |
-| Consulta real na TV | Botão selecionado e OK injetado; API pública do GitHub retornou ausência de versão mais nova para0.4.3, pois a release pública é0.4.2 |
-| Contratos Android |8 casos: versões antigas/atuais, seleção da avaliação mais nova não draft, JSON inválido, assets ausentes/duplicados/externos, quantidade excessiva e rejeição de APK real instalado apesar de metadata futura |
-| Controlador | Worker máximo1/fila1, rejeição/purge, watchdog lógico e callback tardio ignorado, usando latch e transporte falso sem rede extra |
-| Interface nova |21 idiomas×14 estados =294 painéis;483 textos novos compilados iguais aos catálogos;1.050 instâncias de texto sem problemas geométricos registrados; Back fechou nos21 idiomas |
-| Preservação |16 preferências com mesmos tipos/valores e digest antes/depois; namespace updater e sessões próprias inalterados; acesso de instalação continuou falso; Home continuou Lume |
+| JVM | 172 tests; zero failures, errors, or skipped tests. Includes 14 transport/download contracts and four installer-attempt identity regressions |
+| Core JaCoCo | 441/442 lines and 817/859 branches; the 90% gate passed |
+| Update rules | 40/40 lines and 113/120 branches; installer-attempt rules: 3/3 lines and 22/22 branches |
+| Build and lint | Release build succeeded in 3m 21s; matching release instrumentation built in 54s; zero lint errors and 18 warnings |
+| Resources | 21 catalogs/guides and 290 strings per locale; resource verification reported no errors |
+| Live TV check | Real button activation through injected OK; the public GitHub API reported no newer version for installed 0.4.3 while public 0.4.2 was current |
+| Android contracts | Eight cases: current/older versions, newest non-draft evaluation release, malformed JSON, missing/duplicate/foreign assets, excessive release count, and rejection of the actual installed APK despite future-version metadata |
+| Controller | Maximum one worker and one queued job; rejection/purge, logical watchdog, and ignored late callback, exercised with latches and local fake HTTP |
+| New UI | 21 locales × 14 states = 294 updater panels; 483 new compiled string values matched source catalogs exactly; 1,050 visible text instances had no recorded geometry problems; Back closed the panel in all 21 locales |
+| Preservation | All 16 preferences retained their exact types/values and before/after digest; updater namespace and owned installer sessions were unchanged; installation access remained false; Home remained Lume |
 
-O SHA-256 do APK instalado é `ada4b84a3b9d850ad6c5588c59900b14ead590a8e8f7d31937bae2813067b463`. APK privado guardado para entrega; test APK removido após o ensaio e KEYCODE_HOME reabriu LauncherActivity. A proteção nativa Backdrop e timeout300000ms permaneceram iguais. Backup anterior e evidências completas ficaram privados no computador.
+Evidence includes `android-043-updater-final.log`, `android-043-release-test.log`, JUnit XML, JaCoCo XML, lint XML, and the private native `updater.json` with typed before/after snapshots. Helena independently parsed the reports and compared all 483 compiled values against their source catalogs; Clara executed builds and device operations. The UI matrix is specifically for the updater, not the separate 294-screen general-app matrix from 0.4.1.
 
-Os dois avisos de lint adicionais são commit síncrono intencional do registro de tentativa e orientação landscape da Activity instaladora de TV. Commit é necessário antes de entregar a sessão ao instalador; não foi trocado por gravação assíncrona só para silenciar o aviso. Os demais16 avisos já existiam.
+## Artifact verification
 
-## Revisão de segurança e correções
+The delivery APK and the existing release build output are byte-identical:
 
-- Origem e redirects HTTPS restritos ao repositório/CDNs previstos; payloads e tempo limitados; sem credenciais ou URLs assinadas em logs. Checksum não é autenticação independente do autor.
-- APK com pacote diferente, SDK incompatível, código antigo ou certificados atuais diferentes é rejeitado. PackageManager verifica o arquivo e PackageInstaller verifica novamente ao instalar.
-- Revisão encontrou e corrigiu colisão de callbacks entre tentativas: lease exclusiva, owner UUID, sessão/token/URI correlacionados e atualização/limpeza condicionais à identidade da tentativa.
-- Revisão encontrou e corrigiu fila sem limite: updater usa worker global separado, fila1, purge/rejeição e watchdog independente do DNS. O DNS ainda pode ocupar esse único worker após cancelamento lógico, sem criar fila ilimitada ou bloquear a UI.
-- Uma interrupção exatamente entre criar a sessão Android e persistir seu ID pode deixar uma sessão própria órfã. Novas tentativas falham de modo conservador até limpeza/expiração da sessão; não há abandono aleatório de sessões desconhecidas. Não confundir com expiração de24h dos APKs temporários.
+- Version: **0.4.3**, versionCode **29**, minSdk **30**, targetSdk **35**.
+- Size: **10,227,297 bytes**.
+- SHA-256: `ada4b84a3b9d850ad6c5588c59900b14ead590a8e8f7d31937bae2813067b463`.
+- APK Signature Scheme v2 verification succeeded with one signer.
+- Existing certificate SHA-256: `c435b38a840b6381b56c2f71f6e914f7958218762139b47ecd9607793cd67cdb`.
 
-## Falha do auxiliar corrigida
+Read-only comparison used the existing artifacts and apksigner; no rebuild, ADB command, or publication was performed by Helena for this release-document review. Production source remained at commit `9d6858b` during the review; only these two English QA documents were changed.
 
-A primeira execução do novo runner encontrou `NoSuchMethodError` por usar nomes internal da variante debug contra release. O processo de teste terminou antes de alterar preferências; uma verificação independente confirmou o backup exato. Ajustado `testBuildType = "release"`, compilado `assembleReleaseAndroidTest` e repetido o ensaio completo, com resultado aprovado. Não foi adicionada API pública de teste ao produto para contornar a divergência.
+The auxiliary test APK was removed after the native run, and KEYCODE_HOME resumed LauncherActivity. The native Backdrop screensaver and its 300,000 ms timeout remained unchanged. Complete device evidence and backups remain private.
 
-## Limites e próxima etapa
+The two additional lint warnings concern synchronous preference commit in attempt cleanup and the TV install Activity's fixed landscape orientation. The commit remains intentional for attempt-state consistency; the other 16 warnings predate this change. No warning was hidden to manufacture a clean report.
 
-Não houve instalação/commit pelo PackageInstaller de uma release futura nem concessão de fontes desconhecidas. Os estados de instalação no ensaio visual são rótulos, não instalação real. Os testes de download/identidade usam transporte e identidades controlados; o contrato Android usa um APK instalado real para provar rejeição de versão/metadados, não um APK novo de assinatura errada instalado no sistema.
+## Security review and fixes
 
-O watchdog foi disparado logicamente no teste, sem afirmar espera real de60segundos. A cobertura percentual publicada é do core, não de toda a Activity, rede ou PackageInstaller. A matriz de294 painéis desta rodada é do atualizador, distinta das294 telas gerais da0.4.1. Não foi repetido benchmark de FPS, Power/standby, HDMI ou revisão linguística por nativos.
+- Initial HTTPS origins and redirects are restricted to the expected repository/CDNs. Payloads and time are bounded, without logging credentials or signed URLs. A colocated checksum is not independent author authentication.
+- Policy rejects the wrong package, an incompatible SDK, an old/equal code, or a different set of current certificates. PackageManager validates archive identity/signatures, and PackageInstaller validates again if installation occurs. Fake identity tests do not establish every native cryptographic rejection path.
+- Review identified and fixed cross-attempt callback collisions using an exclusive lease, owner UUID, correlated session/token/URI, and identity-checked state updates/cleanup.
+- Review identified and fixed an unbounded queue. The updater now has a separate bounded global worker, one queued job, purge/rejection, and a UI watchdog independent of DNS completion. A blocked DNS call may still occupy that single worker after logical cancellation without creating an unlimited queue or blocking the UI.
+- A process interruption exactly between Android session creation and persistence of its ID may leave an owned orphan session. New attempts fail conservatively until cleanup/expiration rather than abandoning an unknown session. This is separate from the 24-hour expiry policy for temporary APK files.
 
-Próxima prova de instalação: uma release legítima mais nova, mesmo pacote/certificado, escolhida pelo usuário; acompanhar a autorização de fontes e a confirmação nativa, preservando backup e conferindo configurações/Home depois. Não oferecer downgrade nem publicar APK fictício para produzir PASS.
+## Corrected auxiliary-runner failure
+
+The first native run encountered `NoSuchMethodError` because debug-variant Kotlin internal names were linked against the release app. It stopped before preference mutation; an independent check confirmed the exact backup state. Setting `testBuildType = "release"`, building `assembleReleaseAndroidTest`, and repeating the complete run resolved the mismatch. No public production test hook was added.
+
+## Limits and next step
+
+No future release was installed or committed through PackageInstaller, and unknown-source access was not granted. Installation-related visual states are label fixtures, not real installation outcomes. Download/identity tests use controlled transport and identities; the Android archive contract proves rejection of the real installed binary wrapped in future metadata, not installation-time rejection of a new wrong-signer or tampered APK.
+
+The watchdog Runnable was invoked logically; the test did not wait through an actual 60-second network stall. Reported coverage applies to core rules, not all Activity, HTTP, filesystem, or PackageInstaller code. No new FPS benchmark, Power/standby test, HDMI test, or native-speaker language certification was performed. Geometry checks cover the recorded updater panels on this KONKA, not every OEM or viewport.
+
+Next installation proof: a legitimate newer release with the same package/certificate, explicitly selected by the user. Observe any required source-access decision and native confirmation, retain a backup, and verify settings/Home afterward. Publishing 0.4.3, attaching its APK, or downloading release assets does not establish that future upgrade. Do not offer a downgrade or publish a fabricated APK to manufacture a passing result.

@@ -1,36 +1,45 @@
-# Atualização manual pelo GitHub
+# Manual GitHub updates
 
-## Objetivo
+## Objective
 
-Em Ajustes > Sobre, consultar novas versões do repositório público JohnSalazar/lume-orbita e permitir atualização com confirmação do usuário e do Android, mantendo pacote, assinatura, configurações e a seleção existente de Home.
+From **Settings > About**, check the public `JohnSalazar/lume-orbita` repository for a newer version and let the user update Lume with explicit application and Android confirmation. Retain the installed package identity, signing identity and configuration. Preserve the existing Home selection where the OEM permits it; detect changes and offer the official manual selector rather than changing Home automatically.
 
-## Escopo e fluxo
+## Scope and user flow
 
-1. “Verificar atualizações” consulta o GitHub somente por ação do usuário. A aplicação não faz verificações automáticas no boot nem instala silenciosamente.
-2. Exibe ausência de versão nova, erro recuperável ou versão disponível. Considera a linha de avaliação/prereleases já usada pelo projeto; `/releases/latest` sozinho não atende esse canal.
-3. “Baixar atualização” solicita o APK e o checksum da mesma release oficial. Progresso visível; Voltar cancela a operação. Nenhuma fotografia ou conteúdo das plataformas participa da consulta.
-4. Confere limites de tamanho, SHA-256, nome do pacote, versão real do APK, SDK mínimo e certificados atuais iguais aos da instalação. Pacote incompatível ou não verificável é bloqueado.
-5. Se necessário, usuário abre a autorização de fontes do Android e decide concedê-la. Retorna ao Lume e escolhe “Instalar atualização”. O instalador nativo confirma a ação.
-6. A atualização padrão do Android conserva os dados do pacote. Não desinstalar o Lume, limpar dados, solicitar root ou redefinir Home. Se o OEM modificar a escolha de Home após substituir o pacote, informar e oferecer acesso à seleção oficial, sem alterá-la automaticamente.
+1. **Check for updates** contacts GitHub only after a user action. There are no periodic checks, boot-time checks or silent installations.
+2. Show no newer version, a recoverable error, or an available candidate. Support the evaluation/prerelease channel explicitly; `/releases/latest` alone excludes prereleases and is insufficient.
+3. **Download update** retrieves the expected APK and checksum manifest from the same official release. Show progress; Back cancels the application's operation. Screensaver photographs and platform content are not part of the request.
+4. Validate byte limits, SHA-256, package name, actual APK version, minimum SDK and equality of the current signing-certificate sets. Reject incompatible or unverifiable packages.
+5. **Install update** is a separate user action after download and validation. If Android requires source authorization, the user opens the package-specific settings and decides whether to grant it. Recheck access after returning; opening Settings is not authorization. The native installer then requires confirmation.
+6. Use Android's normal same-package update mechanism to retain application data. Do not uninstall Lume, clear data, request root or reset Home. If the OEM changes Home during package replacement, explain the change and offer access to the official selector for a manual decision.
 
-## Implementação definida
+## Implementation
 
-- Versão0.4.3/code29; Android11/API30 ou posterior; Kotlin/Views existentes, sem nova biblioteca.
-- Política pura `UpdateRules`, cliente síncrono `GitHubUpdater` fora da thread de UI e instalador Android com Activity privada/PackageInstaller.
-- Interface reutiliza painéis e navegação do launcher;23 textos novos nos21 idiomas.
-- APK temporário privado é necessário ao instalador e é descartado após staging/cancelamento/falha. A regra de fotos online somente em RAM permanece intacta.
-- Novo acesso especial `REQUEST_INSTALL_PACKAGES` é declarado; nenhum grant é concedido por ADB ou por código. Não usar `INSTALL_PACKAGES` ou `UPDATE_PACKAGES_WITHOUT_USER_ACTION`.
+- Version **0.4.3**, `versionCode 29`; Android 11/API 30 or later, using the existing Kotlin/Views stack without a new dependency.
+- Pure validation in `UpdateRules`, synchronous `GitHubUpdater` work off the UI thread, and a private installation Activity using the public `PackageInstaller` API.
+- Existing launcher panels and remote-navigation conventions; 23 new strings in each of 21 locales.
+- A private temporary APK is required for installation. Remove owned temporary files after staging, cancellation or failure. Online screensaver photographs retain their RAM-only application behavior.
+- Declare `REQUEST_INSTALL_PACKAGES` to request installation. This does not grant source access. Do not request `INSTALL_PACKAGES` or `UPDATE_PACKAGES_WITHOUT_USER_ACTION`, or grant access through ADB or application code.
+- Bound discovery to 30 releases, JSON to 1 MiB, checksums to 64 KiB, APK data to 32 MiB and redirects to three approved HTTPS destinations.
+- Use a 60-second transport deadline per request and a separate 60-second UI watchdog per check or download/validation operation. One worker and its bounded queue remain bounded when DNS has not returned. Native confirmation has no promised 60-second completion time.
+- Correlate the installation attempt's owner, session and token. Stale callbacks and old Activity instances must not complete, clear or abandon a later attempt.
 
-## Aceite e evidência
+## Acceptance criteria and evidence
 
-- Testes de versões/URLs/checksum/limites/pacote/SDK/certificado; negativos para adulteração, downgrade e cancelamento.
-- Testes do cliente com rede controlada, consulta real ao GitHub e interface sem versão nova na KONKA. Uma versão instalada de desenvolvimento superior à release pública deve informar ausência de atualização, sem oferecer downgrade.
-- Recursos e estados traduzidos verificados, incluindo RTL e controle remoto; preservar mapa tipado das configurações, Home e acessos especiais antes/depois.
-- Confirmação de instalação futura é uma prova distinta da consulta: não alegar autoatualização concluída apenas porque o botão aparece. Nunca publicar APK fictício para forçar o teste.
-- Build, lint e cobertura das regras passam; cobertura core não representa o instalador inteiro. Documentar gates executados e pendentes.
+- Exercise version selection, URLs, checksum parsing, payload limits, package/SDK/certificate validation, cancellation and downgrade rejection, including negative cases.
+- Exercise controlled transport/download contracts and real GitHub discovery. A build newer than the public release must report no newer version without offering a downgrade.
+- Verify translated states, RTL and remote focus/Back behavior. Compare complete typed configuration snapshots, Home and source access before and after tests.
+- Keep discovery evidence separate from installation evidence. A button, fixture or successful no-update query does not prove a complete PackageInstaller update. Do not publish fictitious releases to force a test.
+- Run build, lint and the core coverage gate. Core coverage is not whole-application or whole-installer coverage. Report warnings and unexecuted gates explicitly.
 
-## Limites
+The recorded 0.4.3 validation checked the then-public **0.4.2** release and found no newer version. It passed 172 JVM tests, eight Android contract cases and 294 updater-state panels across 21 locales, preserving the recorded settings and Home. No future-release PackageInstaller installation or source-permission grant was performed. This is historical evidence, not a statement that the repository must still be on 0.4.2. After 0.4.3 is published, that installed version should still find no newer version until a legitimate higher release appears. See the [validation report](qa/updater-validation-043.md).
 
-O GitHub pode ficar indisponível ou limitar consultas. TLS/checksum não substituem a assinatura do desenvolvedor. O Android/OEM pode exigir autorização adicional ou indisponibilizar o instalador. A seleção de Home deve ser conferida, sem prometer comportamento universal. Ver [contrato de segurança](design/update-security.md) e [plano QA](qa/updater-test-plan.md).
+## Constraints and residual risks
 
-Fontes oficiais: [PackageInstaller](https://developer.android.com/reference/android/content/pm/PackageInstaller), [ação obrigatória do usuário](https://developer.android.com/reference/android/content/pm/PackageInstaller.SessionParams#setRequireUserAction(int)), [autorização de fontes](https://developer.android.com/reference/android/content/pm/PackageManager#canRequestPackageInstalls()), [releases do GitHub](https://docs.github.com/en/rest/releases/releases#list-releases).
+GitHub can be unavailable, rate-limit requests or change CDN behavior. TLS and a checksum hosted with the APK do not replace verification against the installed signing identity. A checksum is not independent authentication if the repository and signing key are both compromised.
+
+Android/OEM builds can require additional authorization, omit a compatible installer or change Home during replacement. A process interruption between session creation and recording its ID can leave an owned orphan; subsequent attempts fail conservatively until cleanup or expiration rather than abandoning an unidentified session. DNS can outlive logical cancellation and continue occupying the bounded worker. Neither condition authorizes root, protected-setting changes or unbounded retries.
+
+See the [security contract](design/update-security.md), [operational procedure](operations/github-updates.md) and [test plan](qa/updater-test-plan.md).
+
+Official references: [PackageInstaller](https://developer.android.com/reference/android/content/pm/PackageInstaller), [required user action](https://developer.android.com/reference/android/content/pm/PackageInstaller.SessionParams#setRequireUserAction(int)), [source authorization](https://developer.android.com/reference/android/content/pm/PackageManager#canRequestPackageInstalls()), and [GitHub release listing](https://docs.github.com/en/rest/releases/releases#list-releases).
