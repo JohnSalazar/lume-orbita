@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.io.InterruptedIOException
+import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.InetAddress
 import java.net.URL
@@ -34,7 +35,8 @@ class GitHubUpdater internal constructor(
     private val installed: () -> UpdateApkIdentity,
     private val inspect: (File) -> UpdateApkIdentity?,
     private val deviceSdk: Int,
-    internal val transport: UpdateHttpTransport
+    internal val transport: UpdateHttpTransport,
+    private val openOutput: (File) -> OutputStream = { it.outputStream() }
 ) {
     private constructor(environment: Environment) : this(environment.directory, environment.installed,
         environment.inspect, Build.VERSION.SDK_INT, UpdateHttpTransport())
@@ -68,9 +70,14 @@ class GitHubUpdater internal constructor(
             var total = 0L
             onProgress(0)
             try {
-                file.outputStream().use { output ->
+                openOutput(file).use { output ->
                     transport.read(release.apkUrl, UpdateRules.MAX_APK_BYTES) { buffer, count ->
-                        output.write(buffer, 0, count); digest.update(buffer, 0, count); total += count
+                        try { output.write(buffer, 0, count) }
+                        catch (_: IOException) {
+                            transport.checkCanceled()
+                            throw UpdateFailure(UpdateFailureReason.STORAGE)
+                        }
+                        digest.update(buffer, 0, count); total += count
                         onProgress(((total * 100L) / release.apkBytes).coerceIn(0, 100).toInt())
                     }
                 }

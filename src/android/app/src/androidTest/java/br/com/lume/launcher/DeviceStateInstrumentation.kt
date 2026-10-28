@@ -3,6 +3,8 @@ package br.com.lume.launcher
 import android.app.Activity
 import android.app.Instrumentation
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Base64
 import org.json.JSONArray
@@ -38,7 +40,7 @@ open class DeviceStateInstrumentation : Instrumentation() {
         var action = "invalid"
         try {
             val requested = options.getString("action") ?: error("Missing action")
-            require(requested in setOf("backup", "verify", "restore", "selftest", "export")) { "Invalid action" }
+            require(requested in setOf("backup", "verify", "restore", "selftest", "export", "audit")) { "Invalid action" }
             action = requested
             if (action == "selftest") {
                 // Use the target's runtime with an exclusive UUID preference file, not its orbita file.
@@ -52,6 +54,10 @@ open class DeviceStateInstrumentation : Instrumentation() {
             }
             if (action == "export") {
                 finish(Activity.RESULT_OK, exportArchive())
+                return
+            }
+            if (action == "audit") {
+                finish(Activity.RESULT_OK, audit())
                 return
             }
             val id = options.getString("snapshot") ?: error("Missing snapshot")
@@ -81,6 +87,47 @@ open class DeviceStateInstrumentation : Instrumentation() {
         putString("result", status)
         putInt("entries", count)
         putString("digest", digest)
+    }
+
+    /** Read-only install evidence; unlike restore, this cannot conceal an update's data changes. */
+    private fun audit(): Bundle {
+        val id = requireNotNull(options.getString("output"))
+        require(id.matches(Regex("[A-Za-z0-9][A-Za-z0-9_-]{0,63}")) && id != "maintenance-state")
+        val external = requireNotNull(targetContext.getExternalFilesDir(null)).canonicalFile
+        val output = File(external, id)
+        check(output.canonicalFile.parentFile == external && !Files.isSymbolicLink(output.toPath()))
+        Files.createDirectory(output.toPath())
+        val pm = targetContext.packageManager
+        @Suppress("DEPRECATION")
+        val info = pm.getPackageInfo(targetContext.packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+        val source = pm.getInstallSourceInfo(targetContext.packageName)
+        val state = targetContext.getSharedPreferences("lume_updater", Context.MODE_PRIVATE)
+        val certificates = JSONArray()
+        info.signingInfo?.apkContentsSigners?.forEach {
+            certificates.put(MessageDigest.getInstance("SHA-256").digest(it.toByteArray())
+                .joinToString("") { byte -> "%02x".format(byte.toInt() and 255) })
+        }
+        val apkDigest = MessageDigest.getInstance("SHA-256")
+        File(requireNotNull(info.applicationInfo).sourceDir).inputStream().use { input ->
+            val buffer = ByteArray(16384)
+            while (true) { val count = input.read(buffer); if (count < 0) break; apkDigest.update(buffer, 0, count) }
+        }
+        val json = JSONObject().put("version", info.versionName).put("code", info.longVersionCode)
+            .put("apk_sha256", apkDigest.digest().joinToString("") { "%02x".format(it.toInt() and 255) })
+            .put("certificates", certificates)
+            .put("home", Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).resolveActivity(pm)?.flattenToString())
+            .put("installing_package", source.installingPackageName ?: JSONObject.NULL)
+            .put("initiating_package", source.initiatingPackageName ?: JSONObject.NULL)
+            .put("can_install", pm.canRequestPackageInstalls())
+            .put("read_tv", targetContext.checkSelfPermission("android.permission.READ_TV_LISTINGS") == PackageManager.PERMISSION_GRANTED)
+            .put("owned_sessions", JSONArray().apply { pm.packageInstaller.mySessions.forEach {
+                put(JSONObject().put("id", it.sessionId).put("active", it.isActive).put("package", it.appPackageName ?: JSONObject.NULL))
+            } })
+            .put("updater_keys", JSONArray(state.all.keys.sorted()))
+            .put("updater_session", state.getInt("session", -1))
+            .put("has_owner", state.contains("owner")).put("has_token", state.contains("token"))
+        writeNew(File(output, "audit.json"), json.toString(2).toByteArray(Charsets.UTF_8))
+        return result("audit:ok", 0, "")
     }
 
     private fun exportArchive(): Bundle {

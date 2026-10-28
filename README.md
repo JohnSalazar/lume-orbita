@@ -2,13 +2,13 @@
 
 An original launcher for **Android TV and Google TV 11 or later**, implemented in Kotlin with native Views. It combines a translucent glass interface, remote-control navigation, and local customization without root access.
 
-## Release 0.4.3
+## Release 0.4.4
 
-**Evaluation prerelease** — package `br.com.lume.launcher`, version code `29`, minimum SDK `30`.
+**Evaluation prerelease** — package `br.com.lume.launcher`, version code `30`, minimum SDK `30`.
 
-[Download APK](https://github.com/JohnSalazar/lume-orbita/releases/download/v0.4.3/lume-orbita-0.4.3.apk) · [Release assets and SHA-256 checksums](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.3) · [Release notes](docs/releases/0.4.3.md) · [US English release guide](docs/releases/0.4.3-guide.md)
+[Download APK](https://github.com/JohnSalazar/lume-orbita/releases/download/v0.4.4/lume-orbita-0.4.4.apk) · [Release assets and SHA-256 checksums](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.4) · [Release notes](docs/releases/0.4.4.md) · [US English update guide](docs/operations/github-updates.md)
 
-This release adds **Settings > About > Check for updates**. Checks run only when requested. A newer compatible release can be downloaded, verified, and handed to Android for explicit installation confirmation. If Android requires installation-source access, the user must grant it in Android settings. The app never grants that access itself, silently installs a package, uninstalls the launcher, clears its data, or automatically changes Home.
+This maintenance release correctly reports APK storage-write failures as storage errors while retaining cancellation and network-error handling. The manual updater introduced in 0.4.3 remains available under **Settings > About > Check for updates**. Checks run only when requested. A newer compatible release can be downloaded, verified, and handed to Android for explicit installation confirmation. If Android requires installation-source access, the user must grant it in Android settings. The app never grants that access itself, silently installs a package, uninstalls the launcher, clears its data, or automatically changes Home.
 
 The existing evaluation signing certificate is retained. A custom build signed with a different key cannot update the official installation in place. See [build and signing](docs/build.md).
 

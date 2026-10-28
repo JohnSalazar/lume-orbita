@@ -9,11 +9,14 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
+import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.InetAddress
 import java.net.URL
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.atomic.AtomicReference
 
 /** No network, Android PackageManager or installer: archive identities here are explicit fakes. */
 class GitHubUpdaterTest {
@@ -59,14 +62,15 @@ class GitHubUpdaterTest {
         now: () -> Long = System::nanoTime) = UpdateHttpTransport(connect, resolve, now)
 
     private fun client(directory: File, archive: () -> UpdateApkIdentity? = { candidate },
-        checksum: ByteArray = sums(), bytes: ByteArray = payload, transfer: UpdateHttpTransport? = null) =
+        checksum: ByteArray = sums(), bytes: ByteArray = payload, transfer: UpdateHttpTransport? = null,
+        openOutput: (File) -> OutputStream = { it.outputStream() }) =
         GitHubUpdater(directory, { current }, { archive() }, 30, transfer ?: transport({ url ->
             when (url.toString()) {
                 release.checksumsUrl -> Connection(url, checksum)
                 release.apkUrl -> Connection(url, bytes)
                 else -> throw AssertionError("Unexpected URL")
             }
-        }))
+        }), openOutput)
 
     private fun failure(reason: UpdateFailureReason, action: () -> Unit) {
         assertEquals(reason, assertThrows(UpdateFailure::class.java) { action() }.reason)
@@ -227,6 +231,80 @@ class GitHubUpdaterTest {
         val destination = temporary.newFile().apply { writeText("sentinel") }
         failure(UpdateFailureReason.STORAGE) { client(destination).download(release) }
         assertEquals("sentinel", destination.readText())
+    }
+
+    @Test fun failedSecondWriteIsStorageFailureAndRemovesThePartialDownload() {
+        assertPartialWriteFailure(cancelDuringFailure = false)
+    }
+
+    @Test fun concurrentCancellationTakesPrecedenceOverTheSecondWriteFailure() {
+        assertPartialWriteFailure(cancelDuringFailure = true)
+    }
+
+    private fun assertPartialWriteFailure(cancelDuringFailure: Boolean) {
+        val directory = temporary.newFolder()
+        val sentinel = File(directory, "unrelated.txt").apply { writeText("keep") }
+        val apk = Connection(URL(release.apkUrl), payload)
+        val enteredWrite = CountDownLatch(1)
+        val canceled = CountDownLatch(1)
+        val threadFailure = AtomicReference<Throwable?>()
+        var writes = 0; var closed = false; var inspected = false
+        val updater = client(directory, archive = { inspected = true; candidate }, transfer = transport({ url ->
+            if (url.toString() == release.checksumsUrl) Connection(url, sums()) else apk
+        }), openOutput = { file ->
+            object : OutputStream() {
+                private val actual = file.outputStream()
+                override fun write(value: Int) { actual.write(value) }
+                override fun write(buffer: ByteArray, offset: Int, length: Int) {
+                    writes++
+                    if (writes == 2) {
+                        assertTrue("Failure must happen after a real partial write", file.length() > 0)
+                        if (cancelDuringFailure) {
+                            enteredWrite.countDown()
+                            assertTrue("Cancellation must complete before the write fails", canceled.await(2, TimeUnit.SECONDS))
+                        }
+                        throw IOException("synthetic disk write failure")
+                    }
+                    actual.write(buffer, offset, length)
+                }
+                override fun close() { closed = true; actual.close() }
+            }
+        })
+        val canceller = if (cancelDuringFailure) Thread {
+            try {
+                check(enteredWrite.await(2, TimeUnit.SECONDS))
+                updater.cancel()
+            } catch (failure: Throwable) { threadFailure.set(failure) }
+            finally { canceled.countDown() }
+        }.apply { isDaemon = true; start() } else null
+        try {
+            failure(if (cancelDuringFailure) UpdateFailureReason.CANCELED else UpdateFailureReason.STORAGE) { updater.download(release) }
+        } finally {
+            canceller?.join(3_000)
+            if (canceller?.isAlive == true) { canceller.interrupt(); canceller.join(1_000) }
+        }
+        assertNull(threadFailure.get())
+        assertEquals(2, writes); assertTrue(closed)
+        assertTrue(apk.closed && apk.disconnected); assertFalse(inspected)
+        assertEquals(listOf("unrelated.txt"), directory.list()!!.sorted())
+        assertEquals("keep", sentinel.readText())
+    }
+
+    @Test fun failedNetworkReadAfterPartialWriteStaysNetworkFailure() {
+        val directory = temporary.newFolder()
+        val sentinel = File(directory, "unrelated.txt").apply { writeText("keep") }
+        var reads = 0; var inspected = false
+        val apk = Connection(URL(release.apkUrl), payload, onRead = {
+            reads++
+            if (reads == 2) throw IOException("synthetic network read failure")
+        })
+        val updater = client(directory, archive = { inspected = true; candidate }, transfer = transport({ url ->
+            if (url.toString() == release.checksumsUrl) Connection(url, sums()) else apk
+        }))
+        failure(UpdateFailureReason.NETWORK) { updater.download(release) }
+        assertEquals(2, reads); assertTrue(apk.closed && apk.disconnected); assertFalse(inspected)
+        assertEquals(listOf("unrelated.txt"), directory.list()!!.sorted())
+        assertEquals("keep", sentinel.readText())
     }
 
     @Test fun preparedFileMutationOrWrongOwnershipCannotReachInstallerValidation() {
