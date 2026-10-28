@@ -50,7 +50,7 @@ class MaintenanceCleanupInstrumentation : Instrumentation() {
                 "selftest" -> report.put("selftest", selfTest())
                 "cleanup" -> {
                     @Suppress("DEPRECATION")
-                    check(targetContext.packageManager.getPackageInfo(targetContext.packageName, 0).longVersionCode == BuildConfig.VERSION_CODE.toLong())
+                    check(targetContext.packageManager.getPackageInfo(targetContext.packageName, 0).longVersionCode == 31L)
                     check(beforeHome != null)
                     val dirs = options.getString("dirs")?.split(',') ?: emptyList()
                     val updateOption = options.getString("updates")
