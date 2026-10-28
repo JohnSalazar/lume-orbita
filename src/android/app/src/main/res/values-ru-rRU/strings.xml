@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"Открыть репозиторий"</string>
     <string name="activity_about_license_open">"Прочитать лицензию MIT"</string>
     <string name="activity_about_link_failed">"Ни одно приложение не смогло открыть эту ссылку."</string>
+    <string name="activity_update_check">"Проверить обновления"</string>
+    <string name="activity_update_checking">"Проверка GitHub…"</string>
+    <string name="activity_update_current">"Более новая версия на GitHub недоступна."</string>
+    <string name="activity_update_available">"Доступно обновление · %1$s"</string>
+    <string name="activity_update_notice">"Android попросит подтвердить установку. При обновлении ваши настройки сохранятся."</string>
+    <string name="activity_update_evaluation">"Оценочная версия"</string>
+    <string name="activity_update_download">"Скачать обновление"</string>
+    <string name="activity_update_progress">"Загрузка · %1$d%%"</string>
+    <string name="activity_update_verify">"Проверка обновления…"</string>
+    <string name="activity_update_install">"Установить обновление"</string>
+    <string name="activity_update_error">"Не удалось проверить или скачать обновление. Проверьте подключение к интернету и повторите попытку."</string>
+    <string name="activity_update_rejected">"Это обновление несовместимо или не прошло проверку. Ничего не установлено."</string>
+    <string name="activity_update_rate_limit">"GitHub временно ограничил запросы. Повторите попытку позже."</string>
+    <string name="activity_update_storage">"Недостаточно места для загрузки обновления."</string>
+    <string name="activity_update_retry">"Повторить"</string>
+    <string name="activity_update_settings">"Разрешить этот источник"</string>
+    <string name="activity_update_installing">"Подготовка подтверждения Android…"</string>
+    <string name="activity_update_install_failed">"Android не удалось завершить обновление. Текущая установка сохранена."</string>
+    <string name="activity_update_install_canceled">"Обновление отменено. Текущая установка сохранена."</string>
+    <string name="activity_update_install_success">"Обновление установлено."</string>
+    <string name="activity_update_source_required">"Чтобы продолжить, разрешите Lume устанавливать обновления в настройках Android. Затем вернитесь сюда и подтвердите установку."</string>
+    <string name="activity_update_home_changed">"После обновления телевизор изменил выбор главного экрана. Снова выберите Lume в настройках Android. Настройки лаунчера сохранены."</string>
+    <string name="activity_update_home_review">"Проверить выбор главного экрана"</string>
 </resources>

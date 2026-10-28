@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"کوڈ ریپوزٹری کھولیں"</string>
     <string name="activity_about_license_open">"MIT لائسنس پڑھیں"</string>
     <string name="activity_about_link_failed">"کوئی ایپ یہ لنک نہیں کھول سکی۔"</string>
+    <string name="activity_update_check">"اپ ڈیٹس تلاش کریں"</string>
+    <string name="activity_update_checking">"GitHub پر جانچ ہو رہی ہے…"</string>
+    <string name="activity_update_current">"GitHub پر کوئی نیا ورژن دستیاب نہیں ہے۔"</string>
+    <string name="activity_update_available">"اپ ڈیٹ دستیاب ہے · %1$s"</string>
+    <string name="activity_update_notice">"Android انسٹال کرنے کے لیے آپ کی تصدیق مانگے گا۔ اپ ڈیٹ سے آپ کی ترتیبات برقرار رہیں گی۔"</string>
+    <string name="activity_update_evaluation">"آزمائشی ورژن"</string>
+    <string name="activity_update_download">"اپ ڈیٹ ڈاؤن لوڈ کریں"</string>
+    <string name="activity_update_progress">"ڈاؤن لوڈ ہو رہا ہے · %1$d%%"</string>
+    <string name="activity_update_verify">"اپ ڈیٹ کی جانچ ہو رہی ہے…"</string>
+    <string name="activity_update_install">"اپ ڈیٹ انسٹال کریں"</string>
+    <string name="activity_update_error">"اپ ڈیٹ تلاش یا ڈاؤن لوڈ نہیں ہو سکی۔ انٹرنیٹ کنکشن دیکھیں اور دوبارہ کوشش کریں۔"</string>
+    <string name="activity_update_rejected">"یہ اپ ڈیٹ مطابقت نہیں رکھتی یا اس کی جانچ نہیں ہو سکی۔ کچھ بھی انسٹال نہیں کیا گیا۔"</string>
+    <string name="activity_update_rate_limit">"GitHub نے درخواستوں پر عارضی حد لگائی ہے۔ بعد میں دوبارہ کوشش کریں۔"</string>
+    <string name="activity_update_storage">"اپ ڈیٹ ڈاؤن لوڈ کرنے کے لیے کافی جگہ نہیں ہے۔"</string>
+    <string name="activity_update_retry">"دوبارہ کوشش کریں"</string>
+    <string name="activity_update_settings">"اس ماخذ کو اجازت دیں"</string>
+    <string name="activity_update_installing">"Android کی تصدیق تیار ہو رہی ہے…"</string>
+    <string name="activity_update_install_failed">"Android اپ ڈیٹ مکمل نہیں کر سکا۔ آپ کی موجودہ انسٹالیشن برقرار ہے۔"</string>
+    <string name="activity_update_install_canceled">"اپ ڈیٹ منسوخ کر دی گئی۔ آپ کی موجودہ انسٹالیشن برقرار ہے۔"</string>
+    <string name="activity_update_install_success">"اپ ڈیٹ انسٹال ہو گئی۔"</string>
+    <string name="activity_update_source_required">"جاری رکھنے کے لیے Android کی ترتیبات میں Lume کو اپ ڈیٹس انسٹال کرنے کی اجازت دیں۔ یہاں واپس آ کر انسٹالیشن کی تصدیق کریں۔"</string>
+    <string name="activity_update_home_changed">"اپ ڈیٹ کے بعد TV نے ہوم اسکرین کا انتخاب بدل دیا۔ Android کی ترتیبات میں دوبارہ Lume منتخب کریں۔ آپ کے لانچر کی ترتیبات برقرار ہیں۔"</string>
+    <string name="activity_update_home_review">"ہوم اسکرین کا انتخاب دیکھیں"</string>
 </resources>

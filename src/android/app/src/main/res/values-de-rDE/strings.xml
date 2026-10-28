@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"Repository öffnen"</string>
     <string name="activity_about_license_open">"MIT-Lizenz lesen"</string>
     <string name="activity_about_link_failed">"Keine App konnte diesen Link öffnen."</string>
+    <string name="activity_update_check">"Nach Updates suchen"</string>
+    <string name="activity_update_checking">"GitHub wird abgefragt…"</string>
+    <string name="activity_update_current">"Auf GitHub ist keine neuere Version verfügbar."</string>
+    <string name="activity_update_available">"Update verfügbar · %1$s"</string>
+    <string name="activity_update_notice">"Android bittet Sie, die Installation zu bestätigen. Ihre Einstellungen bleiben beim Update erhalten."</string>
+    <string name="activity_update_evaluation">"Evaluierungsversion"</string>
+    <string name="activity_update_download">"Update herunterladen"</string>
+    <string name="activity_update_progress">"Download läuft · %1$d%%"</string>
+    <string name="activity_update_verify">"Update wird überprüft…"</string>
+    <string name="activity_update_install">"Update installieren"</string>
+    <string name="activity_update_error">"Das Update konnte nicht gesucht oder heruntergeladen werden. Prüfen Sie Ihre Internetverbindung und versuchen Sie es erneut."</string>
+    <string name="activity_update_rejected">"Dieses Update ist inkompatibel oder konnte nicht überprüft werden. Es wurde nichts installiert."</string>
+    <string name="activity_update_rate_limit">"GitHub hat die Anfragen vorübergehend begrenzt. Versuchen Sie es später erneut."</string>
+    <string name="activity_update_storage">"Nicht genügend Speicherplatz zum Herunterladen des Updates."</string>
+    <string name="activity_update_retry">"Erneut versuchen"</string>
+    <string name="activity_update_settings">"Diese Quelle zulassen"</string>
+    <string name="activity_update_installing">"Android-Bestätigung wird vorbereitet…"</string>
+    <string name="activity_update_install_failed">"Android konnte das Update nicht abschließen. Ihre vorhandene Installation wurde beibehalten."</string>
+    <string name="activity_update_install_canceled">"Update abgebrochen. Ihre vorhandene Installation wurde beibehalten."</string>
+    <string name="activity_update_install_success">"Update installiert."</string>
+    <string name="activity_update_source_required">"Erlauben Sie Lume in den Android-Einstellungen, Updates zu installieren. Kehren Sie dann hierher zurück und bestätigen Sie die Installation."</string>
+    <string name="activity_update_home_changed">"Der Fernseher hat nach dem Update die Startbildschirmauswahl geändert. Wählen Sie Lume in den Android-Einstellungen erneut aus. Ihre Launcher-Einstellungen wurden beibehalten."</string>
+    <string name="activity_update_home_review">"Startbildschirmauswahl prüfen"</string>
 </resources>

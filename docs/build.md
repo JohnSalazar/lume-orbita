@@ -12,6 +12,8 @@ No diretório `src/android`, execute:
 
 No Windows substitua `./gradlew` por `.\gradlew.bat`.
 
+Para o APK auxiliar de testes nativos, execute `assembleReleaseAndroidTest`; saída `app/build/outputs/apk/androidTest/release/app-release-androidTest.apk`. `testBuildType = "release"` mantém os nomes internos Kotlin compatíveis com o APK de avaliação. Instalar uma instrumentação compilada contra debug no APK release pode causar `NoSuchMethodError` em acessos internal, sem representar falha do launcher normal. Os testes JVM continuam usando debug.
+
 O gate JaCoCo exige pelo menos90% de linhas e ramos do pacote `core/**`. Relatórios em `app/build/reports/jacoco/rulesCoverage` e `app/build/reports/lint-results-release.*`. A cobertura do core não mede toda a Activity, renderização, rede real ou o controle físico.
 
 ## Assinatura

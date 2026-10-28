@@ -4,12 +4,13 @@ android {
     namespace = "br.com.lume.launcher"
     compileSdk = 35
     buildToolsVersion = "36.0.0"
+    testBuildType = "release"
     defaultConfig {
         applicationId = "br.com.lume.launcher"
         minSdk = 30
         targetSdk = 35
-        versionCode = 28
-        versionName = "0.4.2"
+        versionCode = 29
+        versionName = "0.4.3"
         testInstrumentationRunner = "br.com.lume.launcher.LocaleSmokeInstrumentation"
     }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }

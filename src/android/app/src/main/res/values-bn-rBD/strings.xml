@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"কোড রিপোজিটরি খুলুন"</string>
     <string name="activity_about_license_open">"MIT লাইসেন্স পড়ুন"</string>
     <string name="activity_about_link_failed">"কোনো অ্যাপ এই লিংকটি খুলতে পারেনি।"</string>
+    <string name="activity_update_check">"আপডেট খুঁজুন"</string>
+    <string name="activity_update_checking">"GitHub-এ খোঁজা হচ্ছে…"</string>
+    <string name="activity_update_current">"GitHub-এ নতুন কোনো সংস্করণ পাওয়া যায়নি।"</string>
+    <string name="activity_update_available">"আপডেট পাওয়া গেছে · %1$s"</string>
+    <string name="activity_update_notice">"Android ইনস্টল করার আগে আপনার নিশ্চিতকরণ চাইবে। আপডেট করলে আপনার সেটিংস বজায় থাকবে।"</string>
+    <string name="activity_update_evaluation">"মূল্যায়ন সংস্করণ"</string>
+    <string name="activity_update_download">"আপডেট ডাউনলোড করুন"</string>
+    <string name="activity_update_progress">"ডাউনলোড হচ্ছে · %1$d%%"</string>
+    <string name="activity_update_verify">"আপডেট যাচাই করা হচ্ছে…"</string>
+    <string name="activity_update_install">"আপডেট ইনস্টল করুন"</string>
+    <string name="activity_update_error">"আপডেট খোঁজা বা ডাউনলোড করা যায়নি। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।"</string>
+    <string name="activity_update_rejected">"এই আপডেট সামঞ্জস্যপূর্ণ নয় অথবা যাচাই করা যায়নি। কিছুই ইনস্টল করা হয়নি।"</string>
+    <string name="activity_update_rate_limit">"GitHub সাময়িকভাবে অনুরোধের সীমা আরোপ করেছে। পরে আবার চেষ্টা করুন।"</string>
+    <string name="activity_update_storage">"আপডেট ডাউনলোড করার জন্য পর্যাপ্ত জায়গা নেই।"</string>
+    <string name="activity_update_retry">"আবার চেষ্টা করুন"</string>
+    <string name="activity_update_settings">"এই উৎসকে অনুমতি দিন"</string>
+    <string name="activity_update_installing">"Android-এর নিশ্চিতকরণ প্রস্তুত করা হচ্ছে…"</string>
+    <string name="activity_update_install_failed">"Android আপডেট সম্পূর্ণ করতে পারেনি। আপনার বর্তমান ইনস্টলেশন বজায় রয়েছে।"</string>
+    <string name="activity_update_install_canceled">"আপডেট বাতিল হয়েছে। আপনার বর্তমান ইনস্টলেশন বজায় রয়েছে।"</string>
+    <string name="activity_update_install_success">"আপডেট ইনস্টল হয়েছে।"</string>
+    <string name="activity_update_source_required">"চালিয়ে যেতে Android-এর সেটিংসে Lume-কে আপডেট ইনস্টল করার অনুমতি দিন। এখানে ফিরে এসে ইনস্টলেশন নিশ্চিত করুন।"</string>
+    <string name="activity_update_home_changed">"আপডেটের পরে TV হোম স্ক্রিনের নির্বাচন পরিবর্তন করেছে। Android-এর সেটিংসে আবার Lume বেছে নিন। আপনার লঞ্চারের সেটিংস বজায় রয়েছে।"</string>
+    <string name="activity_update_home_review">"হোম স্ক্রিনের নির্বাচন দেখুন"</string>
 </resources>

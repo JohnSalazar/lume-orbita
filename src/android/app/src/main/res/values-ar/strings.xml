@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"فتح مستودع الشيفرة"</string>
     <string name="activity_about_license_open">"قراءة ترخيص MIT"</string>
     <string name="activity_about_link_failed">"تعذّر على أي تطبيق فتح هذا الرابط."</string>
+    <string name="activity_update_check">"البحث عن تحديثات"</string>
+    <string name="activity_update_checking">"جارٍ الاستعلام من GitHub…"</string>
+    <string name="activity_update_current">"لا يتوفر إصدار أحدث على GitHub."</string>
+    <string name="activity_update_available">"يتوفر تحديث · %1$s"</string>
+    <string name="activity_update_notice">"سيطلب منك Android تأكيد التثبيت. يحتفظ التحديث بإعداداتك."</string>
+    <string name="activity_update_evaluation">"نسخة تقييم"</string>
+    <string name="activity_update_download">"تنزيل التحديث"</string>
+    <string name="activity_update_progress">"جارٍ التنزيل · %1$d%%"</string>
+    <string name="activity_update_verify">"جارٍ التحقق من التحديث…"</string>
+    <string name="activity_update_install">"تثبيت التحديث"</string>
+    <string name="activity_update_error">"تعذر البحث عن التحديث أو تنزيله. تحقق من اتصال الإنترنت وحاول مجددًا."</string>
+    <string name="activity_update_rejected">"هذا التحديث غير متوافق أو تعذر التحقق منه. لم يتم تثبيت أي شيء."</string>
+    <string name="activity_update_rate_limit">"فرض GitHub حدًا مؤقتًا على الطلبات. حاول مرة أخرى لاحقًا."</string>
+    <string name="activity_update_storage">"لا توجد مساحة كافية لتنزيل التحديث."</string>
+    <string name="activity_update_retry">"إعادة المحاولة"</string>
+    <string name="activity_update_settings">"السماح بهذا المصدر"</string>
+    <string name="activity_update_installing">"جارٍ تجهيز تأكيد Android…"</string>
+    <string name="activity_update_install_failed">"تعذر على Android إكمال التحديث. تم الاحتفاظ بالتثبيت الحالي."</string>
+    <string name="activity_update_install_canceled">"أُلغي التحديث. تم الاحتفاظ بالتثبيت الحالي."</string>
+    <string name="activity_update_install_success">"تم تثبيت التحديث."</string>
+    <string name="activity_update_source_required">"للمتابعة، اسمح لتطبيق Lume بتثبيت التحديثات في إعدادات Android. ثم عد إلى هنا وأكد التثبيت."</string>
+    <string name="activity_update_home_changed">"غيّر التلفاز اختيار الشاشة الرئيسية بعد التحديث. اختر Lume مجددًا في إعدادات Android. تم الاحتفاظ بإعدادات المشغّل."</string>
+    <string name="activity_update_home_review">"مراجعة اختيار الشاشة الرئيسية"</string>
 </resources>

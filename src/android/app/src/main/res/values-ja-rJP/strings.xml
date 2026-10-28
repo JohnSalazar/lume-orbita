@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"リポジトリを開く"</string>
     <string name="activity_about_license_open">"MIT ライセンスを読む"</string>
     <string name="activity_about_link_failed">"このリンクを開けるアプリがありません。"</string>
+    <string name="activity_update_check">"更新を確認"</string>
+    <string name="activity_update_checking">"GitHubを確認中…"</string>
+    <string name="activity_update_current">"GitHubに新しいバージョンはありません。"</string>
+    <string name="activity_update_available">"更新があります · %1$s"</string>
+    <string name="activity_update_notice">"Androidでインストールの確認が求められます。更新後も設定は保持されます。"</string>
+    <string name="activity_update_evaluation">"評価版"</string>
+    <string name="activity_update_download">"更新をダウンロード"</string>
+    <string name="activity_update_progress">"ダウンロード中 · %1$d%%"</string>
+    <string name="activity_update_verify">"更新を検証中…"</string>
+    <string name="activity_update_install">"更新をインストール"</string>
+    <string name="activity_update_error">"更新の確認またはダウンロードができませんでした。インターネット接続を確認して再試行してください。"</string>
+    <string name="activity_update_rejected">"この更新には互換性がないか、検証できませんでした。何もインストールされていません。"</string>
+    <string name="activity_update_rate_limit">"GitHubがリクエストを一時的に制限しています。しばらくしてから再試行してください。"</string>
+    <string name="activity_update_storage">"更新をダウンロードする空き容量が足りません。"</string>
+    <string name="activity_update_retry">"再試行"</string>
+    <string name="activity_update_settings">"この提供元を許可"</string>
+    <string name="activity_update_installing">"Androidの確認画面を準備中…"</string>
+    <string name="activity_update_install_failed">"Androidで更新を完了できませんでした。現在のインストールは保持されています。"</string>
+    <string name="activity_update_install_canceled">"更新をキャンセルしました。現在のインストールは保持されています。"</string>
+    <string name="activity_update_install_success">"更新をインストールしました。"</string>
+    <string name="activity_update_source_required">"続行するには、Androidの設定でLumeによる更新のインストールを許可してください。ここに戻ってインストールを確認してください。"</string>
+    <string name="activity_update_home_changed">"更新後、テレビがホーム画面の選択を変更しました。Androidの設定でLumeを再度選択してください。ランチャーの設定は保持されています。"</string>
+    <string name="activity_update_home_review">"ホーム画面の選択を確認"</string>
 </resources>

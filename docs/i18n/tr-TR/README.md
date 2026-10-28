@@ -64,3 +64,7 @@ Statik kontrol kaynakları ve biçimleri doğrular; self-check aracın kendisini
 Özel bir sunucu veya telemetri yoktur. Favoriler, görünüm ve dil uygulamanın özel tercihlerinde tutulur. Çevrimiçi görseller HTTPS kullanır. RAM önbellek sınırı toplam uygulama belleği değildir. İzleme geçmişini, hata ayıklama kayıtlarını veya imzalama anahtarlarını yayımlamayın.
 
 Özgün kod [MIT](../../../LICENSE) lisanslıdır. Fotoğraflar, bağımlılıklar, araçlar ve markalar kendi haklarını korur: [üçüncü taraf bildirimleri](../../../THIRD_PARTY_NOTICES.md). Çeviri, özgün hukuki metnin yerini almaz.
+
+## GitHub üzerinden güncellemeler (0.4.3+)
+
+**Hakkında** bölümünde **Güncellemeleri denetle** seçeneğini seçin: GitHub yalnızca tıkladığınızda denetlenir, düzenli otomatik denetim yapılmaz. Daha yeni ve uyumlu bir sürüm varsa **Güncellemeyi indir** seçeneğini seçin. İndirme doğrulandıktan sonra **Güncellemeyi yükle** seçeneğini seçin; ardından Android yükleme onayı ister. Android izin isterse **Bu kaynağa izin ver** seçeneğini açıp Android ayarlarında Lume uygulamasına kendiniz izin verin ve onaylamak için geri dönün. Lume bu izni otomatik olarak vermez. Aynı paket ve imzalama sertifikasıyla güncelleme yapmak ayarları korur; güncellemek için Lume uygulamasını kaldırmayın. Ardından Home seçimini kontrol edin. TV bu seçimi değiştirirse **Ana ekran seçimini gözden geçir** üzerinden resmi ayarları açıp elle seçim yapabilirsiniz.

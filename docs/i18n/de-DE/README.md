@@ -51,3 +51,7 @@ python tools/verify_locales.py
 Originalcode unter MIT, Copyright 2026 Joao Salazar. Siehe LICENSE und THIRD_PARTY_NOTICES.md. Fotos, Marken und Drittinhalte behalten ihre Rechte; Urheber und Lizenzlinks bleiben unverändert. Private Streamingkonten werden weder ausgelesen noch übersetzt. Kompatibilität, Schriften und Leistung müssen gerätespezifisch geprüft werden.
 
 Muttersprachliche Prüfung und QA je Sprache stehen weiter aus. Tatsächliche Ergebnisse unter docs/qa; diese Anleitung behauptet keine abgeschlossenen Tests. Installation: docs/installation.md. Build und Signierung: docs/build.md.
+
+## Updates über GitHub (0.4.3+)
+
+Wählen Sie unter **Über die App** die Option **Nach Updates suchen**: GitHub wird nur nach Ihrem Klick abgefragt, ohne regelmäßige automatische Prüfung. Ist eine neuere kompatible Version verfügbar, wählen Sie **Update herunterladen**. Wählen Sie nach der Prüfung des Downloads **Update installieren**; anschließend bittet Android um Bestätigung der Installation. Falls Android eine Berechtigung verlangt, öffnen Sie **Diese Quelle zulassen** und erlauben Sie Lume die Installation selbst in den Android-Einstellungen. Kehren Sie dann zur Bestätigung zurück. Lume erteilt diese Berechtigung nicht automatisch. Updates mit demselben Paket und Signaturzertifikat erhalten die Einstellungen; deinstallieren Sie Lume nicht zum Aktualisieren. Prüfen Sie anschließend Home. Ändert der Fernseher die Auswahl, öffnet **Startbildschirmauswahl prüfen** die offiziellen Einstellungen zur manuellen Auswahl.

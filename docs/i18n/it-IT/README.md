@@ -51,3 +51,7 @@ Le traduzioni si trovano nei cataloghi common/activity e in tools/translations. 
 Codice originale con licenza MIT, copyright 2026 Joao Salazar. Vedi LICENSE e THIRD_PARTY_NOTICES.md. Foto, marchi e contenuti di terzi mantengono i propri diritti; autori e URL delle licenze non cambiano. Gli account privati di streaming non vengono consultati né tradotti. Compatibilità, caratteri e prestazioni richiedono verifiche sul dispositivo.
 
 Restano necessari la revisione da parte di madrelingua e il QA per ogni lingua. Risultati effettivi in docs/qa; questa guida non dichiara test completati. Installazione: docs/installation.md. Compilazione e firma: docs/build.md.
+
+## Aggiornamenti da GitHub (0.4.3+)
+
+In **Informazioni**, scegli **Cerca aggiornamenti**: GitHub viene consultato solo dopo il tuo clic, senza controlli periodici. Se è disponibile una versione compatibile più recente, scegli **Scarica aggiornamento**. Dopo la verifica del download, scegli **Installa aggiornamento**; Android chiederà poi di confermare l’installazione. Se Android richiede un’autorizzazione, apri **Consenti questa origine** e consenti personalmente a Lume di installare dalle impostazioni di Android, poi torna per confermare. Lume non concede questa autorizzazione automaticamente. Gli aggiornamenti con lo stesso pacchetto e certificato di firma mantengono le impostazioni; non disinstallare Lume per aggiornarlo. Controlla poi Home. Se la TV cambia la selezione, **Controlla la schermata Home** apre le impostazioni ufficiali per consentirti di sceglierla manualmente.

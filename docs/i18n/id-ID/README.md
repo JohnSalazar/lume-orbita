@@ -64,3 +64,7 @@ Pemeriksaan statis memvalidasi sumber daya dan format; self-check menguji alatny
 Tidak ada backend sendiri atau telemetri. Favorit, tampilan, dan bahasa disimpan sebagai preferensi privat aplikasi. Gambar daring menggunakan HTTPS. Batas cache RAM bukan total memori aplikasi. Jangan memublikasikan riwayat tontonan, rekaman debugging, atau kunci penandatanganan.
 
 Kode orisinal berlisensi [MIT](../../../LICENSE). Foto, dependensi, alat, dan merek tetap memiliki hak masing-masing: [pemberitahuan pihak ketiga](../../../THIRD_PARTY_NOTICES.md). Terjemahan tidak menggantikan teks hukum asli.
+
+## Pembaruan melalui GitHub (0.4.3+)
+
+Di **Tentang**, pilih **Periksa pembaruan**: GitHub hanya diperiksa saat Anda mengeklik, tanpa pemeriksaan berkala. Jika ada versi baru yang kompatibel, pilih **Unduh pembaruan**. Setelah unduhan diverifikasi, pilih **Pasang pembaruan**; Android kemudian meminta konfirmasi pemasangan. Jika Android meminta izin, buka **Izinkan sumber ini** dan izinkan sendiri Lume di setelan Android, lalu kembali untuk mengonfirmasi. Lume tidak memberikan izin ini secara otomatis. Pembaruan dengan paket dan sertifikat penandatanganan yang sama mempertahankan setelan; jangan uninstal Lume untuk memperbarui. Periksa Home setelahnya. Jika TV mengubah pilihan, **Tinjau pilihan layar utama** membuka setelan resmi agar Anda dapat memilihnya secara manual.

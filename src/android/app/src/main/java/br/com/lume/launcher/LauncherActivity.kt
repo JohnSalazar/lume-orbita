@@ -41,6 +41,12 @@ import android.os.CancellationSignal
 import br.com.lume.launcher.core.SharedProgram
 
 class LauncherActivity : Activity() {
+    private companion object {
+        val updateWorker = java.util.concurrent.ThreadPoolExecutor(1, 1, 15, java.util.concurrent.TimeUnit.SECONDS,
+            java.util.concurrent.ArrayBlockingQueue(1),
+            { task -> Thread(task, "lume-update").apply { isDaemon = true } },
+            java.util.concurrent.ThreadPoolExecutor.AbortPolicy()).apply { allowCoreThreadTimeOut(true) }
+    }
     private val prefs by lazy { getSharedPreferences("orbita", MODE_PRIVATE) }
     private val worker = Executors.newSingleThreadExecutor()
     private val handler = Handler(Looper.getMainLooper())
@@ -94,6 +100,18 @@ class LauncherActivity : Activity() {
     private var dailyButton: TextView? = null
     private val navigationControls = mutableListOf<View>()
     private var openDialog: Dialog? = null
+    private var updateDialog: Dialog? = null
+    private var updateClient: GitHubUpdater? = null
+    private var updateJob: java.util.concurrent.Future<*>? = null
+    private var preparedUpdate: PreparedUpdate? = null
+    private var updateGeneration = 0
+    private var changingUpdateDialog = false
+    private val updateDeadline = Runnable {
+        if (updateClient != null && openDialog === updateDialog) {
+            cancelUpdate()
+            updateError(UpdateFailure(UpdateFailureReason.NETWORK))
+        }
+    }
     private var appMenu: PopupWindow? = null
     private var appMenuOrigin: View? = null
     private var selectionDownTime = Long.MIN_VALUE
@@ -335,6 +353,8 @@ class LauncherActivity : Activity() {
         setHomeBordersActive(window.decorView, true); network.start(); loadApps(); handler.removeCallbacks(tick); tick.run()
         resetScreensaverTimer()
         handler.post { if (active) artwork.refresh() }
+        preparedUpdate?.takeIf { openDialog === updateDialog }?.let { showPreparedUpdate(it) }
+        if (UpdateInstaller.consumeHomeWarning(this)) showUpdateHomeWarning()
     }
     override fun onPause() {
         restoreContentOnResume = false
@@ -347,7 +367,7 @@ class LauncherActivity : Activity() {
         if (movingPackage != null) finishMove(false, false)
         super.onPause()
     }
-    override fun onDestroy() { active = false; pageImageGeneration++; wallpaperGeneration++; cancelContent(); artwork.dispose(); handler.removeCallbacks(idle); setHomeBordersActive(window.decorView, false); closeAppMenu(false); openDialog?.dismiss(); worker.shutdownNow(); super.onDestroy() }
+    override fun onDestroy() { active = false; pageImageGeneration++; wallpaperGeneration++; cancelContent(); cancelUpdate(); artwork.dispose(); handler.removeCallbacks(idle); setHomeBordersActive(window.decorView, false); closeAppMenu(false); openDialog?.dismiss(); worker.shutdownNow(); super.onDestroy() }
 
     override fun onUserInteraction() { super.onUserInteraction(); pendingRestoredFocusTag = null; restoreContentOnResume = false; resetScreensaverTimer() }
 
@@ -1090,6 +1110,8 @@ class LauncherActivity : Activity() {
             s(R.string.activity_about_version_unknown)
         }
         body.addView(text(version, 15f, true)); gap(body, 16)
+        body.addView(button(s(R.string.activity_update_check)) { checkForUpdate() }.apply { tag = "update:check" })
+        gap(body, 12)
         body.addView(text(s(R.string.activity_about_license), 14f, true)); gap(body, 16)
         fun openLink(url: String) {
             try {
@@ -1104,6 +1126,116 @@ class LauncherActivity : Activity() {
         gap(body, 6)
         body.addView(button(s(R.string.activity_about_license_open)) { openLink("https://github.com/JohnSalazar/lume-orbita/blob/main/LICENSE") })
         dialog(s(R.string.activity_about_title), body)
+    }
+    private fun cancelUpdate() {
+        updateGeneration++
+        handler.removeCallbacks(updateDeadline)
+        updateClient?.cancel(); updateJob?.cancel(true); updateJob = null
+        updateWorker.purge()
+        preparedUpdate?.let { runCatching { updateClient?.discard(it) } }; preparedUpdate = null
+        updateClient = null; updateDialog = null
+    }
+    private fun submitUpdate(action: () -> Unit) {
+        updateWorker.purge()
+        try {
+            updateJob = updateWorker.submit(action)
+            handler.postDelayed(updateDeadline, 60_000L)
+        } catch (_: java.util.concurrent.RejectedExecutionException) {
+            cancelUpdate()
+            updateError(UpdateFailure(UpdateFailureReason.NETWORK))
+        }
+    }
+    private fun updatePanel(status: String, busy: Boolean = false, actionLabel: String? = null, action: (() -> Unit)? = null): TextView {
+        changingUpdateDialog = true
+        try {
+            val body = column()
+            val label = text(status, 16f).apply { tag = "update:status" }
+            body.addView(label); gap(body, 12)
+            if (busy) body.addView(ProgressBar(this).apply { isIndeterminate = true }, LinearLayout.LayoutParams(dp(32), dp(32)))
+            if (actionLabel != null && action != null) body.addView(button(actionLabel, action).apply { tag = "update:action" })
+            dialog(s(R.string.activity_update_check), body)
+            updateDialog = openDialog
+            return label
+        } finally { changingUpdateDialog = false }
+    }
+    private fun updateError(error: Throwable) {
+        val key = when ((error as? UpdateFailure)?.reason) {
+            UpdateFailureReason.INVALID_RELEASE, UpdateFailureReason.INVALID_APK -> R.string.activity_update_rejected
+            UpdateFailureReason.RATE_LIMIT -> R.string.activity_update_rate_limit
+            UpdateFailureReason.STORAGE -> R.string.activity_update_storage
+            else -> R.string.activity_update_error
+        }
+        updatePanel(s(key), actionLabel = s(R.string.activity_update_retry), action = ::checkForUpdate)
+    }
+    private fun checkForUpdate() {
+        cancelUpdate()
+        val client = GitHubUpdater(applicationContext)
+        updateClient = client
+        val generation = updateGeneration
+        updatePanel(s(R.string.activity_update_checking), busy = true)
+        submitUpdate {
+            val result = runCatching { client.check() }
+            handler.post {
+                if (isDestroyed || generation != updateGeneration || openDialog !== updateDialog) return@post
+                handler.removeCallbacks(updateDeadline)
+                updateJob = null
+                result.fold({ release ->
+                    if (release == null) updatePanel(s(R.string.activity_update_current), actionLabel = s(R.string.activity_update_check), action = ::checkForUpdate)
+                    else showAvailableUpdate(release)
+                }, ::updateError)
+            }
+        }
+    }
+    private fun showAvailableUpdate(release: UpdateRelease) {
+        val status = listOfNotNull(s(R.string.activity_update_available, release.version),
+            s(R.string.activity_update_evaluation).takeIf { release.prerelease }, s(R.string.activity_update_notice)).joinToString("\n\n")
+        updatePanel(status, actionLabel = s(R.string.activity_update_download), action = { downloadUpdate(release) })
+    }
+    private fun downloadUpdate(release: UpdateRelease) {
+        val client = updateClient ?: return
+        val generation = updateGeneration
+        val label = updatePanel(s(R.string.activity_update_progress, 0), busy = true)
+        submitUpdate {
+            var previousProgress = -1
+            val result = runCatching { client.download(release) { progress ->
+                if (progress != previousProgress) {
+                    previousProgress = progress
+                    handler.post {
+                        if (generation == updateGeneration && openDialog === updateDialog && label.isAttachedToWindow)
+                            label.text = if (progress >= 100) s(R.string.activity_update_verify) else s(R.string.activity_update_progress, progress)
+                    }
+                }
+            } }
+            handler.post {
+                if (isDestroyed || generation != updateGeneration || openDialog !== updateDialog) {
+                    result.getOrNull()?.let { runCatching { client.discard(it) } }; return@post
+                }
+                handler.removeCallbacks(updateDeadline)
+                updateJob = null
+                result.fold({ prepared -> preparedUpdate = prepared; showPreparedUpdate(prepared) }, ::updateError)
+            }
+        }
+    }
+    private fun showPreparedUpdate(prepared: PreparedUpdate) {
+        if (!UpdateInstaller.canInstall(this)) {
+            updatePanel(s(R.string.activity_update_source_required), actionLabel = s(R.string.activity_update_settings), action = {
+                if (!UpdateInstaller.openPermissionSettings(this)) message(s(R.string.activity_update_install_failed))
+            })
+        } else {
+            updatePanel(s(R.string.activity_update_available, prepared.release.version) + "\n\n" + s(R.string.activity_update_notice),
+                actionLabel = s(R.string.activity_update_install), action = {
+                    if (UpdateInstaller.launch(this, prepared)) {
+                        preparedUpdate = null
+                        closeDialog()
+                    } else message(s(R.string.activity_update_install_failed))
+                })
+        }
+    }
+    private fun showUpdateHomeWarning() {
+        val body = column()
+        body.addView(text(s(R.string.activity_update_home_changed), 15f)); gap(body, 12)
+        body.addView(button(s(R.string.activity_update_home_review)) { showHomeChoice() })
+        dialog(s(R.string.activity_update_check), body)
     }
     private fun languageName(): String = AppLocales.languages.firstOrNull { it.tag == AppLocales.selected(this) }?.nativeName
         ?: s(R.string.activity_language_system)
@@ -1283,6 +1415,7 @@ class LauncherActivity : Activity() {
         }
         dialog.setOnDismissListener {
             decor.removeOnLayoutChangeListener(layoutListener)
+            if (updateDialog === dialog && !changingUpdateDialog) cancelUpdate()
             if (openDialog === dialog) {
                 openDialog = null; dialogOrigin = null
                 if (origin?.isAttachedToWindow == true) origin.requestFocus()

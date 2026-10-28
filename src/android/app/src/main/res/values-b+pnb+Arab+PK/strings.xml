@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"کوڈ ریپوزٹری کھولو"</string>
     <string name="activity_about_license_open">"MIT لائسنس پڑھو"</string>
     <string name="activity_about_link_failed">"کوئی ایپ ایہہ لنک نئیں کھول سکی۔"</string>
+    <string name="activity_update_check">"اپ ڈیٹاں لبھو"</string>
+    <string name="activity_update_checking">"GitHub تے جانچ ہو رہی اے…"</string>
+    <string name="activity_update_current">"GitHub تے کوئی نواں ورژن دستیاب نئیں۔"</string>
+    <string name="activity_update_available">"اپ ڈیٹ دستیاب اے · %1$s"</string>
+    <string name="activity_update_notice">"Android انسٹال کرن لئی تہاڈی تصدیق منگے گا۔ اپ ڈیٹ نال تہاڈیاں ترتیباں قائم رہن گیاں۔"</string>
+    <string name="activity_update_evaluation">"آزمائشی ورژن"</string>
+    <string name="activity_update_download">"اپ ڈیٹ ڈاؤن لوڈ کرو"</string>
+    <string name="activity_update_progress">"ڈاؤن لوڈ ہو رہیا اے · %1$d%%"</string>
+    <string name="activity_update_verify">"اپ ڈیٹ دی جانچ ہو رہی اے…"</string>
+    <string name="activity_update_install">"اپ ڈیٹ انسٹال کرو"</string>
+    <string name="activity_update_error">"اپ ڈیٹ لبھی یا ڈاؤن لوڈ نئیں ہو سکی۔ انٹرنیٹ کنکشن ویکھو تے فیر کوشش کرو۔"</string>
+    <string name="activity_update_rejected">"ایہہ اپ ڈیٹ موافق نئیں یا ایس دی جانچ نئیں ہو سکی۔ کجھ وی انسٹال نئیں کیتا گیا۔"</string>
+    <string name="activity_update_rate_limit">"GitHub نے درخواستاں تے تھوڑے چر لئی حد لائی اے۔ بعد وچ فیر کوشش کرو۔"</string>
+    <string name="activity_update_storage">"اپ ڈیٹ ڈاؤن لوڈ کرن لئی لوڑ جوگی تھاں نئیں۔"</string>
+    <string name="activity_update_retry">"فیر کوشش کرو"</string>
+    <string name="activity_update_settings">"ایس ماخذ نوں اجازت دیو"</string>
+    <string name="activity_update_installing">"Android دی تصدیق تیار ہو رہی اے…"</string>
+    <string name="activity_update_install_failed">"Android اپ ڈیٹ پوری نئیں کر سکیا۔ تہاڈی موجودہ انسٹالیشن قائم اے۔"</string>
+    <string name="activity_update_install_canceled">"اپ ڈیٹ منسوخ ہو گئی۔ تہاڈی موجودہ انسٹالیشن قائم اے۔"</string>
+    <string name="activity_update_install_success">"اپ ڈیٹ انسٹال ہو گئی اے۔"</string>
+    <string name="activity_update_source_required">"اگے ودھن لئی Android دیاں ترتیباں وچ Lume نوں اپ ڈیٹاں انسٹال کرن دی اجازت دیو۔ ایتھے واپس آ کے انسٹالیشن دی تصدیق کرو۔"</string>
+    <string name="activity_update_home_changed">"اپ ڈیٹ توں بعد TV نے ہوم سکرین بدل دِتی۔ Android دیاں ترتیباں وچ Lume نوں فیر چُنو۔ تہاڈے لانچر دیاں ترتیباں قائم نیں۔"</string>
+    <string name="activity_update_home_review">"ہوم سکرین دی ترتیب ویکھو"</string>
 </resources>

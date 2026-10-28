@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"Buka repositori"</string>
     <string name="activity_about_license_open">"Baca lisensi MIT"</string>
     <string name="activity_about_link_failed">"Tidak ada aplikasi yang dapat membuka tautan ini."</string>
+    <string name="activity_update_check">"Periksa pembaruan"</string>
+    <string name="activity_update_checking">"Memeriksa GitHub…"</string>
+    <string name="activity_update_current">"Tidak ada versi lebih baru yang tersedia di GitHub."</string>
+    <string name="activity_update_available">"Pembaruan tersedia · %1$s"</string>
+    <string name="activity_update_notice">"Android akan meminta konfirmasi pemasangan. Pembaruan tetap mempertahankan setelan Anda."</string>
+    <string name="activity_update_evaluation">"Versi evaluasi"</string>
+    <string name="activity_update_download">"Unduh pembaruan"</string>
+    <string name="activity_update_progress">"Mengunduh · %1$d%%"</string>
+    <string name="activity_update_verify">"Memverifikasi pembaruan…"</string>
+    <string name="activity_update_install">"Pasang pembaruan"</string>
+    <string name="activity_update_error">"Tidak dapat memeriksa atau mengunduh pembaruan. Periksa koneksi internet Anda dan coba lagi."</string>
+    <string name="activity_update_rejected">"Pembaruan ini tidak kompatibel atau tidak dapat diverifikasi. Tidak ada yang dipasang."</string>
+    <string name="activity_update_rate_limit">"GitHub membatasi permintaan untuk sementara. Coba lagi nanti."</string>
+    <string name="activity_update_storage">"Ruang tidak cukup untuk mengunduh pembaruan."</string>
+    <string name="activity_update_retry">"Coba lagi"</string>
+    <string name="activity_update_settings">"Izinkan sumber ini"</string>
+    <string name="activity_update_installing">"Menyiapkan konfirmasi Android…"</string>
+    <string name="activity_update_install_failed">"Android tidak dapat menyelesaikan pembaruan. Instalasi yang ada tetap dipertahankan."</string>
+    <string name="activity_update_install_canceled">"Pembaruan dibatalkan. Instalasi yang ada tetap dipertahankan."</string>
+    <string name="activity_update_install_success">"Pembaruan terpasang."</string>
+    <string name="activity_update_source_required">"Untuk melanjutkan, izinkan Lume memasang pembaruan di setelan Android. Kembali ke sini dan konfirmasikan pemasangan."</string>
+    <string name="activity_update_home_changed">"TV mengubah pilihan layar utama setelah pembaruan. Pilih Lume lagi di setelan Android. Setelan peluncur Anda tetap dipertahankan."</string>
+    <string name="activity_update_home_review">"Tinjau pilihan layar utama"</string>
 </resources>

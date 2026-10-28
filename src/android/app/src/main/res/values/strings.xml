@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"Open repository"</string>
     <string name="activity_about_license_open">"Read MIT License"</string>
     <string name="activity_about_link_failed">"No app could open this link."</string>
+    <string name="activity_update_check">"Check for updates"</string>
+    <string name="activity_update_checking">"Checking GitHub…"</string>
+    <string name="activity_update_current">"No newer version is available on GitHub."</string>
+    <string name="activity_update_available">"Update available · %1$s"</string>
+    <string name="activity_update_notice">"Android will ask you to confirm installation. Updating keeps your settings."</string>
+    <string name="activity_update_evaluation">"Evaluation version"</string>
+    <string name="activity_update_download">"Download update"</string>
+    <string name="activity_update_progress">"Downloading · %1$d%%"</string>
+    <string name="activity_update_verify">"Verifying update…"</string>
+    <string name="activity_update_install">"Install update"</string>
+    <string name="activity_update_error">"Could not check or download the update. Check your internet connection and try again."</string>
+    <string name="activity_update_rejected">"This update is incompatible or could not be verified. Nothing was installed."</string>
+    <string name="activity_update_rate_limit">"GitHub has temporarily limited requests. Try again later."</string>
+    <string name="activity_update_storage">"Not enough space to download the update."</string>
+    <string name="activity_update_retry">"Try again"</string>
+    <string name="activity_update_settings">"Allow this source"</string>
+    <string name="activity_update_installing">"Preparing Android confirmation…"</string>
+    <string name="activity_update_install_failed">"Android could not complete the update. Your existing installation was kept."</string>
+    <string name="activity_update_install_canceled">"Update canceled. Your existing installation was kept."</string>
+    <string name="activity_update_install_success">"Update installed."</string>
+    <string name="activity_update_source_required">"To continue, allow Lume to install updates in Android settings. Return here and confirm installation."</string>
+    <string name="activity_update_home_changed">"The TV changed its Home selection after updating. Choose Lume again in Android settings. Your launcher settings were kept."</string>
+    <string name="activity_update_home_review">"Review Home selection"</string>
 </resources>

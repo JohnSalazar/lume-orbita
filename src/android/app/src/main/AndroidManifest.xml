@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission android:name="android.permission.READ_TV_LISTINGS" />
     <queries>
         <provider android:authorities="android.media.tv" />
@@ -19,6 +20,8 @@
             <intent-filter><action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.HOME" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
         </activity>
         <activity android:name=".ScreenSaverActivity" android:exported="false" android:screenOrientation="landscape" android:noHistory="true" />
+        <activity android:name=".UpdateInstallActivity" android:exported="false" android:screenOrientation="landscape"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden" />
         <service android:name=".LumeDreamService" android:label="@string/common_dream_label" android:exported="true" android:permission="android.permission.BIND_DREAM_SERVICE">
             <intent-filter><action android:name="android.service.dreams.DreamService" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
         </service>

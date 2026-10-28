@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"Depoyu aç"</string>
     <string name="activity_about_license_open">"MIT lisansını oku"</string>
     <string name="activity_about_link_failed">"Bu bağlantıyı açabilecek uygulama yok."</string>
+    <string name="activity_update_check">"Güncellemeleri denetle"</string>
+    <string name="activity_update_checking">"GitHub denetleniyor…"</string>
+    <string name="activity_update_current">"GitHub\'da daha yeni bir sürüm yok."</string>
+    <string name="activity_update_available">"Güncelleme mevcut · %1$s"</string>
+    <string name="activity_update_notice">"Android, yüklemeyi onaylamanızı isteyecek. Güncelleme ayarlarınızı korur."</string>
+    <string name="activity_update_evaluation">"Değerlendirme sürümü"</string>
+    <string name="activity_update_download">"Güncellemeyi indir"</string>
+    <string name="activity_update_progress">"İndiriliyor · %1$d%%"</string>
+    <string name="activity_update_verify">"Güncelleme doğrulanıyor…"</string>
+    <string name="activity_update_install">"Güncellemeyi yükle"</string>
+    <string name="activity_update_error">"Güncelleme denetlenemedi veya indirilemedi. İnternet bağlantınızı kontrol edip tekrar deneyin."</string>
+    <string name="activity_update_rejected">"Bu güncelleme uyumsuz veya doğrulanamadı. Hiçbir şey yüklenmedi."</string>
+    <string name="activity_update_rate_limit">"GitHub istekleri geçici olarak sınırladı. Daha sonra tekrar deneyin."</string>
+    <string name="activity_update_storage">"Güncellemeyi indirmek için yeterli alan yok."</string>
+    <string name="activity_update_retry">"Tekrar dene"</string>
+    <string name="activity_update_settings">"Bu kaynağa izin ver"</string>
+    <string name="activity_update_installing">"Android onayı hazırlanıyor…"</string>
+    <string name="activity_update_install_failed">"Android güncellemeyi tamamlayamadı. Mevcut kurulumunuz korundu."</string>
+    <string name="activity_update_install_canceled">"Güncelleme iptal edildi. Mevcut kurulumunuz korundu."</string>
+    <string name="activity_update_install_success">"Güncelleme yüklendi."</string>
+    <string name="activity_update_source_required">"Devam etmek için Android ayarlarında Lume uygulamasının güncelleme yüklemesine izin verin. Buraya dönüp yüklemeyi onaylayın."</string>
+    <string name="activity_update_home_changed">"TV, güncellemeden sonra ana ekran seçimini değiştirdi. Android ayarlarında Lume uygulamasını yeniden seçin. Başlatıcı ayarlarınız korundu."</string>
+    <string name="activity_update_home_review">"Ana ekran seçimini gözden geçir"</string>
 </resources>

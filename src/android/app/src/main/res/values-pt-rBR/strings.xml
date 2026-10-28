@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"Abrir repositório"</string>
     <string name="activity_about_license_open">"Ler licença MIT"</string>
     <string name="activity_about_link_failed">"Nenhum aplicativo pôde abrir este link."</string>
+    <string name="activity_update_check">"Verificar atualizações"</string>
+    <string name="activity_update_checking">"Consultando o GitHub…"</string>
+    <string name="activity_update_current">"Nenhuma versão mais nova disponível no GitHub."</string>
+    <string name="activity_update_available">"Atualização disponível · %1$s"</string>
+    <string name="activity_update_notice">"O Android pedirá sua confirmação para instalar. A atualização mantém suas configurações."</string>
+    <string name="activity_update_evaluation">"Versão de avaliação"</string>
+    <string name="activity_update_download">"Baixar atualização"</string>
+    <string name="activity_update_progress">"Baixando · %1$d%%"</string>
+    <string name="activity_update_verify">"Validando atualização…"</string>
+    <string name="activity_update_install">"Instalar atualização"</string>
+    <string name="activity_update_error">"Não foi possível consultar ou baixar a atualização. Verifique a internet e tente novamente."</string>
+    <string name="activity_update_rejected">"Esta atualização é incompatível ou não pôde ser validada. Nada foi instalado."</string>
+    <string name="activity_update_rate_limit">"O GitHub limitou temporariamente as consultas. Tente novamente mais tarde."</string>
+    <string name="activity_update_storage">"Espaço insuficiente para baixar a atualização."</string>
+    <string name="activity_update_retry">"Tentar novamente"</string>
+    <string name="activity_update_settings">"Permitir esta origem"</string>
+    <string name="activity_update_installing">"Preparando a confirmação do Android…"</string>
+    <string name="activity_update_install_failed">"O Android não pôde concluir a atualização. Sua instalação atual foi mantida."</string>
+    <string name="activity_update_install_canceled">"Atualização cancelada. Sua instalação atual foi mantida."</string>
+    <string name="activity_update_install_success">"Atualização instalada."</string>
+    <string name="activity_update_source_required">"Para continuar, permita que o Lume instale atualizações nos ajustes do Android. Volte aqui e confirme a instalação."</string>
+    <string name="activity_update_home_changed">"A TV alterou a seleção de tela inicial após atualizar. Escolha o Lume novamente nos ajustes do Android. Suas configurações do launcher foram mantidas."</string>
+    <string name="activity_update_home_review">"Revisar tela inicial"</string>
 </resources>

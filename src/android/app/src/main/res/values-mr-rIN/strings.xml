@@ -267,4 +267,27 @@
     <string name="activity_about_repository">"कोड रेपॉझिटरी उघडा"</string>
     <string name="activity_about_license_open">"MIT परवाना वाचा"</string>
     <string name="activity_about_link_failed">"कोणतेही अॅप ही लिंक उघडू शकले नाही."</string>
+    <string name="activity_update_check">"अपडेट तपासा"</string>
+    <string name="activity_update_checking">"GitHub वर तपासत आहे…"</string>
+    <string name="activity_update_current">"GitHub वर नवीन आवृत्ती उपलब्ध नाही."</string>
+    <string name="activity_update_available">"अपडेट उपलब्ध आहे · %1$s"</string>
+    <string name="activity_update_notice">"Android इंस्टॉल करण्यासाठी तुमची पुष्टी मागेल. अपडेट केल्यावर तुमची सेटिंग्ज कायम राहतील."</string>
+    <string name="activity_update_evaluation">"चाचणी आवृत्ती"</string>
+    <string name="activity_update_download">"अपडेट डाउनलोड करा"</string>
+    <string name="activity_update_progress">"डाउनलोड होत आहे · %1$d%%"</string>
+    <string name="activity_update_verify">"अपडेट पडताळत आहे…"</string>
+    <string name="activity_update_install">"अपडेट इंस्टॉल करा"</string>
+    <string name="activity_update_error">"अपडेट तपासता किंवा डाउनलोड करता आले नाही. इंटरनेट कनेक्शन तपासा आणि पुन्हा प्रयत्न करा."</string>
+    <string name="activity_update_rejected">"हे अपडेट सुसंगत नाही किंवा त्याची पडताळणी करता आली नाही. काहीही इंस्टॉल केलेले नाही."</string>
+    <string name="activity_update_rate_limit">"GitHub ने विनंत्यांवर तात्पुरती मर्यादा घातली आहे. नंतर पुन्हा प्रयत्न करा."</string>
+    <string name="activity_update_storage">"अपडेट डाउनलोड करण्यासाठी पुरेशी जागा नाही."</string>
+    <string name="activity_update_retry">"पुन्हा प्रयत्न करा"</string>
+    <string name="activity_update_settings">"या स्रोताला परवानगी द्या"</string>
+    <string name="activity_update_installing">"Android ची पुष्टी तयार करत आहे…"</string>
+    <string name="activity_update_install_failed">"Android अपडेट पूर्ण करू शकले नाही. तुमचे सध्याचे इंस्टॉलेशन कायम आहे."</string>
+    <string name="activity_update_install_canceled">"अपडेट रद्द झाले. तुमचे सध्याचे इंस्टॉलेशन कायम आहे."</string>
+    <string name="activity_update_install_success">"अपडेट इंस्टॉल झाले."</string>
+    <string name="activity_update_source_required">"पुढे जाण्यासाठी Android च्या सेटिंग्जमध्ये Lume ला अपडेट इंस्टॉल करण्याची परवानगी द्या. येथे परत येऊन इंस्टॉलेशनची पुष्टी करा."</string>
+    <string name="activity_update_home_changed">"अपडेटनंतर TV ने होम स्क्रीनची निवड बदलली. Android च्या सेटिंग्जमध्ये Lume पुन्हा निवडा. तुमच्या लाँचरच्या सेटिंग्ज कायम आहेत."</string>
+    <string name="activity_update_home_review">"होम स्क्रीनची निवड तपासा"</string>
 </resources>

@@ -52,3 +52,7 @@ Translation sources live under tools: common/activity catalogues and per-locale 
 Original code: MIT, copyright 2026 Joao Salazar. See the repository LICENSE and THIRD_PARTY_NOTICES.md. Photos, libraries, trademarks and publisher content retain their own rights; photo authors and licence URLs remain unchanged. External streaming accounts/content are not translated, accessed privately or guaranteed available. Universal compatibility and performance require hardware-specific testing.
 
 Validation status is recorded in docs/qa; do not infer completed tests from this guide. Installation and recovery details: docs/installation.md. Build/signing: docs/build.md.
+
+## GitHub updates (0.4.3+)
+
+In **About**, choose **Check for updates**: GitHub is checked only when you click, with no periodic checks. If a newer compatible version is available, choose **Download update**. After the download is verified, choose **Install update**; Android then asks you to confirm installation. If Android requires permission, open **Allow this source** and personally allow Lume in Android settings, then return to confirm; Lume does not grant this access automatically. Updating with the same package and signing certificate preserves app settings; do not uninstall Lume to update. Check Home afterwards. If the TV changes it, **Review Home selection** provides access to the official settings so you can select it manually.

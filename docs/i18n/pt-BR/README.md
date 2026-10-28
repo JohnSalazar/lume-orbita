@@ -51,3 +51,7 @@ Traduções ficam nos catálogos common/activity e em tools/translations. Regene
 Código original sob MIT, copyright 2026 Joao Salazar. Consulte LICENSE e THIRD_PARTY_NOTICES.md. Fotos, marcas e conteúdo de terceiros mantêm seus direitos; autores e URLs das licenças não mudam. Contas privadas de streaming não são acessadas nem traduzidas. Disponibilidade, fontes, desempenho e compatibilidade exigem testes específicos.
 
 Revisão linguística nativa e QA por idioma continuam necessários. Consulte resultados reais em docs/qa; este guia não declara testes concluídos. Instalação: docs/installation.md. Build e assinatura: docs/build.md.
+
+## Atualizações pelo GitHub (0.4.3+)
+
+Em **Sobre**, escolha **Verificar atualizações**: o GitHub só é consultado quando você clica, sem consultas periódicas. Se houver uma versão nova compatível, escolha **Baixar atualização**. Depois da validação do download, escolha **Instalar atualização**; o Android então pede sua confirmação para instalar. Se o Android exigir autorização, abra **Permitir esta origem** e permita pessoalmente que o Lume instale pelos ajustes do Android; volte para confirmar. O Lume não concede esse acesso automaticamente. A atualização com o mesmo pacote e certificado de assinatura preserva as configurações; não desinstale o Lume para atualizar. Confira o botão Home depois. Se a TV mudar essa escolha, **Revisar tela inicial** dá acesso aos ajustes oficiais para você selecioná-la manualmente.

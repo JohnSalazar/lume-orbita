@@ -16,6 +16,8 @@ Versão de avaliação **0.4.2**, com 21 idiomas, Sobre, temas procedurais aleat
 
 Instalada e testada na KONKA preservando preferências e Home. [Validação física0.4.1](docs/qa/konka-041-validation.md) · [correção do relógio0.4.2](docs/qa/clock-locale-042.md) · [validação anterior em emulador](docs/qa/i18n-validation.md). A tradução não implica certificação linguística nativa.
 
+A linha de desenvolvimento **0.4.3** acrescenta **Sobre > Verificar atualizações**: consulta manual ao GitHub, download validado e instalação com confirmação do Android. [Uso e autorização de fontes](docs/operations/github-updates.md) · [validação0.4.3 e limites](docs/qa/updater-validation-043.md). A release pública0.4.2 acima permanece separada desse código.
+
 ## Idiomas / Languages
 
 Em Configurações > Idioma, escolha Automático ou uma língua manual. Automático usa a primeira preferência compatível da TV; fallback **English (United States)**. A escolha afeta somente o Lume. Nomes e descrições de conteúdo publicados pelas plataformas mantêm o idioma de origem.
@@ -45,6 +47,8 @@ cd src/android
 ```
 
 APK local: `src/android/app/build/outputs/apk/release/app-release.apk`.
+
+Instrumentação do APK de avaliação: `assembleReleaseAndroidTest`. O projeto usa `testBuildType = "release"` para que os testes nativos tenham o mesmo vínculo de APIs Kotlin internal do APK instalado. Os testes JVM continuam em `testDebugUnitTest`.
 
 Na raiz, `python tools/build_locale_resources.py` regenera os recursos a partir dos catálogos revisáveis; `python tools/verify_locales.py` verifica cobertura de chaves, placeholders e guias. `python tools/verify_locales.py --self-check` testa o próprio verificador com fixtures isoladas.
 

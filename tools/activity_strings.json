@@ -574,5 +574,97 @@
   "activity_about_link_failed": {
     "en": "No app could open this link.",
     "pt": "Nenhum aplicativo pôde abrir este link."
+  },
+  "activity_update_check": {
+    "en": "Check for updates",
+    "pt": "Verificar atualizações"
+  },
+  "activity_update_checking": {
+    "en": "Checking GitHub…",
+    "pt": "Consultando o GitHub…"
+  },
+  "activity_update_current": {
+    "en": "No newer version is available on GitHub.",
+    "pt": "Nenhuma versão mais nova disponível no GitHub."
+  },
+  "activity_update_available": {
+    "en": "Update available · %1$s",
+    "pt": "Atualização disponível · %1$s"
+  },
+  "activity_update_notice": {
+    "en": "Android will ask you to confirm installation. Updating keeps your settings.",
+    "pt": "O Android pedirá sua confirmação para instalar. A atualização mantém suas configurações."
+  },
+  "activity_update_evaluation": {
+    "en": "Evaluation version",
+    "pt": "Versão de avaliação"
+  },
+  "activity_update_download": {
+    "en": "Download update",
+    "pt": "Baixar atualização"
+  },
+  "activity_update_progress": {
+    "en": "Downloading · %1$d%%",
+    "pt": "Baixando · %1$d%%"
+  },
+  "activity_update_verify": {
+    "en": "Verifying update…",
+    "pt": "Validando atualização…"
+  },
+  "activity_update_install": {
+    "en": "Install update",
+    "pt": "Instalar atualização"
+  },
+  "activity_update_error": {
+    "en": "Could not check or download the update. Check your internet connection and try again.",
+    "pt": "Não foi possível consultar ou baixar a atualização. Verifique a internet e tente novamente."
+  },
+  "activity_update_rejected": {
+    "en": "This update is incompatible or could not be verified. Nothing was installed.",
+    "pt": "Esta atualização é incompatível ou não pôde ser validada. Nada foi instalado."
+  },
+  "activity_update_rate_limit": {
+    "en": "GitHub has temporarily limited requests. Try again later.",
+    "pt": "O GitHub limitou temporariamente as consultas. Tente novamente mais tarde."
+  },
+  "activity_update_storage": {
+    "en": "Not enough space to download the update.",
+    "pt": "Espaço insuficiente para baixar a atualização."
+  },
+  "activity_update_retry": {
+    "en": "Try again",
+    "pt": "Tentar novamente"
+  },
+  "activity_update_settings": {
+    "en": "Allow this source",
+    "pt": "Permitir esta origem"
+  },
+  "activity_update_installing": {
+    "en": "Preparing Android confirmation…",
+    "pt": "Preparando a confirmação do Android…"
+  },
+  "activity_update_install_failed": {
+    "en": "Android could not complete the update. Your existing installation was kept.",
+    "pt": "O Android não pôde concluir a atualização. Sua instalação atual foi mantida."
+  },
+  "activity_update_install_canceled": {
+    "en": "Update canceled. Your existing installation was kept.",
+    "pt": "Atualização cancelada. Sua instalação atual foi mantida."
+  },
+  "activity_update_install_success": {
+    "en": "Update installed.",
+    "pt": "Atualização instalada."
+  },
+  "activity_update_source_required": {
+    "en": "To continue, allow Lume to install updates in Android settings. Return here and confirm installation.",
+    "pt": "Para continuar, permita que o Lume instale atualizações nos ajustes do Android. Volte aqui e confirme a instalação."
+  },
+  "activity_update_home_changed": {
+    "en": "The TV changed its Home selection after updating. Choose Lume again in Android settings. Your launcher settings were kept.",
+    "pt": "A TV alterou a seleção de tela inicial após atualizar. Escolha o Lume novamente nos ajustes do Android. Suas configurações do launcher foram mantidas."
+  },
+  "activity_update_home_review": {
+    "en": "Review Home selection",
+    "pt": "Revisar tela inicial"
   }
 }
