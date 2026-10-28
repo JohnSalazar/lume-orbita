@@ -1,6 +1,6 @@
 # lume órbita — panduan bahasa Indonesia
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 lume órbita adalah peluncur orisinal untuk Android TV dan Google TV 11 atau lebih baru. Dibuat dengan Kotlin dan Views native, tanpa root. Fiturnya meliputi daftar aplikasi, favorit yang dapat diurutkan, lanjut menonton dan rekomendasi, tampilan kaca, mode Sinema, 30 latar, serta pengaman layar. Ketersediaan fitur bergantung pada perangkat dan produsennya.
 

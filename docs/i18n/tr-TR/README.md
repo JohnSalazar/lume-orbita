@@ -1,6 +1,6 @@
 # lume órbita — Türkçe kılavuz
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 lume órbita, Android TV ve Google TV 11 veya üzeri için geliştirilmiş özgün bir başlatıcıdır. Kotlin ve yerel Views kullanır; root gerektirmez. Uygulama listesi, sıralanabilir favoriler, izlemeye devam etme ve öneriler, cam görünümü, Sinema modu, 30 arka plan ve ekran koruyucu sunar. Özelliklerin kullanılabilirliği üreticiye ve cihaza bağlıdır.
 

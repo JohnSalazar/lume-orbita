@@ -1,6 +1,6 @@
 # Lume Órbita — हिन्दी
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 Android TV और Google TV 11 या बाद के संस्करण के लिए मूल लॉन्चर। सभी टीवी मॉडल प्रमाणित नहीं हैं; Home और स्टैंडबाय का व्यवहार निर्माता पर निर्भर करता है।
 

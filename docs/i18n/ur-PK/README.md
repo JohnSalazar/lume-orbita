@@ -1,6 +1,6 @@
 # Lume Órbita — اردو
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 Android TV اور Google TV 11 یا بعد کے نسخوں کے لیے اصل لانچر۔ تمام ماڈل کی مطابقت کی تصدیق نہیں ہوئی؛ Home اور اسٹینڈبائی سے واپسی کا رویہ بنانے والے پر منحصر ہے۔
 

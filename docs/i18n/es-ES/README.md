@@ -1,6 +1,6 @@
 # lume órbita — guía de uso y colaboración
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 Launcher original para **Android TV y Google TV 11 o posterior**, con Views nativas en Kotlin. Sin root ni firmware modificado. El diseño y las funciones se mantienen al cambiar de idioma.
 

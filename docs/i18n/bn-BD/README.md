@@ -1,6 +1,6 @@
 # Lume Órbita — বাংলা
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 Android TV ও Google TV 11 বা পরের সংস্করণের জন্য মৌলিক লঞ্চার। সব মডেলের সামঞ্জস্য প্রত্যয়িত নয়; Home ও স্ট্যান্ডবাই থেকে ফেরার আচরণ নির্মাতার ওপর নির্ভর করে।
 

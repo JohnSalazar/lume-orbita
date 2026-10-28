@@ -1,6 +1,6 @@
 # Validação da versão0.3.4
 
-Registro histórico da base anterior. Para a versão multilíngue 0.4.0, consulte [a validação de idiomas](qa/i18n-validation.md).
+Registro histórico da base anterior. Consulte também [a validação de idiomas0.4.0](qa/i18n-validation.md), [a validação física0.4.1](qa/konka-041-validation.md) e [a correção do relógio0.4.2](qa/clock-locale-042.md).
 
 Estado antes da primeira publicação:129 testes JVM aprovados, sem falhas/erros/skips. JaCoCo do core:349/350 linhas(99,71%),570/600 ramos(95%); lint release:0 erros/11 avisos preexistentes. O gate não é cobertura de toda a UI.
 

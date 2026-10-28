@@ -1,6 +1,6 @@
 # lume órbita — 日本語ガイド
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 lume órbitaはAndroid TVおよびGoogle TV 11以降向けのオリジナルランチャーです。KotlinとネイティブViewsを使用し、rootは不要です。アプリ一覧、並べ替え可能なお気に入り、視聴の続き・おすすめ、ガラス調の外観、シネマモード、30種類の背景、スクリーンセーバーを備えます。利用できる機能はメーカーや機種によって異なります。
 

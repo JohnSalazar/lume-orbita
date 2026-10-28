@@ -1,6 +1,6 @@
 # lume órbita — 한국어 안내
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 lume órbita는 Android TV와 Google TV 11 이상을 위한 오리지널 런처입니다. Kotlin과 네이티브 Views를 사용하며 루팅이 필요 없습니다. 앱 목록, 순서를 바꿀 수 있는 즐겨찾기, 이어서 시청·추천, 유리 느낌의 외관, 시네마 모드, 30가지 배경, 화면 보호기를 제공합니다. 기능 지원은 제조사와 기기에 따라 다릅니다.
 

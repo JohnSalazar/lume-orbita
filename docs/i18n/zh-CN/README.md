@@ -1,6 +1,6 @@
 # lume órbita — 简体中文指南
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 lume órbita是面向Android TV和Google TV 11及以上版本的原创启动器，使用Kotlin和原生Views，无需root。功能包括应用库、可排序的收藏、继续观看和推荐、透明玻璃风格、影院模式、30种氛围背景及屏幕保护程序。兼容性仍取决于电视厂商，不能保证所有型号都支持相同功能。
 

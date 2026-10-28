@@ -1,6 +1,6 @@
 # Lume Órbita — العربية
 
-QA: [0.4.0](../../qa/i18n-validation.md)
+QA: [0.4.0](../../qa/i18n-validation.md) · [0.4.1](../../qa/konka-041-validation.md) · [0.4.2](../../qa/clock-locale-042.md)
 
 مشغّل أصلي لأجهزة Android TV وGoogle TV بإصدار 11 أو أحدث. لا توجد شهادة توافق لكل الطرازات؛ سلوك Home والعودة من الاستعداد يعتمد على الشركة المصنّعة.
 
