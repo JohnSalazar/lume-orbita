@@ -258,5 +258,12 @@
   "common_procedural_17": "প্রজাপতির বাগান",
   "common_procedural_18": "মৌমাছি ও ফুল",
   "common_procedural_19": "শাপলার হ্রদ",
-  "common_procedural_20": "প্রশান্তির বাতিঘর"
+  "common_procedural_20": "প্রশান্তির বাতিঘর",
+  "activity_about_title": "অ্যাপ সম্পর্কে",
+  "activity_about_version": "সংস্করণ %1$s (বিল্ড %2$d)",
+  "activity_about_version_unknown": "সংস্করণের তথ্য পাওয়া যাচ্ছে না",
+  "activity_about_license": "মূল কোড: MIT লাইসেন্স। © 2026 Joao Salazar।\nতৃতীয় পক্ষের ছবি, সফটওয়্যার ও ট্রেডমার্কের অধিকার সংশ্লিষ্ট অধিকারধারীদের কাছেই থাকে।",
+  "activity_about_repository": "কোড রিপোজিটরি খুলুন",
+  "activity_about_license_open": "MIT লাইসেন্স পড়ুন",
+  "activity_about_link_failed": "কোনো অ্যাপ এই লিংকটি খুলতে পারেনি।"
 }

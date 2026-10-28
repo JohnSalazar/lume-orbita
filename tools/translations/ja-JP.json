@@ -258,5 +258,12 @@
   "activity_language_title": "言語",
   "activity_language_system": "自動（テレビの言語）",
   "activity_language_setting": "言語 · %1$s",
-  "activity_language_description": "自動ではテレビの対応言語に従い、該当しない場合は英語（米国）を使います。手動の選択はこのランチャーだけに適用されます。"
+  "activity_language_description": "自動ではテレビの対応言語に従い、該当しない場合は英語（米国）を使います。手動の選択はこのランチャーだけに適用されます。",
+  "activity_about_title": "このアプリについて",
+  "activity_about_version": "バージョン %1$s（ビルド %2$d）",
+  "activity_about_version_unknown": "バージョン情報を取得できません",
+  "activity_about_license": "オリジナルコード：MIT ライセンス。© 2026 Joao Salazar。\n第三者の写真、ソフトウェア、商標の権利は、それぞれの権利者に帰属します。",
+  "activity_about_repository": "リポジトリを開く",
+  "activity_about_license_open": "MIT ライセンスを読む",
+  "activity_about_link_failed": "このリンクを開けるアプリがありません。"
 }

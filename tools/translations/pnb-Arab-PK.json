@@ -258,5 +258,12 @@
   "common_procedural_17": "تتلیاں دا باغ",
   "common_procedural_18": "شہد دیاں مکھیاں تے پُھل",
   "common_procedural_19": "کنول دی جھیل",
-  "common_procedural_20": "سکون دا چانن مینار"
+  "common_procedural_20": "سکون دا چانن مینار",
+  "activity_about_title": "ایپ بارے",
+  "activity_about_version": "ورژن %1$s (بلڈ %2$d)",
+  "activity_about_version_unknown": "ورژن دی جانکاری دستیاب نئیں",
+  "activity_about_license": "اصل کوڈ: MIT لائسنس۔ © 2026 Joao Salazar۔\nتیجیاں دھراں دیاں تصویراں، سافٹ ویئر تے تجارتی نشانواں دے حق اوہناں دے حق داراں کول رہندے نیں۔",
+  "activity_about_repository": "کوڈ ریپوزٹری کھولو",
+  "activity_about_license_open": "MIT لائسنس پڑھو",
+  "activity_about_link_failed": "کوئی ایپ ایہہ لنک نئیں کھول سکی۔"
 }

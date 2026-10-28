@@ -260,4 +260,11 @@
     <string name="activity_language_system">"Automático (idioma da TV)"</string>
     <string name="activity_language_setting">"Idioma · %1$s"</string>
     <string name="activity_language_description">"Automático acompanha o idioma compatível da TV, usando inglês dos Estados Unidos como alternativa. A escolha manual muda somente este launcher."</string>
+    <string name="activity_about_title">"Sobre"</string>
+    <string name="activity_about_version">"Versão %1$s (compilação %2$d)"</string>
+    <string name="activity_about_version_unknown">"Versão indisponível"</string>
+    <string name="activity_about_license">"Código original: licença MIT. © 2026 Joao Salazar.\nFotografias, software e marcas de terceiros mantêm seus próprios direitos."</string>
+    <string name="activity_about_repository">"Abrir repositório"</string>
+    <string name="activity_about_license_open">"Ler licença MIT"</string>
+    <string name="activity_about_link_failed">"Nenhum aplicativo pôde abrir este link."</string>
 </resources>

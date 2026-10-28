@@ -258,5 +258,12 @@
   "common_procedural_17": "تتلیوں کا باغ",
   "common_procedural_18": "شہد کی مکھیاں اور پھول",
   "common_procedural_19": "کنول کی جھیل",
-  "common_procedural_20": "سکون کا مینارِ نور"
+  "common_procedural_20": "سکون کا مینارِ نور",
+  "activity_about_title": "ایپ کے بارے میں",
+  "activity_about_version": "ورژن %1$s (بلڈ %2$d)",
+  "activity_about_version_unknown": "ورژن کی معلومات دستیاب نہیں",
+  "activity_about_license": "اصل کوڈ: MIT لائسنس۔ © 2026 Joao Salazar۔\nفریق ثالث کی تصاویر، سافٹ ویئر اور تجارتی نشانات کے حقوق متعلقہ حق داروں کے پاس رہتے ہیں۔",
+  "activity_about_repository": "کوڈ ریپوزٹری کھولیں",
+  "activity_about_license_open": "MIT لائسنس پڑھیں",
+  "activity_about_link_failed": "کوئی ایپ یہ لنک نہیں کھول سکی۔"
 }

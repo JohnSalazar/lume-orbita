@@ -260,4 +260,11 @@
     <string name="common_procedural_18">"मधमाश्या आणि फुले"</string>
     <string name="common_procedural_19">"कमळांचा तलाव"</string>
     <string name="common_procedural_20">"शांतीचा दीपस्तंभ"</string>
+    <string name="activity_about_title">"अॅपविषयी"</string>
+    <string name="activity_about_version">"आवृत्ती %1$s (बिल्ड %2$d)"</string>
+    <string name="activity_about_version_unknown">"आवृत्तीची माहिती उपलब्ध नाही"</string>
+    <string name="activity_about_license">"मूळ कोड: MIT परवाना. © 2026 Joao Salazar.\nतृतीय पक्षांची छायाचित्रे, सॉफ्टवेअर आणि ट्रेडमार्क यांचे हक्क संबंधित हक्कधारकांकडेच राहतात."</string>
+    <string name="activity_about_repository">"कोड रेपॉझिटरी उघडा"</string>
+    <string name="activity_about_license_open">"MIT परवाना वाचा"</string>
+    <string name="activity_about_link_failed">"कोणतेही अॅप ही लिंक उघडू शकले नाही."</string>
 </resources>

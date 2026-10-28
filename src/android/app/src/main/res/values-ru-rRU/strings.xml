@@ -260,4 +260,11 @@
     <string name="activity_language_system">"Автоматически (язык телевизора)"</string>
     <string name="activity_language_setting">"Язык · %1$s"</string>
     <string name="activity_language_description">"Автоматический режим следует поддерживаемому языку телевизора; если подходящего нет, используется английский (США). Ручной выбор меняет язык только этого лаунчера."</string>
+    <string name="activity_about_title">"О приложении"</string>
+    <string name="activity_about_version">"Версия %1$s (сборка %2$d)"</string>
+    <string name="activity_about_version_unknown">"Версия недоступна"</string>
+    <string name="activity_about_license">"Исходный код: лицензия MIT. © 2026 Joao Salazar.\nПрава на фотографии, ПО и товарные знаки третьих лиц сохраняются за их правообладателями."</string>
+    <string name="activity_about_repository">"Открыть репозиторий"</string>
+    <string name="activity_about_license_open">"Прочитать лицензию MIT"</string>
+    <string name="activity_about_link_failed">"Ни одно приложение не смогло открыть эту ссылку."</string>
 </resources>

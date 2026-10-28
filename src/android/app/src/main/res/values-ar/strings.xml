@@ -260,4 +260,11 @@
     <string name="common_procedural_18">"النحل والزهور"</string>
     <string name="common_procedural_19">"بحيرة زنابق الماء"</string>
     <string name="common_procedural_20">"منارة السكينة"</string>
+    <string name="activity_about_title">"حول التطبيق"</string>
+    <string name="activity_about_version">"الإصدار %1$s (البنية %2$d)"</string>
+    <string name="activity_about_version_unknown">"معلومات الإصدار غير متاحة"</string>
+    <string name="activity_about_license">"الشيفرة الأصلية: ترخيص MIT. © 2026 Joao Salazar.\nتظل حقوق الصور والبرامج والعلامات التجارية التابعة لأطراف ثالثة لأصحابها."</string>
+    <string name="activity_about_repository">"فتح مستودع الشيفرة"</string>
+    <string name="activity_about_license_open">"قراءة ترخيص MIT"</string>
+    <string name="activity_about_link_failed">"تعذّر على أي تطبيق فتح هذا الرابط."</string>
 </resources>

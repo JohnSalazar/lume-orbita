@@ -6,7 +6,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TAGS = 'en-US en-GB en-CA pt-BR pt-PT es-ES fr-FR zh-CN hi-IN ar bn-BD ru-RU ur-PK ja-JP pnb-Arab-PK mr-IN de-DE it-IT ko-KR id-ID tr-TR'.split()
-SCREENS = 'home library gallery showSettings showCinema showAppearance showScreensaverSettings showScreensaverCredits showStore showLanguage appOptions showInputs showHomeChoice'.split()
+SCREENS = 'home library gallery showSettings showCinema showAppearance showScreensaverSettings showScreensaverCredits showStore showLanguage appOptions showInputs showHomeChoice showAbout'.split()
 BIDI = re.compile('[\u200e\u200f\u202a-\u202e\u2066-\u2069]')
 
 def audit(folder):

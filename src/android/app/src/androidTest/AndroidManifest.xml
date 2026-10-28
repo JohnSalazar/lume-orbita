@@ -1,0 +1,7 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- AGP replaces the first runner entry with testInstrumentationRunner. -->
+    <instrumentation android:name="br.com.lume.launcher.LocaleSmokeInstrumentation" android:targetPackage="br.com.lume.launcher" />
+    <instrumentation android:name="br.com.lume.launcher.DeviceStateInstrumentation" android:targetPackage="br.com.lume.launcher" />
+    <instrumentation android:name="br.com.lume.launcher.DeviceStateSelfTestInstrumentation" android:targetPackage="br.com.lume.launcher" />
+    <instrumentation android:name="br.com.lume.launcher.ScreensaverPlaybackInstrumentation" android:targetPackage="br.com.lume.launcher" />
+</manifest>

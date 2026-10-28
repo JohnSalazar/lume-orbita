@@ -76,4 +76,24 @@ class ScreensaverRulesTest {
         }
         assertThrows(IllegalArgumentException::class.java) { ScreensaverRules.nextIndex(0, 0, 0) }
     }
+
+    @Test fun onlineRequestEntropyReachesEveryPhotoExceptDisplayedAndLastAttempted() {
+        val expected = (0 until 14).filterNot { it == 2 || it == 7 }.toSet()
+        assertEquals(expected, (0 until 12).map { ScreensaverRules.nextRequestIndex(14, 2, 7, it) }.toSet())
+        assertEquals(expected, (-12 until 0).map { ScreensaverRules.nextRequestIndex(14, 2, 7, it) }.toSet())
+        assertEquals(setOf(0, 2, 3), (0..2).map { ScreensaverRules.nextRequestIndex(4, 1, 1, it) }.toSet())
+    }
+
+    @Test fun onlineRequestHandlesTinyCatalogsUnknownHistoryAndExtremeEntropy() {
+        listOf(Int.MIN_VALUE, -1, 0, 1, Int.MAX_VALUE).forEach { entropy ->
+            assertEquals(0, ScreensaverRules.nextRequestIndex(1, 0, 0, entropy))
+            // With two photos, avoiding the last failed attempt takes priority over old display history.
+            assertEquals(0, ScreensaverRules.nextRequestIndex(2, 0, 1, entropy))
+            assertTrue(ScreensaverRules.nextRequestIndex(14, -1, 14, entropy) in 0 until 14)
+        }
+        assertEquals((0 until 14).toSet(), (0 until 14).map { ScreensaverRules.nextRequestIndex(14, -1, -1, it) }.toSet())
+        listOf(0, -1).forEach { count ->
+            assertThrows(IllegalArgumentException::class.java) { ScreensaverRules.nextRequestIndex(count, -1, -1, 0) }
+        }
+    }
 }

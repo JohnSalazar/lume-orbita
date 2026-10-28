@@ -258,5 +258,12 @@
   "activity_language_title": "Bahasa",
   "activity_language_system": "Otomatis (bahasa TV)",
   "activity_language_setting": "Bahasa · %1$s",
-  "activity_language_description": "Otomatis mengikuti bahasa TV yang didukung, dengan Inggris (Amerika Serikat) sebagai pilihan jika tidak cocok. Pilihan manual hanya mengubah peluncur ini."
+  "activity_language_description": "Otomatis mengikuti bahasa TV yang didukung, dengan Inggris (Amerika Serikat) sebagai pilihan jika tidak cocok. Pilihan manual hanya mengubah peluncur ini.",
+  "activity_about_title": "Tentang",
+  "activity_about_version": "Versi %1$s (build %2$d)",
+  "activity_about_version_unknown": "Versi tidak tersedia",
+  "activity_about_license": "Kode asli: lisensi MIT. © 2026 Joao Salazar.\nHak atas foto, perangkat lunak, dan merek dagang pihak ketiga tetap dimiliki pemegang hak masing-masing.",
+  "activity_about_repository": "Buka repositori",
+  "activity_about_license_open": "Baca lisensi MIT",
+  "activity_about_link_failed": "Tidak ada aplikasi yang dapat membuka tautan ini."
 }

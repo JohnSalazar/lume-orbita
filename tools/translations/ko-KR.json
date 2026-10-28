@@ -258,5 +258,12 @@
   "activity_language_title": "언어",
   "activity_language_system": "자동(TV 언어)",
   "activity_language_setting": "언어 · %1$s",
-  "activity_language_description": "자동은 TV의 지원 언어를 따르며 일치하는 언어가 없으면 영어(미국)를 사용합니다. 수동 선택은 이 런처에만 적용됩니다."
+  "activity_language_description": "자동은 TV의 지원 언어를 따르며 일치하는 언어가 없으면 영어(미국)를 사용합니다. 수동 선택은 이 런처에만 적용됩니다.",
+  "activity_about_title": "앱 정보",
+  "activity_about_version": "버전 %1$s (빌드 %2$d)",
+  "activity_about_version_unknown": "버전 정보를 확인할 수 없습니다",
+  "activity_about_license": "원본 코드: MIT 라이선스. © 2026 Joao Salazar.\n타사 사진, 소프트웨어 및 상표에 대한 권리는 각 권리자에게 있습니다.",
+  "activity_about_repository": "저장소 열기",
+  "activity_about_license_open": "MIT 라이선스 읽기",
+  "activity_about_link_failed": "이 링크를 열 수 있는 앱이 없습니다."
 }

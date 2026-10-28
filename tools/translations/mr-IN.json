@@ -258,5 +258,12 @@
   "common_procedural_17": "फुलपाखरांची बाग",
   "common_procedural_18": "मधमाश्या आणि फुले",
   "common_procedural_19": "कमळांचा तलाव",
-  "common_procedural_20": "शांतीचा दीपस्तंभ"
+  "common_procedural_20": "शांतीचा दीपस्तंभ",
+  "activity_about_title": "अॅपविषयी",
+  "activity_about_version": "आवृत्ती %1$s (बिल्ड %2$d)",
+  "activity_about_version_unknown": "आवृत्तीची माहिती उपलब्ध नाही",
+  "activity_about_license": "मूळ कोड: MIT परवाना. © 2026 Joao Salazar.\nतृतीय पक्षांची छायाचित्रे, सॉफ्टवेअर आणि ट्रेडमार्क यांचे हक्क संबंधित हक्कधारकांकडेच राहतात.",
+  "activity_about_repository": "कोड रेपॉझिटरी उघडा",
+  "activity_about_license_open": "MIT परवाना वाचा",
+  "activity_about_link_failed": "कोणतेही अॅप ही लिंक उघडू शकले नाही."
 }

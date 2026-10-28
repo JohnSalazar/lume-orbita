@@ -258,5 +258,12 @@
   "common_procedural_17": "حديقة الفراشات",
   "common_procedural_18": "النحل والزهور",
   "common_procedural_19": "بحيرة زنابق الماء",
-  "common_procedural_20": "منارة السكينة"
+  "common_procedural_20": "منارة السكينة",
+  "activity_about_title": "حول التطبيق",
+  "activity_about_version": "الإصدار %1$s (البنية %2$d)",
+  "activity_about_version_unknown": "معلومات الإصدار غير متاحة",
+  "activity_about_license": "الشيفرة الأصلية: ترخيص MIT. © 2026 Joao Salazar.\nتظل حقوق الصور والبرامج والعلامات التجارية التابعة لأطراف ثالثة لأصحابها.",
+  "activity_about_repository": "فتح مستودع الشيفرة",
+  "activity_about_license_open": "قراءة ترخيص MIT",
+  "activity_about_link_failed": "تعذّر على أي تطبيق فتح هذا الرابط."
 }

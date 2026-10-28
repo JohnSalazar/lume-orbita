@@ -12,7 +12,7 @@ Launcher original para **Android TV e Google TV 11 ou posterior**, escrito em Ko
 - Acesso às configurações Android, rede, Google Play e entradas disponibilizadas pelo fabricante.
 - Seleção como Home pelas possibilidades do Android/OEM, sem interceptação global ou firmware modificado.
 
-Versão de avaliação **0.4.0**, com 21 idiomas. [APK e notas](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.0) · [Validação executada e limites](docs/qa/i18n-validation.md). A tradução não implica certificação linguística nativa; a repetição física desta versão na KONKA permanece pendente.
+Release pública de avaliação **0.4.0**, com 21 idiomas: [APK e notas](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.0). O código atual **0.4.1** acrescenta Sobre e sorteio de temas procedurais; foi instalado e testado na KONKA, preservando preferências e Home. [Validação física e ressalvas](docs/qa/konka-041-validation.md) · [validação anterior em emulador](docs/qa/i18n-validation.md). A tradução não implica certificação linguística nativa.
 
 ## Idiomas / Languages
 

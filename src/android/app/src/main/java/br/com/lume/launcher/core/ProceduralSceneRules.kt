@@ -42,11 +42,14 @@ object ProceduralSceneRules {
         return palettes[index].map { it or 0xFF000000.toInt() }.toIntArray()
     }
 
-    /** Visit every theme before repeating, while entropy changes each illustration's composition. */
+    /** Pick any other theme from entropy, retaining seed variation for the illustration's composition. */
     fun nextSeed(previous: Long?, random: Long): Long {
         if (previous == null) return random
         val safe = random.coerceIn(Long.MIN_VALUE + themes.size, Long.MAX_VALUE - themes.size)
-        return safe - themeIndex(safe) + (themeIndex(previous) + 1) % themes.size
+        val excluded = themeIndex(previous)
+        val slot = Math.floorMod(random, (themes.size - 1).toLong()).toInt()
+        val nextTheme = if (slot >= excluded) slot + 1 else slot
+        return safe - themeIndex(safe) + nextTheme
     }
 
     fun geometry(width: Int, height: Int, seed: Long): Geometry {

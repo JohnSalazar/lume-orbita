@@ -258,5 +258,12 @@
   "common_procedural_17": "तितलियों का बगीचा",
   "common_procedural_18": "मधुमक्खियाँ और फूल",
   "common_procedural_19": "कुमुदिनी की झील",
-  "common_procedural_20": "शांति का प्रकाशस्तंभ"
+  "common_procedural_20": "शांति का प्रकाशस्तंभ",
+  "activity_about_title": "ऐप के बारे में",
+  "activity_about_version": "संस्करण %1$s (बिल्ड %2$d)",
+  "activity_about_version_unknown": "संस्करण उपलब्ध नहीं है",
+  "activity_about_license": "मूल कोड: MIT लाइसेंस। © 2026 Joao Salazar।\nतीसरे पक्ष की तस्वीरों, सॉफ़्टवेयर और ट्रेडमार्क के अधिकार उनके संबंधित अधिकारधारकों के पास हैं।",
+  "activity_about_repository": "कोड रिपॉज़िटरी खोलें",
+  "activity_about_license_open": "MIT लाइसेंस पढ़ें",
+  "activity_about_link_failed": "कोई ऐप यह लिंक नहीं खोल सका।"
 }

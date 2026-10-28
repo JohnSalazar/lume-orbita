@@ -260,4 +260,11 @@
     <string name="common_procedural_18">"मधुमक्खियाँ और फूल"</string>
     <string name="common_procedural_19">"कुमुदिनी की झील"</string>
     <string name="common_procedural_20">"शांति का प्रकाशस्तंभ"</string>
+    <string name="activity_about_title">"ऐप के बारे में"</string>
+    <string name="activity_about_version">"संस्करण %1$s (बिल्ड %2$d)"</string>
+    <string name="activity_about_version_unknown">"संस्करण उपलब्ध नहीं है"</string>
+    <string name="activity_about_license">"मूल कोड: MIT लाइसेंस। © 2026 Joao Salazar।\nतीसरे पक्ष की तस्वीरों, सॉफ़्टवेयर और ट्रेडमार्क के अधिकार उनके संबंधित अधिकारधारकों के पास हैं।"</string>
+    <string name="activity_about_repository">"कोड रिपॉज़िटरी खोलें"</string>
+    <string name="activity_about_license_open">"MIT लाइसेंस पढ़ें"</string>
+    <string name="activity_about_link_failed">"कोई ऐप यह लिंक नहीं खोल सका।"</string>
 </resources>

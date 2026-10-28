@@ -546,5 +546,33 @@
   "activity_language_description": {
     "en": "Automatic follows the TV's supported language, with English (United States) as the fallback. A manual choice changes only this launcher.",
     "pt": "Automático acompanha o idioma compatível da TV, usando inglês dos Estados Unidos como alternativa. A escolha manual muda somente este launcher."
+  },
+  "activity_about_title": {
+    "en": "About",
+    "pt": "Sobre"
+  },
+  "activity_about_version": {
+    "en": "Version %1$s (build %2$d)",
+    "pt": "Versão %1$s (compilação %2$d)"
+  },
+  "activity_about_version_unknown": {
+    "en": "Version unavailable",
+    "pt": "Versão indisponível"
+  },
+  "activity_about_license": {
+    "en": "Original code: MIT License. © 2026 Joao Salazar.\nThird-party photos, software and trademarks retain their own rights.",
+    "pt": "Código original: licença MIT. © 2026 Joao Salazar.\nFotografias, software e marcas de terceiros mantêm seus próprios direitos."
+  },
+  "activity_about_repository": {
+    "en": "Open repository",
+    "pt": "Abrir repositório"
+  },
+  "activity_about_license_open": {
+    "en": "Read MIT License",
+    "pt": "Ler licença MIT"
+  },
+  "activity_about_link_failed": {
+    "en": "No app could open this link.",
+    "pt": "Nenhum aplicativo pôde abrir este link."
   }
 }

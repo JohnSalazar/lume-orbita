@@ -260,4 +260,11 @@
     <string name="activity_language_system">"Otomatik (TV dili)"</string>
     <string name="activity_language_setting">"Dil · %1$s"</string>
     <string name="activity_language_description">"Otomatik seçim TV’nin desteklenen dilini izler; uygun dil yoksa İngilizce (ABD) kullanılır. Elle yapılan seçim yalnızca bu başlatıcının dilini değiştirir."</string>
+    <string name="activity_about_title">"Hakkında"</string>
+    <string name="activity_about_version">"Sürüm %1$s (derleme %2$d)"</string>
+    <string name="activity_about_version_unknown">"Sürüm bilgisi kullanılamıyor"</string>
+    <string name="activity_about_license">"Özgün kod: MIT lisansı. © 2026 Joao Salazar.\nÜçüncü taraf fotoğraflarının, yazılımlarının ve ticari markalarının hakları ilgili hak sahiplerine aittir."</string>
+    <string name="activity_about_repository">"Depoyu aç"</string>
+    <string name="activity_about_license_open">"MIT lisansını oku"</string>
+    <string name="activity_about_link_failed">"Bu bağlantıyı açabilecek uygulama yok."</string>
 </resources>

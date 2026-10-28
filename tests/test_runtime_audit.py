@@ -82,9 +82,9 @@ class RuntimeAuditTests(unittest.TestCase):
         failed, summary = self.run_audit()
         self.assertFalse(failed)
         self.assertEqual(summary['compiled_values'], 25 * 21)
-        self.assertEqual(summary['screens'], 273)
+        self.assertEqual(summary['screens'], len(AUDITOR.TAGS) * len(AUDITOR.SCREENS))
         self.assertEqual(summary['screensavers'], 21)
-        self.assertEqual(summary['visible_text_views'], 273)
+        self.assertEqual(summary['visible_text_views'], len(AUDITOR.TAGS) * len(AUDITOR.SCREENS))
         self.assertEqual(summary['differences'], [])
 
     def test_wrong_language_source_fails_even_with_complete_keys(self):
@@ -139,7 +139,7 @@ class RuntimeAuditTests(unittest.TestCase):
         self.write(self.evidence / 'report.json', self.screens)
         failed, summary = self.run_audit()
         self.assertFalse(failed)
-        self.assertEqual(summary['visible_text_views'], 273)
+        self.assertEqual(summary['visible_text_views'], len(AUDITOR.TAGS) * len(AUDITOR.SCREENS))
 
     def test_duplicate_screen_or_missing_locale_cannot_pass(self):
         original = self.screens[0]

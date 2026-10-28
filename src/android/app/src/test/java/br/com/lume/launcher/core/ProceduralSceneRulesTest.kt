@@ -39,12 +39,23 @@ class ProceduralSceneRulesTest {
         } }
     }
 
-    @Test fun sceneOrderCyclesWithoutDependingOnWallClockOrDeviceState() {
-        var seed = 0L
-        val visited = mutableSetOf<String>()
-        repeat(20) { visited.add(ProceduralSceneRules.theme(seed)); seed = ProceduralSceneRules.nextSeed(seed, seed) }
-        assertEquals(20, visited.size)
-        assertEquals("ocean", ProceduralSceneRules.theme(seed))
+    @Test fun entropyCanSelectEveryOtherThemeRatherThanFollowingASequentialCycle() {
+        for (previous in 0L..19L) {
+            val expected = ProceduralSceneRules.themes.toSet() - ProceduralSceneRules.theme(previous)
+            val positive = (0L..18L).map { ProceduralSceneRules.theme(ProceduralSceneRules.nextSeed(previous, it)) }.toSet()
+            val negative = (-19L..-1L).map { ProceduralSceneRules.theme(ProceduralSceneRules.nextSeed(previous, it)) }.toSet()
+            assertEquals(expected, positive)
+            assertEquals(expected, negative)
+        }
+    }
+
+    @Test fun differentEntropyKeepsCompositionVarietyEvenWhenItSelectsTheSameTheme() {
+        val first = ProceduralSceneRules.nextSeed(5L, 0L)
+        val second = ProceduralSceneRules.nextSeed(5L, 380L)
+        assertEquals(ProceduralSceneRules.theme(first), ProceduralSceneRules.theme(second))
+        assertNotEquals(first, second)
+        assertNotEquals(ProceduralSceneRules.geometry(1280, 720, first), ProceduralSceneRules.geometry(1280, 720, second))
+        assertEquals(first, ProceduralSceneRules.nextSeed(5L, 0L))
     }
 
     @Test fun geometryIsDeterministicAndDifferentSeedsProvideRealSceneVariety() {

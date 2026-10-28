@@ -260,4 +260,11 @@
     <string name="activity_language_system">"自动（电视语言）"</string>
     <string name="activity_language_setting">"语言 · %1$s"</string>
     <string name="activity_language_description">"自动模式跟随电视支持的语言；不匹配时使用英语（美国）。手动选择只改变此启动器的语言。"</string>
+    <string name="activity_about_title">"关于"</string>
+    <string name="activity_about_version">"版本 %1$s（构建 %2$d）"</string>
+    <string name="activity_about_version_unknown">"版本信息不可用"</string>
+    <string name="activity_about_license">"原创代码采用 MIT 许可证。© 2026 Joao Salazar。\n第三方照片、软件和商标的权利归各自权利人所有。"</string>
+    <string name="activity_about_repository">"打开代码仓库"</string>
+    <string name="activity_about_license_open">"阅读 MIT 许可证"</string>
+    <string name="activity_about_link_failed">"没有应用可以打开此链接。"</string>
 </resources>

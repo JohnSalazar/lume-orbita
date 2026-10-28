@@ -258,5 +258,12 @@
   "activity_language_title": "Idioma",
   "activity_language_system": "Automático (idioma de la TV)",
   "activity_language_setting": "Idioma · %1$s",
-  "activity_language_description": "Automático sigue un idioma compatible de la TV y, si no lo hay, usa inglés de Estados Unidos. La selección manual solo cambia este launcher."
+  "activity_language_description": "Automático sigue un idioma compatible de la TV y, si no lo hay, usa inglés de Estados Unidos. La selección manual solo cambia este launcher.",
+  "activity_about_title": "Acerca de",
+  "activity_about_version": "Versión %1$s (compilación %2$d)",
+  "activity_about_version_unknown": "Versión no disponible",
+  "activity_about_license": "Código original: licencia MIT. © 2026 Joao Salazar.\nLas fotografías, el software y las marcas de terceros conservan sus propios derechos.",
+  "activity_about_repository": "Abrir repositorio",
+  "activity_about_license_open": "Leer licencia MIT",
+  "activity_about_link_failed": "Ninguna aplicación pudo abrir este enlace."
 }

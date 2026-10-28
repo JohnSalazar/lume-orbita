@@ -8,8 +8,8 @@ android {
         applicationId = "br.com.lume.launcher"
         minSdk = 30
         targetSdk = 35
-        versionCode = 26
-        versionName = "0.4.0"
+        versionCode = 27
+        versionName = "0.4.1"
         testInstrumentationRunner = "br.com.lume.launcher.LocaleSmokeInstrumentation"
     }
     compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }

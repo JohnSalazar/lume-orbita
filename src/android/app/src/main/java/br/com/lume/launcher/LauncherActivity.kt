@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.content.Context
+import android.content.ActivityNotFoundException
+import android.net.Uri
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Outline
@@ -1071,9 +1073,36 @@ class LauncherActivity : Activity() {
                     contentSnapshot = TvContentCatalog.Snapshot(emptyList(), emptyList(), false); renderContent()
                 } else connectContent()
             },
-            s(R.string.activity_home_choose) to { showHomeChoice() }
+            s(R.string.activity_home_choose) to { showHomeChoice() },
+            s(R.string.activity_about_title) to { showAbout() }
         ).forEach { (label, action) -> body.addView(button(label, action), LinearLayout.LayoutParams(-1, -2)); gap(body, 6) }
         dialog(s(R.string.activity_settings_title), body)
+    }
+    private fun showAbout() {
+        val body = column()
+        body.addView(text(applicationInfo.loadLabel(packageManager).toString(), 24f)); gap(body, 8)
+        val version = try {
+            @Suppress("DEPRECATION")
+            val info = packageManager.getPackageInfo(packageName, 0)
+            s(R.string.activity_about_version, info.versionName ?: s(R.string.activity_about_version_unknown), info.longVersionCode)
+        } catch (_: PackageManager.NameNotFoundException) {
+            s(R.string.activity_about_version_unknown)
+        }
+        body.addView(text(version, 15f, true)); gap(body, 16)
+        body.addView(text(s(R.string.activity_about_license), 14f, true)); gap(body, 16)
+        fun openLink(url: String) {
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)).addCategory(Intent.CATEGORY_BROWSABLE))
+            } catch (_: ActivityNotFoundException) {
+                message(s(R.string.activity_about_link_failed))
+            } catch (_: SecurityException) {
+                message(s(R.string.activity_about_link_failed))
+            }
+        }
+        body.addView(button(s(R.string.activity_about_repository)) { openLink("https://github.com/JohnSalazar/lume-orbita") })
+        gap(body, 6)
+        body.addView(button(s(R.string.activity_about_license_open)) { openLink("https://github.com/JohnSalazar/lume-orbita/blob/main/LICENSE") })
+        dialog(s(R.string.activity_about_title), body)
     }
     private fun languageName(): String = AppLocales.languages.firstOrNull { it.tag == AppLocales.selected(this) }?.nativeName
         ?: s(R.string.activity_language_system)

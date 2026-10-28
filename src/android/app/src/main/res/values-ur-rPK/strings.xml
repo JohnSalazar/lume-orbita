@@ -260,4 +260,11 @@
     <string name="common_procedural_18">"شہد کی مکھیاں اور پھول"</string>
     <string name="common_procedural_19">"کنول کی جھیل"</string>
     <string name="common_procedural_20">"سکون کا مینارِ نور"</string>
+    <string name="activity_about_title">"ایپ کے بارے میں"</string>
+    <string name="activity_about_version">"ورژن %1$s (بلڈ %2$d)"</string>
+    <string name="activity_about_version_unknown">"ورژن کی معلومات دستیاب نہیں"</string>
+    <string name="activity_about_license">"اصل کوڈ: MIT لائسنس۔ © 2026 Joao Salazar۔\nفریق ثالث کی تصاویر، سافٹ ویئر اور تجارتی نشانات کے حقوق متعلقہ حق داروں کے پاس رہتے ہیں۔"</string>
+    <string name="activity_about_repository">"کوڈ ریپوزٹری کھولیں"</string>
+    <string name="activity_about_license_open">"MIT لائسنس پڑھیں"</string>
+    <string name="activity_about_link_failed">"کوئی ایپ یہ لنک نہیں کھول سکی۔"</string>
 </resources>

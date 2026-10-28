@@ -260,4 +260,11 @@
     <string name="common_procedural_18">"شہد دیاں مکھیاں تے پُھل"</string>
     <string name="common_procedural_19">"کنول دی جھیل"</string>
     <string name="common_procedural_20">"سکون دا چانن مینار"</string>
+    <string name="activity_about_title">"ایپ بارے"</string>
+    <string name="activity_about_version">"ورژن %1$s (بلڈ %2$d)"</string>
+    <string name="activity_about_version_unknown">"ورژن دی جانکاری دستیاب نئیں"</string>
+    <string name="activity_about_license">"اصل کوڈ: MIT لائسنس۔ © 2026 Joao Salazar۔\nتیجیاں دھراں دیاں تصویراں، سافٹ ویئر تے تجارتی نشانواں دے حق اوہناں دے حق داراں کول رہندے نیں۔"</string>
+    <string name="activity_about_repository">"کوڈ ریپوزٹری کھولو"</string>
+    <string name="activity_about_license_open">"MIT لائسنس پڑھو"</string>
+    <string name="activity_about_link_failed">"کوئی ایپ ایہہ لنک نئیں کھول سکی۔"</string>
 </resources>
