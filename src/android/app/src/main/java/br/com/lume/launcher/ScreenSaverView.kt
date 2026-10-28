@@ -17,12 +17,12 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import br.com.lume.launcher.core.ScreensaverRules
+import br.com.lume.launcher.core.LocaleRules
 import br.com.lume.launcher.core.ScreensaverAttemptCoordinator
 import br.com.lume.launcher.core.ProceduralSceneRules
 import org.json.JSONArray
 import org.json.JSONObject
 import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.concurrent.Future
 import java.util.concurrent.RejectedExecutionException
 import kotlin.random.Random
@@ -85,7 +85,7 @@ class ScreenSaverView(context: Context) : FrameLayout(context) {
     private val tick = object : Runnable {
         override fun run() {
             if (running) {
-                if (clockEnabled) clock.text = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm", AppLocales.formattingLocale(context)))
+                if (clockEnabled) clock.text = LocaleRules.formatTime(LocalTime.now(), AppLocales.effectiveTag(context))
                 sizeLabels()
                 handler.postDelayed(this, 60_000L - System.currentTimeMillis() % 60_000L)
             }

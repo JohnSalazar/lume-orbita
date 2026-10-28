@@ -1,5 +1,9 @@
 package br.com.lume.launcher.core
 
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DecimalStyle
+import java.time.format.FormatStyle
 import java.util.IllformedLocaleException
 import java.util.Locale
 
@@ -60,6 +64,13 @@ object LocaleRules {
 
     // CLDR stores Shahmukhi date/number data under pa-Arab, rather than the pnb UI tag.
     fun formattingTag(tag: String): String = if (tag == "pnb-Arab-PK") "pa-Arab-PK" else tag
+
+    /** Follow the app locale's default hour cycle without changing Android's clock preferences. */
+    fun formatTime(time: LocalTime, tag: String): String {
+        val locale = Locale.forLanguageTag(formattingTag(resolve(tag, emptyList())))
+        return time.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+            .withLocale(locale).withDecimalStyle(DecimalStyle.of(locale)))
+    }
 
     fun resourceQualifier(tag: String): String {
         val selected = selection(tag)

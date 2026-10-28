@@ -27,6 +27,7 @@ import android.view.WindowInsetsController
 import android.view.WindowManager
 import android.widget.*
 import br.com.lume.launcher.core.LauncherRules
+import br.com.lume.launcher.core.LocaleRules
 import br.com.lume.launcher.core.MenuSelectGuard
 import br.com.lume.launcher.core.NetworkStatus
 import br.com.lume.launcher.core.ScreensaverRules
@@ -1001,7 +1002,7 @@ class LauncherActivity : Activity() {
     }
 
     private fun refreshAmbient() {
-        clock?.text = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
+        clock?.text = LocaleRules.formatTime(LocalTime.now(), AppLocales.effectiveTag(this))
         date?.text = LocalDate.now().format(DateTimeFormatter.ofPattern("EEE, d MMM", locale))
         val index = sceneIndex()
         if (index != currentScene) {

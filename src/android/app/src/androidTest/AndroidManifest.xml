@@ -4,4 +4,5 @@
     <instrumentation android:name="br.com.lume.launcher.DeviceStateInstrumentation" android:targetPackage="br.com.lume.launcher" />
     <instrumentation android:name="br.com.lume.launcher.DeviceStateSelfTestInstrumentation" android:targetPackage="br.com.lume.launcher" />
     <instrumentation android:name="br.com.lume.launcher.ScreensaverPlaybackInstrumentation" android:targetPackage="br.com.lume.launcher" />
+    <instrumentation android:name="br.com.lume.launcher.ClockLocaleInstrumentation" android:targetPackage="br.com.lume.launcher" />
 </manifest>

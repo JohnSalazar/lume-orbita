@@ -2,6 +2,11 @@ package br.com.lume.launcher.core
 
 import org.junit.Assert.*
 import org.junit.Test
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DecimalStyle
+import java.time.format.FormatStyle
+import java.util.Locale
 
 class LocaleRulesTest {
     @Test fun catalogContainsExactlyTheTwentyOneRequestedLocales() {
@@ -92,6 +97,63 @@ class LocaleRulesTest {
     @Test fun shahmukhiFormattingUsesTheCompatibleCldrScriptWithoutChangingOtherLocales() {
         LocaleRules.supportedTags.forEach { tag ->
             assertEquals(if (tag == "pnb-Arab-PK") "pa-Arab-PK" else tag, LocaleRules.formattingTag(tag))
+        }
+    }
+
+    // CLDR versions differ between JDK and Android in their regular/nonbreaking AM/PM separator.
+    private fun normalizedTime(value: String) = value.replace('\u202f', ' ').replace('\u00a0', ' ')
+
+    @Test fun shortTimeFollowsAppLocaleInsteadOfAlwaysUsingTwentyFourHours() {
+        val afternoon = LocalTime.of(17, 5)
+        assertEquals("17:05", LocaleRules.formatTime(afternoon, "pt-BR"))
+        assertEquals("5:05 PM", normalizedTime(LocaleRules.formatTime(afternoon, "en-US")))
+        assertEquals("17:05", LocaleRules.formatTime(afternoon, "en-GB"))
+        assertEquals("5:05 AM", normalizedTime(LocaleRules.formatTime(LocalTime.of(5, 5), "en-US")))
+    }
+
+    @Test fun midnightAndNoonUseTheCorrectTwelveHourPeriod() {
+        assertEquals("12:00 AM", normalizedTime(LocaleRules.formatTime(LocalTime.MIDNIGHT, "en-US")))
+        assertEquals("12:00 PM", normalizedTime(LocaleRules.formatTime(LocalTime.NOON, "en-US")))
+        assertEquals("00:00", LocaleRules.formatTime(LocalTime.MIDNIGHT, "pt-BR"))
+        assertEquals("12:00", LocaleRules.formatTime(LocalTime.NOON, "pt-BR"))
+    }
+
+    @Test fun everyAppLocaleFormatsWithoutChangingAnyJvmDefaultLocale() {
+        val original = Locale.getDefault()
+        val display = Locale.getDefault(Locale.Category.DISPLAY)
+        val format = Locale.getDefault(Locale.Category.FORMAT)
+        LocaleRules.supportedTags.forEach { tag ->
+            listOf(LocalTime.MIDNIGHT, LocalTime.NOON, LocalTime.of(17, 5)).forEach { time ->
+                assertTrue(tag, LocaleRules.formatTime(time, tag).isNotBlank())
+            }
+        }
+        assertEquals(original, Locale.getDefault())
+        assertEquals(display, Locale.getDefault(Locale.Category.DISPLAY))
+        assertEquals(format, Locale.getDefault(Locale.Category.FORMAT))
+    }
+
+    @Test fun timeFormattingPreservesShahmukhiMappingAliasesAndEnglishFallback() {
+        val time = LocalTime.of(17, 5)
+        val locale = Locale.forLanguageTag("pa-Arab-PK")
+        val shahmukhi = time.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+            .withLocale(locale).withDecimalStyle(DecimalStyle.of(locale)))
+        assertEquals(shahmukhi, LocaleRules.formatTime(time, "pnb-Arab-PK"))
+        assertEquals(LocaleRules.formatTime(time, "pt-BR"), LocaleRules.formatTime(time, "PT_br"))
+        listOf("system", "invalid-!", "zz-ZZ").forEach { tag ->
+            assertEquals(LocaleRules.formatTime(time, "en-US"), LocaleRules.formatTime(time, tag))
+        }
+    }
+
+    @Test fun timeDigitsFollowTheFormattingLocalesDefaultNumbering() {
+        LocaleRules.supportedTags.forEach { tag ->
+            val locale = Locale.forLanguageTag(LocaleRules.formattingTag(tag))
+            val zero = DecimalStyle.of(locale).zeroDigit
+            val digits = LocaleRules.formatTime(LocalTime.of(17, 5), tag).filter(Char::isDigit)
+            assertTrue(tag, digits.isNotEmpty())
+            assertTrue(tag, digits.all { it.code in zero.code..zero.code + 9 })
+        }
+        listOf("ar", "bn-BD").forEach { tag ->
+            assertNotEquals(tag, '0', DecimalStyle.of(Locale.forLanguageTag(tag)).zeroDigit)
         }
     }
 }
