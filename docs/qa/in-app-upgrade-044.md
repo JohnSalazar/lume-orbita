@@ -2,11 +2,11 @@
 
 ## Status and authorization boundaries
 
-**Candidate and baseline gates recorded; publication and the physical upgrade are still pending.** The user explicitly authorized publishing 0.4.4 and proceeding with the test after reviewing the prepared candidate. This authorization does not itself grant installation-source access or confirm Android's installation dialog. No successful in-app upgrade is recorded below.
+**Publication verified; the physical in-app upgrade and post-upgrade comparison remain pending.** The user explicitly authorized publishing 0.4.4 and proceeding with the test after reviewing the prepared candidate. This authorization does not itself grant installation-source access or confirm Android's installation dialog. No successful in-app upgrade is recorded below.
 
 The TV must remain on **0.4.3/code 29** until the user upgrades through Lume with the physical remote and Android confirmation. Candidate **0.4.4/code 30** contains a real local-storage error-classification correction. Do not install it over ADB, alter the installed version/code, publish a fake future release or substitute fixture metadata to manufacture an in-app success.
 
-## Candidate gates — completed; publication pending
+## Candidate and publication gates — completed
 
 - [x] Review the focused production/test diff: local APK output-write `IOException` becomes STORAGE; existing CANCELED errors remain CANCELED; network-read failures remain NETWORK. No UI, permission, source or validation-policy change.
 - [x] Execute partial-write regression: remove only the partial owned APK, close streams, release the connection, retain an unrelated sentinel and do not inspect the archive after the failed write. This is fault injection, not a physical disk-full observation on the TV.
@@ -14,7 +14,7 @@ The TV must remain on **0.4.3/code 29** until the user upgrades through Lume wit
 - [x] Inspect the actual release APK: package `br.com.lume.launcher`, version 0.4.4/code 30, minimum SDK 30, target SDK 35 and the existing signing identity.
 - [x] Record the actual APK: **10,228,073 bytes**; SHA-256 **`498318bf83176f689aed01533bd269f980080a6eeee5c19473c8fde4b8100216`**. This is the APK digest, not a configuration-backup digest.
 - [x] Present the prepared candidate, documentation, release notes, test results and limitations; receive the user's explicit publication/test authorization.
-- [ ] Publish and verify the legitimate assets, checksum manifest and tag. Publication is authorized but has not yet been recorded as completed. Recheck what the live API returns; a local tag alone does not prove discoverability.
+- [x] Publish and verify the legitimate assets, checksum manifest and tag. [Release 0.4.4 is public](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.4). All four assets were downloaded anonymously and matched the prepared files byte for byte, with release-API digest verification. The immutable release commit/tag points to `120746dd7c099551df112c8c16f780e011152820`.
 
 ## Fresh baseline before the remote-controlled test — captured
 
@@ -28,7 +28,9 @@ The operator uses diagnostics and backups only. No hidden mutation or automatic 
 - [x] Record recovery limits without claiming a proven alternative launcher. Observed OEM fallback components are not evidence of a working recovery Home. Do not change Home for this test or treat an unvalidated fallback as a passed gate.
 - [x] Leave source authorization unchanged during preparation. Only the user may decide to grant it through Android settings. No ADB/AppOps write, root, shell grant or protected-setting change is authorized as a substitute.
 
-If the user changes configuration or enough time passes before installation, take a fresh read-only comparison and baseline again; do not assume this captured state is still current.
+The baseline was checked again after publication: all 16 preferences retained the private baseline digest, Home remained Lume and the TV still reported 0.4.3/code 29. This is a pre-upgrade check, not a post-upgrade result. The user has received remote-control instructions and a request to report the native outcome.
+
+If the user changes configuration or enough time passes before installation, arrange a fresh read-only comparison before starting; do not assume the baseline remains current. Do not run instrumentation or automated navigation while the user is operating the source-permission or installation flow. Wait for the user to confirm that the native flow has ended before the post-upgrade audit.
 
 ## Actions performed only by the user with the physical remote — pending
 
@@ -53,7 +55,18 @@ Publication and proceeding with the test are authorized. Source access and nativ
 
 ## Outcome record
 
-Candidate results and the fresh baseline are recorded above. **Publication is authorized but pending; the real in-app installation and post-upgrade comparison are pending.** Record the published asset/tag verification and the user's native-confirmation outcome before marking an in-app upgrade successful. No preference restore may be used to conceal a failed comparison.
+Candidate results, the fresh baseline and publication verification are recorded above. **The real in-app installation and post-upgrade comparison are still pending.** Wait for the user's native-confirmation outcome before marking an in-app upgrade successful. No preference restore may be used to conceal a failed comparison.
+
+Verified public asset evidence:
+
+| Asset | Bytes | SHA-256 |
+|---|---:|---|
+| APK | 10,228,073 | `498318bf83176f689aed01533bd269f980080a6eeee5c19473c8fde4b8100216` |
+| English documentation ZIP | 61,599 | `2a975f465689318fdaffe2460e7d767678e0f0362afdc1e0ca63d5747d0ee69d` |
+| Release-notes Markdown | 5,732 | `1948335386e55cfba9253f05666a04abee52099425e9e01f0c1f25ea2623e928` |
+| SHA256SUMS.txt | 285 | Release-API digest and anonymous byte comparison verified; digest not reproduced here |
+
+The published tag and assets remain the immutable release snapshot. This living checklist records publication and subsequent test observations separately; it does not change that tag, replace release assets or rewrite the original preparation evidence. Download verification establishes public artifact integrity, not a PackageInstaller transition on the TV.
 
 The 0.4.3 application will perform the download of 0.4.4. A successful transition would prove the native installation and preservation path; the new 0.4.4 error classification is separately supported by the candidate's fault-injection regressions.
 
