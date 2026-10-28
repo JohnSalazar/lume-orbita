@@ -354,7 +354,12 @@ class LauncherActivity : Activity() {
         resetScreensaverTimer()
         handler.post { if (active) artwork.refresh() }
         preparedUpdate?.takeIf { openDialog === updateDialog }?.let { showPreparedUpdate(it) }
-        if (UpdateInstaller.consumeHomeWarning(this)) showUpdateHomeWarning()
+        UpdateInstaller.reconcile(this) {
+            if (active && !isDestroyed) {
+                if (UpdateInstaller.consumeInstallSuccess(this)) message(s(R.string.activity_update_install_success))
+                if (UpdateInstaller.consumeHomeWarning(this)) showUpdateHomeWarning()
+            }
+        }
     }
     override fun onPause() {
         restoreContentOnResume = false

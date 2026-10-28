@@ -8,6 +8,8 @@ During recorded validation, installed 0.4.3 queried the then-public 0.4.2 releas
 
 Sources: [PRD](../01-updater-prd.md), [security contract](../design/update-security.md), [validation report](../qa/updater-validation-043.md) and [test plan](../qa/updater-test-plan.md). Pure tests and adapter fixtures do not replace Android installation confirmation on the device.
 
+A later real 0.4.3-to-0.4.4 upgrade preserved the recorded configuration and Home, but exposed a blocked post-install result Activity. See the [physical outcome](../qa/in-app-upgrade-044.md). The 0.4.5 candidate adds verified replacement recovery; publication and the next physical return test are recorded separately in its [validation checklist](../qa/updater-return-045.md).
+
 ## TV workflow
 
 1. Open the gear, then **About > Check for updates**. Only this user action initiates discovery. There are no periodic checks, boot-time checks or silent installations.
@@ -45,6 +47,8 @@ A checksum from the same repository detects corruption but is not independent au
 There are no GitHub credentials, cookies, application telemetry or uploads of settings, favorites, history or streaming accounts. GitHub and its CDN naturally receive the IP address and ordinary request; this is not anonymity. Do not publish signed CDN query strings, personal data or raw HTTP errors in logs.
 
 ## Attempts, delayed callbacks and recovery
+
+In the 0.4.5 candidate, a protected package-replacement receiver and foreground resume can reconcile the installed package with the recorded target. New attempts verify exact code, APK hash and signers. The incoming migration from 0.4.4 uses a separate, narrower protected-event rule because that outgoing version did not record all target pins. A successful verification can request a one-time return to Lume only when Lume already was and remains Home. Android can still refuse automatic foreground opening; press Home in that case. A refused return does not mean installation failed. No user preferences, source permissions or default-Home settings are rewritten to produce success.
 
 An installation attempt has its own owner, session and token. `InstallerAttemptRules` correlates them with the active state. A delayed callback or old Activity must not confirm, clear or abandon a later attempt. The installation Activity is private; only a callback correlated with its active session can advance Android confirmation. The previous Home choice is recorded separately for comparison after a genuinely newer version is installed.
 

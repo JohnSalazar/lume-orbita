@@ -22,6 +22,9 @@
         <activity android:name=".ScreenSaverActivity" android:exported="false" android:screenOrientation="landscape" android:noHistory="true" />
         <activity android:name=".UpdateInstallActivity" android:exported="false" android:screenOrientation="landscape"
             android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden" />
+        <receiver android:name=".PackageReplacedReceiver" android:exported="false">
+            <intent-filter><action android:name="android.intent.action.MY_PACKAGE_REPLACED" /></intent-filter>
+        </receiver>
         <service android:name=".LumeDreamService" android:label="@string/common_dream_label" android:exported="true" android:permission="android.permission.BIND_DREAM_SERVICE">
             <intent-filter><action android:name="android.service.dreams.DreamService" /><category android:name="android.intent.category.DEFAULT" /></intent-filter>
         </service>

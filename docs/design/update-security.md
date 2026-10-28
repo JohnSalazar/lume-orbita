@@ -56,6 +56,16 @@ Residual recovery limitation: if the process dies between `createSession` and re
 
 A compatible update is intended to retain existing Android application data. Updater code must not clear or migrate preferences without a specific contract, change the HOME holder, Dream, OS language/time zone, or automatically open Home selection. OEM Home behavior after APK replacement needs verification; do not promise universal preservation. Compare typed preferences and resolved HOME before and after the private validation gate. Do not restore an old baseline over recent user changes. An older version does not guarantee a downgrade with data preserved.
 
+## Recovery after self-replacement (0.4.5 candidate)
+
+The real 0.4.3-to-0.4.4 test exposed a blocked result Activity after Android killed the outgoing process. The candidate retains the working native confirmation callback and adds a non-exported receiver for the system-protected MY_PACKAGE_REPLACED event. A single bounded/coalesced worker verifies recovery outside the UI thread. A missing session alone is never success. The [candidate validation record](../qa/updater-return-045.md) separates pure tests, Android contracts and the pending physical return test.
+
+Before committing a new attempt, the private journal atomically records the correlated owner/session/token, previous code/Home, selected target code and SHA-256, current signer set and interactive timestamp. Recovery requires the installed target code, APK hash and signer set to match exactly. It commits the result and conditional cleanup before requesting any foreground return. Duplicate or old owners cannot complete a newer attempt. Hashing is byte-bounded and has a cooperative eight-second deadline; this is not a hard guarantee that every Binder or filesystem call finishes within a receiver deadline.
+
+For a fresh attempt initiated by 0.4.4, exact target pins do not exist. Its narrower legacy path is permitted only during the protected replacement event, with a code increase, correlated owner/home owner/token, an absent recorded session, Lume as both installing and initiating package, and Lume selected as Home before and afterward. This supports a one-time UI return; it is not a claim of exact persisted-target verification. Incomplete old markers without that evidence remain neutral, and foreground resume alone cannot elevate them to success.
+
+The return request explicitly targets Lume, only if it remains the chosen Home. New attempts additionally require a recent recorded interaction. The return is recorded as attempted before opening the Activity; the verified result remains available for foreground presentation. Android/OEM background-start policy can still reject the request, including without a thrown exception. Such refusal must not become an installation error or trigger repeated launches, permission grants, overlays, alarms or Home-setting changes. Any transient visibility of an earlier system task remains outside the app's guarantee. See [the protected event contract](https://developer.android.com/reference/android/content/Intent#ACTION_MY_PACKAGE_REPLACED) and [activity-start restrictions](https://developer.android.com/guide/components/activities/secure-bal).
+
 ## Threats and validation gates
 
 | Risk | Impact | Mitigation and required evidence | Residual risk |

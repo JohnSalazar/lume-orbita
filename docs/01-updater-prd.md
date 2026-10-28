@@ -12,6 +12,16 @@ From **Settings > About**, check the public `JohnSalazar/lume-orbita` repository
 4. Validate byte limits, SHA-256, package name, actual APK version, minimum SDK and equality of the current signing-certificate sets. Reject incompatible or unverifiable packages.
 5. **Install update** is a separate user action after download and validation. If Android requires source authorization, the user opens the package-specific settings and decides whether to grant it. Recheck access after returning; opening Settings is not authorization. The native installer then requires confirmation.
 6. Use Android's normal same-package update mechanism to retain application data. Do not uninstall Lume, clear data, request root or reset Home. If the OEM changes Home during package replacement, explain the change and offer access to the official selector for a manual decision.
+7. Recover a successful self-update when Android kills the old process and blocks the result Activity. Persist the selected target identity before committing, verify the installed package on recovery, and return to Lume only when it was and remains the selected Home. A blocked return is not an installation failure. An absent session alone does not establish success.
+
+### Return correction acceptance criteria
+
+- Keep the physically tested native confirmation flow; do not add silent installation or Home-setting writes.
+- A private receiver for Android's protected MY_PACKAGE_REPLACED broadcast and foreground resume recovery must tolerate process death, duplicate callbacks and stale attempts.
+- New attempts require the installed version code, APK hash and signer set to match the persisted validated target before recovering success. Completion is correlated to the attempt and consumed once.
+- The 0.4.4 legacy path may request a one-time UI return only after the protected replacement broadcast, a version increase, matching recorded ownership, an absent recorded session, Lume as installing and initiating package, and Lume as Home before and after replacement. This is not exact persisted-target verification. Old incomplete markers alone remain inconclusive.
+- Do not display a generic installation error merely because the old Activity was recreated after a verified replacement. A firmware block on reopening must retain the verified result for the next foreground visit.
+- Test negative identities, stale/duplicate callbacks, legacy restrictions and Home preservation. Separately report unit/contract tests, physical installation and the OEM's observed return behavior.
 
 ## Implementation
 

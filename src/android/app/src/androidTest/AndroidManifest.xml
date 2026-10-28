@@ -6,4 +6,6 @@
     <instrumentation android:name="br.com.lume.launcher.ScreensaverPlaybackInstrumentation" android:targetPackage="br.com.lume.launcher" />
     <instrumentation android:name="br.com.lume.launcher.ClockLocaleInstrumentation" android:targetPackage="br.com.lume.launcher" />
     <instrumentation android:name="br.com.lume.launcher.UpdaterCheckInstrumentation" android:targetPackage="br.com.lume.launcher" />
+    <instrumentation android:name="br.com.lume.launcher.MaintenanceCleanupInstrumentation" android:targetPackage="br.com.lume.launcher" />
+    <instrumentation android:name="br.com.lume.launcher.UpdateReturnInstrumentation" android:targetPackage="br.com.lume.launcher" />
 </manifest>

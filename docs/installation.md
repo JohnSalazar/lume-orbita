@@ -6,7 +6,7 @@ Install only on Android TV or Google TV 11 or later. Confirm the device OS and i
 adb devices
 adb -s SERIAL shell am get-current-user
 adb -s SERIAL shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME
-adb -s SERIAL install -r lume-orbita-0.4.4.apk
+adb -s SERIAL install -r lume-orbita-0.4.5.apk
 adb -s SERIAL shell cmd package resolve-activity --brief -a android.intent.action.MAIN -c android.intent.category.HOME
 ```
 

@@ -41,7 +41,6 @@ class UpdateInstallActivity : Activity() {
         super.onCreate(savedInstanceState)
         owner = savedInstanceState?.getString("owner") ?: intent.getStringExtra("owner").orEmpty()
         completed = savedInstanceState?.getBoolean("completed", false) ?: false
-        if (!completed && !UpdateInstaller.attach(this, owner)) { finish(); return }
         body = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL; gravity = Gravity.CENTER_VERTICAL
             val padding = GlassUi.dp(context, 36); setPadding(padding, padding, padding, padding)
@@ -56,12 +55,15 @@ class UpdateInstallActivity : Activity() {
         committed = savedInstanceState?.getBoolean("committed", false) ?: false
         finalStatus = savedInstanceState?.getInt("finalStatus", PackageInstaller.STATUS_FAILURE) ?: PackageInstaller.STATUS_FAILURE
         homeWarning = savedInstanceState?.getBoolean("homeWarning", false) ?: false
-        if (completed) showTerminal()
-        else if (intent.action == UpdateInstaller.RESULT_ACTION) { if (!handleResult(intent)) finish() }
-        else if (!committed) {
-            val old = sessionId
-            if (old >= 0) { fail(); worker.execute { runCatching { UpdateInstaller.abandonOwned(this, owner, old) } } }
-            else stage()
+        UpdateInstaller.reconcile(this) {
+            if (isDestroyed || canceled) return@reconcile
+            if (UpdateInstaller.resolvedOwner(this, owner)) showReconciledSuccess()
+            else if (completed) showTerminal()
+            else if (!UpdateInstaller.attach(this, owner)) finish()
+            else if (intent.action == UpdateInstaller.RESULT_ACTION) { if (!handleResult(intent)) finish() }
+            else if (!committed) {
+                if (sessionId >= 0) showInstalledVersion() else stage()
+            }
         }
     }
 
@@ -124,7 +126,7 @@ class UpdateInstallActivity : Activity() {
     private fun commit(id: Int) {
         val token = UUID.randomUUID().toString()
         try {
-            if (!UpdateInstaller.prepareCommit(this, owner, id, token)) throw IllegalStateException()
+            if (!UpdateInstaller.prepareCommit(this, owner, id, token, requireNotNull(prepared))) throw IllegalStateException()
             val callback = Intent(this, UpdateInstallActivity::class.java).apply {
                 action = UpdateInstaller.RESULT_ACTION
                 data = android.net.Uri.parse("lume-update://result/$token")
@@ -157,18 +159,31 @@ class UpdateInstallActivity : Activity() {
             result.data?.toString() != "lume-update://result/$token" || (sessionId >= 0 && sessionId != id) ||
             !UpdateInstaller.acceptsCallback(this, owner, id, token)) return false
         sessionId = id; committed = true
-        when (result.getIntExtra(PackageInstaller.EXTRA_STATUS, PackageInstaller.STATUS_FAILURE)) {
+        val resultStatus = result.getIntExtra(PackageInstaller.EXTRA_STATUS, PackageInstaller.STATUS_FAILURE)
+        @Suppress("DEPRECATION")
+        val installedCode = packageManager.getPackageInfo(packageName, 0).longVersionCode
+        val beforeCode = getSharedPreferences(UpdateInstaller.PREFS, MODE_PRIVATE).getLong("before_code", 0)
+        if ((resultStatus == PackageInstaller.STATUS_PENDING_USER_ACTION && packageManager.packageInstaller.getSessionInfo(id) == null) ||
+            (resultStatus != PackageInstaller.STATUS_PENDING_USER_ACTION && beforeCode > 0 && installedCode > beforeCode)) {
+            UpdateInstaller.reconcile(this) {
+                if (!isDestroyed && !canceled) {
+                    if (UpdateInstaller.resolvedOwner(this, owner)) showReconciledSuccess() else showInstalledVersion()
+                }
+            }
+            return true
+        }
+        when (resultStatus) {
             PackageInstaller.STATUS_PENDING_USER_ACTION -> {
                 @Suppress("DEPRECATION")
                 val next = result.getParcelableExtra<Intent>(Intent.EXTRA_INTENT)
                 if (next == null) fail() else { confirmation = next; openConfirmation() }
             }
             PackageInstaller.STATUS_SUCCESS -> {
-                if (!UpdateInstaller.finishAttempt(this, owner, id, token, true)) return false
-                completed = true
-                finalStatus = PackageInstaller.STATUS_SUCCESS
-                homeWarning = UpdateInstaller.consumeHomeWarning(this)
-                showTerminal()
+                UpdateInstaller.reconcile(this) {
+                    if (!isDestroyed && !canceled) {
+                        if (UpdateInstaller.resolvedOwner(this, owner)) showReconciledSuccess() else showInstalledVersion()
+                    }
+                }
             }
             else -> {
                 if (!UpdateInstaller.finishAttempt(this, owner, id, token, false)) return false
@@ -178,6 +193,20 @@ class UpdateInstallActivity : Activity() {
             }
         }
         return true
+    }
+
+    private fun showReconciledSuccess() {
+        if (completed && finalStatus == PackageInstaller.STATUS_SUCCESS) return
+        completed = true; committed = true; finalStatus = PackageInstaller.STATUS_SUCCESS
+        homeWarning = UpdateInstaller.consumeHomeWarning(this)
+        UpdateInstaller.consumeInstallSuccess(this)
+        showTerminal()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun showInstalledVersion() {
+        val info = packageManager.getPackageInfo(packageName, 0)
+        status.text = getString(R.string.activity_about_version, info.versionName ?: getString(R.string.activity_about_version_unknown), info.longVersionCode)
     }
 
     private fun showTerminal() {
@@ -201,7 +230,12 @@ class UpdateInstallActivity : Activity() {
         try { startActivity(next) } catch (_: RuntimeException) { fail() }
     }
     private fun fail() { status.setText(R.string.activity_update_install_failed) }
-    override fun onResume() { super.onResume(); resumed = true; openConfirmation() }
+    override fun onResume() {
+        super.onResume(); resumed = true; openConfirmation()
+        if (committed && !completed) UpdateInstaller.reconcile(this) {
+            if (!isDestroyed && !canceled && UpdateInstaller.resolvedOwner(this, owner)) showReconciledSuccess()
+        }
+    }
     override fun onPause() { resumed = false; super.onPause() }
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt("session", sessionId); outState.putBoolean("committed", committed); outState.putBoolean("completed", completed)

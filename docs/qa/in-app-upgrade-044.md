@@ -2,7 +2,7 @@
 
 ## Status and authorization boundaries
 
-**Publication verified; the physical in-app upgrade and post-upgrade comparison remain pending.** The user explicitly authorized publishing 0.4.4 and proceeding with the test after reviewing the prepared candidate. This authorization does not itself grant installation-source access or confirm Android's installation dialog. No successful in-app upgrade is recorded below.
+**Publication, physical installation and configuration/Home preservation verified; the terminal callback has an unresolved defect.** The user explicitly authorized publishing 0.4.4 and proceeding with the test, then confirmed the human-driven installation and physical Home behavior. See the outcome record for the observed popup and blocked callback; this is not an unconditional updater PASS.
 
 The TV must remain on **0.4.3/code 29** until the user upgrades through Lume with the physical remote and Android confirmation. Candidate **0.4.4/code 30** contains a real local-storage error-classification correction. Do not install it over ADB, alter the installed version/code, publish a fake future release or substitute fixture metadata to manufacture an in-app success.
 
@@ -43,19 +43,23 @@ If the user changes configuration or enough time passes before installation, arr
 
 Publication and proceeding with the test are authorized. Source access and native installation still require the user's own decisions at the Android prompts. A declined prompt is not consent and must not be bypassed to satisfy the checklist.
 
-## Read-only post-upgrade comparison — pending
+## Read-only post-upgrade comparison — installation and preservation verified; callback defect observed
 
-- [ ] Verify actual installed 0.4.4/code 30, expected package/signing identity and the live resumed component. A version label in the offered metadata is not proof of installation.
-- [ ] Read the complete `orbita` map again and compare it to the fresh baseline: key set, types and every value must match, including absent keys. Record differences without changing them.
+- [x] Verify actual installed 0.4.4/code 30, expected package/signing identity and the live resumed component. The installed APK hash matches the published APK; Android records Lume as both installing and initiating package.
+- [x] Read the complete `orbita` map again and compare it to the fresh baseline: all 16 typed preferences match. No restore was performed.
 - [ ] **Do not invoke a preference restore to make the comparison pass.** A mismatch is a finding. Any recovery requires a separate explicit decision and must preserve the original before/after evidence.
-- [ ] Compare Home and content permission/flags with the baseline. If the OEM changed Home, record that loss and any user-driven recovery through the official selector separately; do not report Home as continuously preserved.
+- [x] Compare Home and content permission/flags with the baseline: Lume remains Home and READ_TV_LISTINGS remains granted with USER_SET. The user also confirmed physical Home returns to Lume.
 - [ ] Compare source access/AppOps. A false-to-true change is acceptable only if it corresponds to the user's recorded Android-settings decision. An automatic grant invalidates this proof.
 - [ ] Capture the raw updater namespace and own-session state again. Attempt owners, session IDs, tokens and Home-comparison markers are operational state and may legitimately change; distinguish them from the user-facing `orbita` settings. Check expected terminal cleanup without rewriting the namespace to hide a stale attempt.
 - [ ] Preserve backups and evidence privately. Report version transition, data comparison, Home behavior, permission decisions and incomplete gates as separate results.
 
 ## Outcome record
 
-Candidate results, the fresh baseline and publication verification are recorded above. **The real in-app installation and post-upgrade comparison are still pending.** Wait for the user's native-confirmation outcome before marking an in-app upgrade successful. No preference restore may be used to conceal a failed comparison.
+On October 28, 2026, the user confirmed installing 0.4.4 through Lume and returning to Lume with the physical Home button. Read-only inspection confirmed code 30, the published APK hash and original signing certificate, all 16 preferences unchanged, Lume still resolved as Home, and READ_TV_LISTINGS still granted. Installation-source access was observed as enabled after the human-driven flow; the operator did not grant it over ADB. No preference restore was performed.
+
+**Installation and preservation passed; the complete terminal-result flow did not.** The user reported that HBO briefly appeared and an error popup followed, but could not recall its text. The Android log shows the app process stopped for replacement, followed by `Abort background activity starts` when the installer callback attempted to open UpdateInstallActivity. No new Lume crash was found in that interval. The own-session list was empty, while updater owner/session/token markers remained. Their values and raw evidence are retained privately. This establishes a callback-delivery/reconciliation defect; it does not establish the exact popup text or a failed package installation. No operational markers were cleared to hide the finding. A production correction and another real upgrade test remain outstanding.
+
+The owner subsequently requested storage cleanup. See the [observed cleanup record](../operations/konka-cleanup-044.md). TV-side test outputs and backups were removed after preserving the current backup privately; no preference restore or production APK replacement was performed during cleanup.
 
 Verified public asset evidence:
 
