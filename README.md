@@ -2,13 +2,13 @@
 
 An original launcher for **Android TV and Google TV 11 or later**, implemented in Kotlin with native Views. It combines a translucent glass interface, remote-control navigation, and local customization without root access.
 
-## Release 0.4.5
+## Release 0.4.6
 
-**Evaluation prerelease** — package `br.com.lume.launcher`, version code `31`, minimum SDK `30`.
+**Evaluation prerelease** — package `br.com.lume.launcher`, version code `32`, minimum SDK `30`.
 
-[Download APK](https://github.com/JohnSalazar/lume-orbita/releases/download/v0.4.5/lume-orbita-0.4.5.apk) · [Release assets and SHA-256 checksums](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.5) · [Release notes](docs/releases/0.4.5.md) · [US English update guide](docs/operations/github-updates.md)
+[Download APK](https://github.com/JohnSalazar/lume-orbita/releases/download/v0.4.6/lume-orbita-0.4.6.apk) · [Release assets and SHA-256 checksums](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.6) · [Release notes](docs/releases/0.4.6.md) · [US English update guide](docs/operations/github-updates.md)
 
-This maintenance release recovers the result of a successful self-update after Android replaces the old process, with a one-time return request when Lume remains the selected Home. Android can still restrict automatic foreground opening; the real KONKA return test is recorded separately. The manual updater introduced in 0.4.3 remains available under **Settings > About > Check for updates**. Checks run only when requested. A newer compatible release can be downloaded, verified, and handed to Android for explicit installation confirmation. If Android requires installation-source access, the user must grant it in Android settings. The app never grants that access itself, silently installs a package, uninstalls the launcher, clears its data, or automatically changes Home.
+This maintenance release automatically removes orphaned updater APKs after a recorded successful installation, including older failed attempts, while protecting active files. It retains self-update result recovery. The KONKA test confirmed that Android blocks automatic foreground return; press Home after installing. The manual updater introduced in 0.4.3 remains available under **Settings > About > Check for updates**. Checks run only when requested. A newer compatible release can be downloaded, verified, and handed to Android for explicit installation confirmation. If Android requires installation-source access, the user must grant it in Android settings. The app never grants that access itself, silently installs a package, uninstalls the launcher, clears its data, or automatically changes Home.
 
 The existing evaluation signing certificate is retained. A custom build signed with a different key cannot update the official installation in place. See [build and signing](docs/build.md).
 

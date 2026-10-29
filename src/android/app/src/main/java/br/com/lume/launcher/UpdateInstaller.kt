@@ -235,12 +235,16 @@ object UpdateInstaller {
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val ownHome = ComponentName(context, LauncherActivity::class.java).flattenToString()
         val journal = synchronized(this) {
-            val owner = prefs.getString("owner", null) ?: return InstallResolution.NEUTRAL
-            InstallJournal(owner, prefs.getInt("session", -1), prefs.getString("token", null), prefs.getLong("before_code", 0),
+            val owner = prefs.getString("owner", null)
+            owner?.let { InstallJournal(it, prefs.getInt("session", -1), prefs.getString("token", null), prefs.getLong("before_code", 0),
                 prefs.getLong("expected_code", 0), prefs.getString("expected_hash", null), prefs.getStringSet("expected_signers", emptySet()).orEmpty().toSet(),
                 prefs.contains("expected_code") || prefs.contains("expected_hash") || prefs.contains("expected_signers"),
                 prefs.getBoolean("commit_requested", false), prefs.getLong("interactive_at", 0), prefs.getString("home_owner", null),
-                prefs.getString("home_owner", null) == owner && prefs.getString("before_home", null) == ownHome)
+                prefs.getString("home_owner", null) == owner && prefs.getString("before_home", null) == ownHome) }
+        }
+        if (journal == null) {
+            cleanupCompletedDownloads(context)
+            return InstallResolution.NEUTRAL
         }
         if (journal.session < 0 && synchronized(this) { liveOwner == journal.owner }) return InstallResolution.PENDING
         val info = context.packageManager.getPackageInfo(context.packageName, 0)
@@ -283,7 +287,22 @@ object UpdateInstaller {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
             }) } // BAL/OEM refusal is not an installation failure and is never retried automatically.
         }
+        if (result == InstallResolution.VERIFIED || result == InstallResolution.LEGACY) cleanupCompletedDownloads(context)
         return result
+    }
+
+    /** Worker-only, retryable maintenance; a cleanup failure never changes an installation result. */
+    private fun cleanupCompletedDownloads(context: Context) {
+        runCatching {
+            val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+            @Suppress("DEPRECATION")
+            val code = context.packageManager.getPackageInfo(context.packageName, 0).longVersionCode
+            val allowed = synchronized(this) {
+                InstallReconciliationRules.mayCleanDownloads(prefs.getString("owner", null), prefs.getString("result_owner", null),
+                    prefs.getString("result_kind", null), prefs.getLong("result_code", 0), code)
+            }
+            if (allowed) GitHubUpdater.cleanupDownloads(context)
+        }
     }
 
     @Synchronized internal fun resolvedOwner(context: Context, owner: String): Boolean {

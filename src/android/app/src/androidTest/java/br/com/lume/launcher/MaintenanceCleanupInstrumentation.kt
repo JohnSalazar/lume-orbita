@@ -21,6 +21,7 @@ class MaintenanceCleanupInstrumentation : Instrumentation() {
     // Add evidence directories only after a reviewed on-device inventory; never accept a caller path.
     private val approvedDirectories = setOf(
         "maintenance-state", "audit-pre-inapp-044", "audit-post-inapp-044", "audit-pre-inapp-045", "audit-post-inapp-045",
+        "audit-pre-inapp-046", "audit-post-inapp-046",
         "konka-041-locales-a", "konka-041-locales-b", "konka-041-locales-c",
         "konka-041-offline", "konka-041-online", "konka-041-short", "konka-041-short2",
         "konka-042-clock", "konka-043-updater2"
@@ -50,7 +51,7 @@ class MaintenanceCleanupInstrumentation : Instrumentation() {
                 "selftest" -> report.put("selftest", selfTest())
                 "cleanup" -> {
                     @Suppress("DEPRECATION")
-                    check(targetContext.packageManager.getPackageInfo(targetContext.packageName, 0).longVersionCode == 31L)
+                    check(targetContext.packageManager.getPackageInfo(targetContext.packageName, 0).longVersionCode == 32L)
                     check(beforeHome != null)
                     val dirs = options.getString("dirs")?.split(',') ?: emptyList()
                     val updateOption = options.getString("updates")

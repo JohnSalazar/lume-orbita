@@ -15,6 +15,8 @@ import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.InetAddress
 import java.net.URL
+import java.nio.file.Files
+import java.nio.file.LinkOption
 import java.security.MessageDigest
 import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadPoolExecutor
@@ -47,8 +49,7 @@ class GitHubUpdater internal constructor(
     fun check(): UpdateRelease? {
         // A killed process can leave an uncommitted download; expire only our old private APKs.
         val expired = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1)
-        directory.listFiles()?.filter { it.name.matches(Regex("lume-update-[A-Za-z0-9-]+\\.apk")) && it.lastModified() < expired }
-            ?.forEach { runCatching { if (it.canonicalFile.parentFile == directory.canonicalFile) it.delete() } }
+        cleanupOwnedDownloads(directory, expired)
         val current = installed()
         if (UpdateRules.compareVersions(current.version, current.version) == null) throw UpdateFailure(UpdateFailureReason.INVALID_APK)
         val bytes = transport.bytes(LIST_URL, UpdateRules.MAX_JSON_BYTES)
@@ -62,8 +63,13 @@ class GitHubUpdater internal constructor(
         val checksumText = transport.bytes(release.checksumsUrl, UpdateRules.MAX_CHECKSUM_BYTES).toString(Charsets.UTF_8)
         val expected = UpdateRules.checksum(checksumText, filename) ?: throw UpdateFailure(UpdateFailureReason.INVALID_RELEASE)
         val file = try {
-            if (!directory.isDirectory && !directory.mkdirs()) throw IOException()
-            File.createTempFile("lume-update-", ".apk", directory)
+            synchronized(downloadLock) {
+                if (Files.isSymbolicLink(directory.toPath())) throw IOException()
+                if (!directory.isDirectory && !directory.mkdirs()) throw IOException()
+                File.createTempFile("lume-update-", ".apk", directory.canonicalFile).also {
+                    activeDownloads.add(it.absolutePath)
+                }
+            }
         } catch (_: IOException) { throw UpdateFailure(UpdateFailureReason.STORAGE) }
         try {
             val digest = MessageDigest.getInstance("SHA-256")
@@ -89,7 +95,7 @@ class GitHubUpdater internal constructor(
             transport.checkCanceled()
             return result
         } catch (failure: Exception) {
-            file.delete()
+            releaseDownload(directory, file)
             throw failure
         }
     }
@@ -97,8 +103,13 @@ class GitHubUpdater internal constructor(
     internal fun validatePrepared(prepared: PreparedUpdate): UpdateApkIdentity {
         validateRelease(prepared.release)
         val file = prepared.apk
-        if (file.canonicalFile.parentFile != directory.canonicalFile || !file.name.matches(Regex("lume-update-[A-Za-z0-9-]+\\.apk")) ||
-            !file.isFile || file.length() != prepared.release.apkBytes) throw UpdateFailure(UpdateFailureReason.INVALID_APK)
+        synchronized(downloadLock) {
+            if (Files.isSymbolicLink(directory.toPath()) || file.canonicalFile.parentFile != directory.canonicalFile || !ownedApkName.matches(file.name) ||
+                !Files.isRegularFile(file.toPath(), LinkOption.NOFOLLOW_LINKS) || file.length() != prepared.release.apkBytes)
+                throw UpdateFailure(UpdateFailureReason.INVALID_APK)
+            // Includes a PreparedUpdate handed to a new updater instance for staging.
+            activeDownloads.add(File(directory.canonicalFile, file.name).absolutePath)
+        }
         val digest = MessageDigest.getInstance("SHA-256")
         var total = 0L
         file.inputStream().use { input ->
@@ -120,9 +131,7 @@ class GitHubUpdater internal constructor(
 
     fun discard(prepared: PreparedUpdate) {
         // Only our own private temporary directory; never accept arbitrary paths for cleanup.
-        runCatching {
-            if (prepared.apk.canonicalFile.parentFile == directory.canonicalFile && prepared.apk.name.matches(Regex("lume-update-[A-Za-z0-9-]+\\.apk"))) prepared.apk.delete()
-        }
+        releaseDownload(directory, prepared.apk)
     }
 
     private fun validateArchive(file: File, release: UpdateRelease): UpdateApkIdentity {
@@ -188,6 +197,56 @@ class GitHubUpdater internal constructor(
     private data class Environment(val directory: File, val installed: () -> UpdateApkIdentity, val inspect: (File) -> UpdateApkIdentity?)
     companion object {
         internal const val LIST_URL = "https://api.github.com/repos/JohnSalazar/lume-orbita/releases?per_page=30"
+        private val downloadLock = Any()
+        private val activeDownloads = mutableSetOf<String>()
+        private val ownedApkName = Regex("lume-update-[A-Za-z0-9-]+\\.apk")
+
+        /** Worker-only best effort after verified installation; never inspects or abandons sessions. */
+        fun cleanupDownloads(context: Context): Int = runCatching {
+            val app = context.applicationContext
+            if (app.packageManager.packageInstaller.mySessions.isNotEmpty()) 0
+            else cleanupOwnedDownloads(File(app.cacheDir, "updates"))
+        }.getOrDefault(0)
+
+        /** The same policy also expires old downloads on check, without touching a live prepared APK. */
+        internal fun cleanupOwnedDownloads(directory: File, expiredBefore: Long? = null,
+                                           deleteFile: (File) -> Boolean = { it.delete() }): Int {
+            var removed = 0
+            runCatching {
+                if (Files.isSymbolicLink(directory.toPath()) || !directory.isDirectory) return removed
+                val base = directory.canonicalFile
+                val started = System.nanoTime(); var examined = 0
+                Files.newDirectoryStream(base.toPath()).use { stream ->
+                    for (path in stream) {
+                        // Bounded maintenance, never recursive. A later successful update/check may retry.
+                        if (++examined > 4096 || TimeUnit.NANOSECONDS.toSeconds(System.nanoTime() - started) >= 2) break
+                        val file = path.toFile()
+                        if (!ownedApkName.matches(file.name)) continue
+                        synchronized(downloadLock) {
+                            runCatching {
+                                if (!Files.isSymbolicLink(directory.toPath()) && directory.canonicalFile == base &&
+                                    Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS) && file.canonicalFile.parentFile == base &&
+                                    file.absolutePath !in activeDownloads && (expiredBefore == null || file.lastModified() < expiredBefore) && deleteFile(file)) removed++
+                            }
+                        }
+                    }
+                }
+            }
+            return removed
+        }
+
+        private fun releaseDownload(directory: File, file: File) {
+            synchronized(downloadLock) {
+                runCatching {
+                    val base = directory.canonicalFile
+                    if (!ownedApkName.matches(file.name) || file.absoluteFile.parentFile?.canonicalFile != base) return
+                    activeDownloads.remove(File(base, file.name).absolutePath)
+                    if (!Files.isSymbolicLink(directory.toPath()) && Files.isRegularFile(file.toPath(), LinkOption.NOFOLLOW_LINKS) &&
+                        file.canonicalFile.parentFile == base) file.delete()
+                }
+            }
+        }
+
         private fun environment(app: Context): Environment {
             val pm = app.packageManager
             fun identity(info: PackageInfo): UpdateApkIdentity {

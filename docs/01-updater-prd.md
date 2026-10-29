@@ -23,6 +23,15 @@ From **Settings > About**, check the public `JohnSalazar/lume-orbita` repository
 - Do not display a generic installation error merely because the old Activity was recreated after a verified replacement. A firmware block on reopening must retain the verified result for the next foreground visit.
 - Test negative identities, stale/duplicate callbacks, legacy restrictions and Home preservation. Separately report unit/contract tests, physical installation and the OEM's observed return behavior.
 
+### Temporary APK cleanup (0.4.6 candidate)
+
+- After a durably recovered successful installation, remove all orphaned Lume APKs in the private updater cache, including remnants of older failed attempts; do not wait for their 24-hour expiry.
+- Protect an active download, prepared APK awaiting the user, and staging source through a shared ownership registry. Creation/registration and deletion checks must use the same lock.
+- Skip maintenance if any own native installer session remains or its state cannot be read. Do not abandon unknown sessions or delete Android-managed installation directories.
+- Restrict deletion to regular non-symlink files with the updater's exact generated filename pattern and canonical cache parent; never recurse into subdirectories or touch other caches, preferences or the installed APK.
+- Keep maintenance off the UI thread and bounded. A deletion failure does not change installation success. Foreground resume may retry orphan cleanup only with a recorded successful result for the current version and no new attempt owner.
+- Test concurrent download/prepared/staging ownership, unrelated files, symlinks, failed deletion/retry and the success-proof guard. Use an isolated Android cache fixture; do not seed real user cache with synthetic APKs.
+
 ## Implementation
 
 - Version **0.4.3**, `versionCode 29`; Android 11/API 30 or later, using the existing Kotlin/Views stack without a new dependency.

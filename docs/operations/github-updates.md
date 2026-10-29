@@ -40,6 +40,8 @@ Installation requires a temporary APK in private internal cache. This differs fr
 
 ## Validation and privacy
 
+The 0.4.6 candidate adds automatic removal of orphaned APKs from Lume's private `cache/updates` after a recorded successful installation. This includes older failed-download remnants. Active downloads, prepared/staging sources and pending native sessions are protected. Maintenance is bounded and best effort; reopening Lume can retry after a recorded success for the installed version. No user setting or manual cleanup action is required. Android continues to manage its native installation/session directories; Lume does not delete the installed package, preferences, other-app caches or unknown sessions. This candidate is not yet a published or physically validated 0.4.6 update.
+
 Downloads use standard TLS and fixed project URLs with restricted redirects. Validation checks byte counts, SHA-256, advertised versus actual APK version, exact package `br.com.lume.launcher`, a strictly higher `versionCode`, compatible minimum SDK and exact equality of the current signer-certificate sets. `PackageManager` inspects the archive and `PackageInstaller` verifies the package when installing. Invalid, ambiguous, modified or incompatibly signed archives are rejected.
 
 A checksum from the same repository detects corruption but is not independent authentication; comparison with the installed signing identity remains mandatory. The updater does not extract and execute downloaded classes or layouts in its process. Validated bytes are rechecked before staging.

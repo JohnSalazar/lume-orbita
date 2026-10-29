@@ -4,6 +4,7 @@ import br.com.lume.launcher.core.UpdateRules
 import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
+import org.junit.Assume
 import org.junit.rules.TemporaryFolder
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -13,6 +14,8 @@ import java.io.OutputStream
 import java.net.HttpURLConnection
 import java.net.InetAddress
 import java.net.URL
+import java.nio.file.Files
+import java.nio.file.FileSystemException
 import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.CountDownLatch
@@ -317,5 +320,107 @@ class GitHubUpdaterTest {
         failure(UpdateFailureReason.INVALID_APK) { updater.validatePrepared(result.copy(apk = outside)) }
         updater.discard(result.copy(apk = outside)); assertTrue(outside.exists())
         updater.discard(result)
+    }
+
+    @Test fun cleanupRemovesAllUnleasedOwnedApksWithoutRecursingOrTouchingOtherFiles() {
+        val directory = temporary.newFolder()
+        val old = File(directory, "lume-update-old.apk").apply { writeText("old"); check(setLastModified(1)) }
+        val recent = File(directory, "lume-update-recent.apk").apply { writeText("recent") }
+        val keep = File(directory, "base.apk").apply { writeText("installed sentinel") }
+        val other = File(directory, "lume-update-old.apk.backup").apply { writeText("keep") }
+        val folder = File(directory, "lume-update-directory.apk").apply { check(mkdir()) }
+        val nested = File(folder, "lume-update-nested.apk").apply { writeText("keep") }
+        val outside = temporary.newFile("lume-update-outside.apk").apply { writeText("keep") }
+        assertEquals(2, GitHubUpdater.cleanupOwnedDownloads(directory))
+        assertFalse(old.exists()); assertFalse(recent.exists())
+        assertEquals("installed sentinel", keep.readText()); assertEquals("keep", other.readText())
+        assertEquals("keep", nested.readText()); assertEquals("keep", outside.readText())
+        assertEquals(0, GitHubUpdater.cleanupOwnedDownloads(directory))
+    }
+
+    @Test fun cleanupProtectsAnActiveDownloadAndItsPreparedAndStagingOwnership() {
+        val directory = temporary.newFolder()
+        val old = File(directory, "lume-update-abandoned.apk").apply { writeText("old") }
+        val started = CountDownLatch(1); val resume = CountDownLatch(1)
+        val outcome = AtomicReference<PreparedUpdate?>(); val error = AtomicReference<Throwable?>()
+        val updater = client(directory, openOutput = { file ->
+            object : OutputStream() {
+                private val actual = file.outputStream()
+                private var first = true
+                override fun write(value: Int) { actual.write(value) }
+                override fun write(buffer: ByteArray, offset: Int, length: Int) {
+                    if (first) {
+                        first = false; started.countDown()
+                        check(resume.await(3, TimeUnit.SECONDS))
+                    }
+                    actual.write(buffer, offset, length)
+                }
+                override fun close() { actual.close() }
+            }
+        })
+        val thread = Thread {
+            try { outcome.set(updater.download(release)) } catch (failure: Throwable) { error.set(failure) }
+        }.apply { isDaemon = true; start() }
+        try {
+            assertTrue(started.await(3, TimeUnit.SECONDS))
+            assertEquals(1, GitHubUpdater.cleanupOwnedDownloads(directory))
+            assertFalse(old.exists())
+            assertEquals(1, directory.listFiles()!!.size)
+        } finally {
+            resume.countDown(); thread.join(4_000)
+            if (thread.isAlive) { thread.interrupt(); thread.join(1_000) }
+        }
+        assertFalse(thread.isAlive); assertNull(error.get())
+        val prepared = requireNotNull(outcome.get())
+        try {
+            assertTrue(prepared.apk.setLastModified(1))
+            assertEquals(0, GitHubUpdater.cleanupOwnedDownloads(directory, System.currentTimeMillis()))
+            assertEquals(candidate, client(directory).validatePrepared(prepared))
+            assertEquals(0, GitHubUpdater.cleanupOwnedDownloads(directory))
+            assertArrayEquals(payload, prepared.apk.readBytes())
+        } finally { updater.discard(prepared) }
+        assertFalse(prepared.apk.exists())
+    }
+
+    @Test fun cleanupErrorsAreBestEffortAndOldFailuresCanBeRetried() {
+        val directory = temporary.newFolder()
+        val stuck = File(directory, "lume-update-stuck.apk").apply { writeText("fixture") }
+        val removable = File(directory, "lume-update-removable.apk").apply { writeText("fixture") }
+        assertEquals(1, GitHubUpdater.cleanupOwnedDownloads(directory, deleteFile = { file ->
+            if (file.name == stuck.name) throw IOException("synthetic deletion failure") else file.delete()
+        }))
+        assertTrue(stuck.exists()); assertFalse(removable.exists())
+        assertEquals(1, GitHubUpdater.cleanupOwnedDownloads(directory))
+        val notDirectory = temporary.newFile().apply { writeText("keep") }
+        assertEquals(0, GitHubUpdater.cleanupOwnedDownloads(notDirectory))
+        assertEquals("keep", notDirectory.readText())
+    }
+
+    @Test fun cleanupNeverFollowsAnApkSymlinkOrAnUpdatesDirectorySymlink() {
+        val directory = temporary.newFolder()
+        val outside = temporary.newFile("lume-update-external-target.apk").apply { writeText("keep") }
+        val fileLink = File(directory, "lume-update-link.apk").toPath()
+        val directoryLink = File(temporary.root, "linked-updates").toPath()
+        try {
+            try {
+                Files.createSymbolicLink(fileLink, outside.toPath())
+                Files.createSymbolicLink(directoryLink, directory.toPath())
+            } catch (failure: UnsupportedOperationException) {
+                Assume.assumeNoException("Filesystem does not support symbolic links", failure)
+            } catch (failure: FileSystemException) {
+                if (System.getProperty("os.name", "").startsWith("Windows", ignoreCase = true) &&
+                    failure.reason.orEmpty().contains("privil", ignoreCase = true))
+                    Assume.assumeNoException("Windows symbolic-link privilege unavailable", failure)
+                else throw failure
+            }
+            val regular = File(directory, "lume-update-owned.apk").apply { writeText("owned") }
+            assertEquals(1, GitHubUpdater.cleanupOwnedDownloads(directory))
+            assertFalse(regular.exists()); assertTrue(Files.isSymbolicLink(fileLink)); assertEquals("keep", outside.readText())
+            val retained = File(directory, "lume-update-retained.apk").apply { writeText("keep") }
+            assertEquals(0, GitHubUpdater.cleanupOwnedDownloads(directoryLink.toFile()))
+            assertEquals("keep", retained.readText()); assertEquals("keep", outside.readText())
+        } finally {
+            Files.deleteIfExists(fileLink); Files.deleteIfExists(directoryLink)
+        }
     }
 }

@@ -14,6 +14,8 @@ import br.com.lume.launcher.core.InstallResolution
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.LinkOption
 import java.security.MessageDigest
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
@@ -26,10 +28,12 @@ import java.util.concurrent.atomic.AtomicReference
 class UpdateReturnInstrumentation : Instrumentation() {
     override fun onCreate(arguments: Bundle?) { super.onCreate(arguments); start() }
 
-    private class IsolatedContext(base: Context, private val isolated: SharedPreferences) : ContextWrapper(base) {
+    private class IsolatedContext(base: Context, private val isolated: SharedPreferences,
+                                  private val fixtureCache: File) : ContextWrapper(base) {
         val launches = CopyOnWriteArrayList<Intent>()
         @Volatile var beforeSourceRead: (() -> Unit)? = null
         override fun getApplicationContext(): Context = this
+        override fun getCacheDir(): File = fixtureCache
         override fun getSharedPreferences(name: String, mode: Int): SharedPreferences {
             check(name == "lume_updater") { "Unexpected preference namespace in isolated adapter" }
             return isolated
@@ -62,6 +66,9 @@ class UpdateReturnInstrumentation : Instrumentation() {
         var failure: Throwable? = null
         var isolatedName: String? = null
         var isolatedContext: IsolatedContext? = null
+        var fixtureCache: File? = null
+        var cacheParent: File? = null
+        var fixtureLink: File? = null
         var orbitaBefore: JSONObject? = null
         var actualUpdaterBefore: Map<String, Any?>? = null
         var sessionsBefore: Set<Int>? = null
@@ -76,6 +83,7 @@ class UpdateReturnInstrumentation : Instrumentation() {
             check(homeBefore != null) { "Home baseline is unresolved" }
             actualUpdaterBefore = copyState(targetContext.getSharedPreferences("lume_updater", Context.MODE_PRIVATE))
             sessionsBefore = targetContext.packageManager.packageInstaller.mySessions.map { it.sessionId }.toSet()
+            check(sessionsBefore.isEmpty()) { "Cleanup contracts require no active installer sessions" }
             accessBefore = UpdateInstaller.canInstall(targetContext)
 
             val info = targetContext.packageManager.getPackageInfo(targetContext.packageName, PackageManager.GET_SIGNING_CERTIFICATES)
@@ -100,8 +108,21 @@ class UpdateReturnInstrumentation : Instrumentation() {
             isolatedName = "qa_update_return_" + UUID.randomUUID().toString().replace("-", "")
             val prefs = targetContext.getSharedPreferences(isolatedName, Context.MODE_PRIVATE)
             check(prefs.all.isEmpty())
-            val context = IsolatedContext(targetContext, prefs); isolatedContext = context
+            val parent = targetContext.cacheDir.canonicalFile; cacheParent = parent
+            val cache = File(parent, "qa_update_return_" + UUID.randomUUID().toString().replace("-", ""))
+            check(!Files.isSymbolicLink(cache.toPath()) && cache.canonicalFile.parentFile == parent &&
+                !cache.exists() && cache.mkdir()) { "Cannot create exclusive test cache" }
+            fixtureCache = cache
+            val updates = File(cache, "updates").apply { check(mkdir()) }
+            val firstOrphan = File(updates, "lume-update-first.apk").apply { writeBytes(byteArrayOf(1, 2)) }
+            val secondOrphan = File(updates, "lume-update-second.apk").apply { writeBytes(byteArrayOf(3, 4)) }
+            val sentinel = File(updates, "keep.txt").apply { writeText("owned-sentinel") }
+            val link = File(updates, "lume-update-link.apk"); fixtureLink = link
+            // A real POSIX link, not a mocked path. Failure to create it fails this contract; no skip.
+            Files.createSymbolicLink(link.toPath(), sentinel.toPath())
+            val context = IsolatedContext(targetContext, prefs, cache); isolatedContext = context
             check(context.applicationContext === context)
+            check(context.cacheDir === cache)
             check(runCatching { context.getSharedPreferences("orbita", 0) }.isFailure)
 
             fun seed(owner: String = UUID.randomUUID().toString(), expectedHash: String = installedHash,
@@ -135,6 +156,12 @@ class UpdateReturnInstrumentation : Instrumentation() {
             // Any proposed Home return is intercepted by IsolatedContext.startActivity.
             val exactOwner = seed()
             check(await(begin(true)) == InstallResolution.VERIFIED)
+            check(!firstOrphan.exists() && !secondOrphan.exists()) { "Successful reconciliation left owned APK fixtures" }
+            check(Files.isSymbolicLink(link.toPath()) && Files.readSymbolicLink(link.toPath()) == sentinel.toPath())
+            check(sentinel.readText() == "owned-sentinel" &&
+                updates.list()!!.toSet() == setOf("keep.txt", "lume-update-link.apk"))
+            Files.delete(link.toPath()) // Unlink the entry explicitly; never follow it or delete its target.
+            check(Files.notExists(link.toPath(), LinkOption.NOFOLLOW_LINKS) && sentinel.readText() == "owned-sentinel")
             check(UpdateInstaller.resolvedOwner(context, exactOwner))
             check(!UpdateInstaller.resolvedOwner(context, "not-this-owner"))
             check(!prefs.contains("owner") && !prefs.contains("session") && !prefs.contains("token"))
@@ -146,7 +173,10 @@ class UpdateReturnInstrumentation : Instrumentation() {
             check(proposed.component == ComponentName(targetContext, LauncherActivity::class.java))
             check(proposed.action == Intent.ACTION_MAIN && proposed.hasCategory(Intent.CATEGORY_HOME))
             check(proposed.flags and Intent.FLAG_ACTIVITY_NEW_TASK != 0)
+            val retryOrphan = File(updates, "lume-update-retry.apk").apply { writeBytes(byteArrayOf(5, 6)) }
             check(await(begin()) == InstallResolution.NEUTRAL)
+            check(!retryOrphan.exists() && sentinel.readText() == "owned-sentinel" &&
+                updates.list()!!.toSet() == setOf("keep.txt")) { "Idempotent reconciliation did not retry safe cleanup" }
             check(context.launches.size == 1 && !UpdateInstaller.consumeInstallSuccess(context))
             passed("exact_identity_idempotent_result_and_single_notification")
 
@@ -197,6 +227,8 @@ class UpdateReturnInstrumentation : Instrumentation() {
             passed("legacy_without_protected_event_remains_neutral")
             check(cases.length() == 6)
             report.put("checks_passed", true).put("contract_count", cases.length()).put("home_return_intercepted_only", true)
+                .put("orphan_fixture_cleanup", true).put("orphan_fixture_retry", true).put("non_apk_sentinel_preserved", true)
+                .put("posix_file_symlink_preserved", true)
         } catch (error: Throwable) { failed(error) }
         finally {
             isolatedContext?.beforeSourceRead = null
@@ -206,6 +238,28 @@ class UpdateReturnInstrumentation : Instrumentation() {
                 check(drained) { "Adapter worker is still pending; preserve isolated data for diagnosis" }
                 isolatedName?.let { check(targetContext.deleteSharedPreferences(it)) { "Cannot remove owned test preferences" } }
                 report.put("isolated_preferences_removed", true)
+            } catch (error: Throwable) { failed(error) }
+            try {
+                check(drained) { "Adapter worker is still pending; preserve the owned cache fixture" }
+                fixtureCache?.let { cache ->
+                    val parent = requireNotNull(cacheParent)
+                    check(cache.name.startsWith("qa_update_return_") && !Files.isSymbolicLink(cache.toPath()) &&
+                        cache.canonicalFile.parentFile == parent && cache.isDirectory) { "Unsafe fixture cache location" }
+                    val updates = File(cache, "updates")
+                    check(!Files.isSymbolicLink(updates.toPath()) && updates.canonicalFile.parentFile == cache.canonicalFile &&
+                        updates.isDirectory) { "Unsafe fixture updates location" }
+                    fixtureLink?.let { link ->
+                        check(link.name == "lume-update-link.apk" && link.parentFile.canonicalFile == updates.canonicalFile)
+                        if (Files.isSymbolicLink(link.toPath())) Files.delete(link.toPath())
+                        else check(Files.notExists(link.toPath(), LinkOption.NOFOLLOW_LINKS)) { "Fixture link was replaced" }
+                    }
+                    requireNotNull(updates.listFiles()).forEach { file ->
+                        check(!Files.isSymbolicLink(file.toPath()) && file.canonicalFile.parentFile == updates.canonicalFile &&
+                            file.isFile && file.delete()) { "Cannot safely remove an owned fixture file" }
+                    }
+                    check(updates.delete() && cache.delete()) { "Cannot remove owned fixture directories" }
+                }
+                report.put("isolated_cache_removed", true)
             } catch (error: Throwable) { failed(error) }
             try {
                 orbitaBefore?.let { check(PreferenceStateSnapshot.matches(targetContext, it)) { "Real orbita preferences changed" } }

@@ -4,6 +4,19 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class InstallReconciliationRulesTest {
+    @Test fun cleanupNeedsSuccessfulCurrentResultWithoutAnActiveAttempt() {
+        for (kind in listOf("VERIFIED", "LEGACY")) {
+            assertTrue(InstallReconciliationRules.mayCleanDownloads(null, "owner", kind, 31, 31))
+            for (active in listOf("owner", "new-owner", ""))
+                assertFalse(InstallReconciliationRules.mayCleanDownloads(active, "owner", kind, 31, 31))
+        }
+        for (kind in listOf(null, "NEUTRAL", "PENDING", "unknown"))
+            assertFalse(InstallReconciliationRules.mayCleanDownloads(null, "owner", kind, 31, 31))
+        for (owner in listOf(null, "", " "))
+            assertFalse(InstallReconciliationRules.mayCleanDownloads(null, owner, "VERIFIED", 31, 31))
+        assertFalse(InstallReconciliationRules.mayCleanDownloads(null, "owner", "VERIFIED", 0, 0))
+        assertFalse(InstallReconciliationRules.mayCleanDownloads(null, "owner", "VERIFIED", 30, 31))
+    }
     @Test fun homeChangeWarningPreservesChoicesOfOtherDefaultLaunchers() {
         assertFalse(InstallReconciliationRules.homeChanged(null, "Lume"))
         assertFalse(InstallReconciliationRules.homeChanged("OtherHome", "OtherHome"))

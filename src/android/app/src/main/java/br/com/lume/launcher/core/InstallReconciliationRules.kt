@@ -11,6 +11,9 @@ object InstallReconciliationRules {
     private val hash = Regex("[0-9a-f]{64}")
     const val RETURN_WINDOW_MILLIS = 10 * 60 * 1000L
     fun homeChanged(before: String?, after: String?): Boolean = before != null && before != after
+    fun mayCleanDownloads(activeOwner: String?, resultOwner: String?, resultKind: String?, resultCode: Long, installedCode: Long): Boolean =
+        activeOwner == null && resultKind in setOf(InstallResolution.VERIFIED.name, InstallResolution.LEGACY.name) &&
+            mayShowResolved(null, resultOwner, resultCode, installedCode)
     fun needsProtectedReplay(passWasProtected: Boolean, protectedEventJoined: Boolean): Boolean =
         !passWasProtected && protectedEventJoined
     fun mayShowResolved(activeOwner: String?, resultOwner: String?, resultCode: Long, installedCode: Long): Boolean =
