@@ -32,7 +32,7 @@ The incoming 0.4.5 package must also handle a new attempt started by 0.4.4. That
 - [x] Publish the reviewed APK and English documentation, then verify the public tag, metadata, checksum manifest and exact anonymously downloaded asset bytes.
 - [x] Have the user confirm the real installation with the remote. No instrumentation ran during download, staging or native confirmation.
 - [x] Observe the foreground destination and error status; verify installed APK, signing identity, installation source, Home, content permission and terminal updater state. Automatic return was blocked, not passed.
-- [ ] Confirm exact preference preservation: comparison found 14/16 entries unchanged; only the active content tab and remembered Suggestions card differ. Manual navigation confirmation is pending. No values were restored to hide the differences.
+- [x] Compare every preference: 14/16 entries were identical; the active content tab and remembered Suggestions card differed. The user explicitly confirmed navigating tabs/cards during the test, accounting for those UI-selection changes. No values were restored.
 
 ## Physical outcome and cleanup
 
@@ -40,7 +40,7 @@ The installed package is 0.4.5/code 31 with the exact public APK hash and origin
 
 The Android log shows the original result Activity blocked after package replacement. It then starts PackageReplacedReceiver, which records the result and attempts the explicit Lume HOME Activity. Android rejects that second request with `Abort background activity starts`. This is direct evidence of the firmware restriction; HBO is the previous resumed task, not a content-card launch requested by the updater. Pressing Home remains the safe manual return path. No root, overlay, alarm, default-Home write or extra privilege was used.
 
-Before and after snapshots and raw updater evidence were exported and verified privately. The complete maps differ in the active content tab and remembered Suggestions card, while all other 14 entries match; a user question is pending to distinguish deliberate navigation from an unintended selection change. The six subsequent adapter tests and maintenance cleanup preserved their own before/after real-state snapshots exactly.
+Before and after snapshots and raw updater evidence were exported and verified privately. The complete maps differ in the active content tab and remembered Suggestions card, while all other 14 entries match. The user explicitly confirmed navigating between tabs/cards during the test; those two changes are recorded as user navigation, not silently treated as byte-identical preservation. The six subsequent adapter tests and maintenance cleanup preserved their own before/after real-state snapshots exactly.
 
 After evidence export, the reviewed maintenance helper removed 12 test/backup files totaling 8,227 logical bytes. The private updater APK directory was already empty. The auxiliary test package was uninstalled and Lume reopened. Available storage was 869,024 KiB. These are point-in-time observations, not proof that all future failed downloads are automatically removed; a separate automatic-cleanup change is being prepared.
 
@@ -61,4 +61,4 @@ Published [v0.4.5](https://github.com/JohnSalazar/lume-orbita/releases/tag/v0.4.
 | Release notes | 3,901 | `f4f0dcad956b5f582c34ecc3e377433a28d15a83efb022c464002dbdec92cb6c` |
 | SHA256SUMS.txt | 285 | Exact bytes and API digest verified |
 
-The published release assets and tag remain fixed. This living validation record records physical observations without replacing assets or moving the published tag. The real install, six adapter contracts and final maintenance cleanup are complete; the automatic foreground-return goal failed under the KONKA background-start restriction, and the two UI-selection differences remain under clarification.
+The published release assets and tag remain fixed. This living validation record records physical observations without replacing assets or moving the published tag. The real install, six adapter contracts and final maintenance cleanup are complete. The two UI-selection changes were explained by the user; the automatic foreground-return goal failed under the KONKA background-start restriction.
