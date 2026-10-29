@@ -23,7 +23,7 @@ From **Settings > About**, check the public `JohnSalazar/lume-orbita` repository
 - Do not display a generic installation error merely because the old Activity was recreated after a verified replacement. A firmware block on reopening must retain the verified result for the next foreground visit.
 - Test negative identities, stale/duplicate callbacks, legacy restrictions and Home preservation. Separately report unit/contract tests, physical installation and the OEM's observed return behavior.
 
-### Temporary APK cleanup (0.4.6 candidate)
+### Temporary APK cleanup (0.4.6)
 
 - After a durably recovered successful installation, remove all orphaned Lume APKs in the private updater cache, including remnants of older failed attempts; do not wait for their 24-hour expiry.
 - Protect an active download, prepared APK awaiting the user, and staging source through a shared ownership registry. Creation/registration and deletion checks must use the same lock.
