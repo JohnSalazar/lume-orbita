@@ -69,6 +69,7 @@ class UpdateReturnInstrumentation : Instrumentation() {
         var fixtureCache: File? = null
         var cacheParent: File? = null
         var fixtureLink: File? = null
+        var fixtureAliasRoot: File? = null
         var orbitaBefore: JSONObject? = null
         var actualUpdaterBefore: Map<String, Any?>? = null
         var sessionsBefore: Set<Int>? = null
@@ -180,6 +181,28 @@ class UpdateReturnInstrumentation : Instrumentation() {
             check(context.launches.size == 1 && !UpdateInstaller.consumeInstallSuccess(context))
             passed("exact_identity_idempotent_result_and_single_notification")
 
+            val directoryTarget = File(updates, "lume-update-directory-target.apk")
+            val targetBytes = byteArrayOf(7, 8, 9)
+            directoryTarget.writeBytes(targetBytes)
+            val alias = File(cache, "alias")
+            check(!Files.isSymbolicLink(alias.toPath()) && alias.canonicalFile.parentFile == cache.canonicalFile &&
+                !alias.exists() && alias.mkdir()) { "Cannot create owned alias fixture" }
+            fixtureAliasRoot = alias
+            val aliasUpdates = File(alias, "updates")
+            Files.createSymbolicLink(aliasUpdates.toPath(), updates.toPath())
+            val aliasContext = IsolatedContext(targetContext, prefs, alias)
+            check(aliasContext.applicationContext === aliasContext && aliasContext.cacheDir === alias)
+            check(targetContext.packageManager.packageInstaller.mySessions.isEmpty())
+            check(GitHubUpdater.cleanupDownloads(aliasContext) == 0) { "Cleanup followed a symlinked updates directory" }
+            check(Files.isSymbolicLink(aliasUpdates.toPath()) && Files.readSymbolicLink(aliasUpdates.toPath()) == updates.toPath())
+            check(directoryTarget.readBytes().contentEquals(targetBytes) && sentinel.readText() == "owned-sentinel" &&
+                updates.list()!!.toSet() == setOf("keep.txt", "lume-update-directory-target.apk"))
+            Files.delete(aliasUpdates.toPath()) // Remove the alias itself, never traverse its target.
+            check(Files.notExists(aliasUpdates.toPath(), LinkOption.NOFOLLOW_LINKS) && alias.delete())
+            check(!Files.isSymbolicLink(directoryTarget.toPath()) &&
+                directoryTarget.canonicalFile.parentFile == updates.canonicalFile && directoryTarget.delete())
+            passed("directory_symlink_cleanup_is_no_op_and_preserves_target")
+
             val badHashOwner = seed(expectedHash = oppositeHash(installedHash))
             check(await(begin()) == InstallResolution.NEUTRAL)
             check(!UpdateInstaller.resolvedOwner(context, badHashOwner) && !UpdateInstaller.consumeInstallSuccess(context))
@@ -225,10 +248,11 @@ class UpdateReturnInstrumentation : Instrumentation() {
             check(!UpdateInstaller.resolvedOwner(context, legacyOwner) && !UpdateInstaller.consumeInstallSuccess(context))
             check(!UpdateInstaller.consumeHomeWarning(context) && context.launches.isEmpty())
             passed("legacy_without_protected_event_remains_neutral")
-            check(cases.length() == 6)
+            check(cases.length() == 7)
             report.put("checks_passed", true).put("contract_count", cases.length()).put("home_return_intercepted_only", true)
                 .put("orphan_fixture_cleanup", true).put("orphan_fixture_retry", true).put("non_apk_sentinel_preserved", true)
                 .put("posix_file_symlink_preserved", true)
+                .put("posix_directory_symlink_preserved", true)
         } catch (error: Throwable) { failed(error) }
         finally {
             isolatedContext?.beforeSourceRead = null
@@ -248,6 +272,18 @@ class UpdateReturnInstrumentation : Instrumentation() {
                     val updates = File(cache, "updates")
                     check(!Files.isSymbolicLink(updates.toPath()) && updates.canonicalFile.parentFile == cache.canonicalFile &&
                         updates.isDirectory) { "Unsafe fixture updates location" }
+                    fixtureAliasRoot?.let { alias ->
+                        check(alias.name == "alias" && alias.parentFile.canonicalFile == cache.canonicalFile)
+                        if (Files.exists(alias.toPath(), LinkOption.NOFOLLOW_LINKS)) {
+                            check(!Files.isSymbolicLink(alias.toPath()) && alias.canonicalFile.parentFile == cache.canonicalFile &&
+                                alias.isDirectory) { "Unsafe fixture alias location" }
+                            val aliasUpdates = File(alias, "updates")
+                            check(aliasUpdates.parentFile.canonicalFile == alias.canonicalFile)
+                            if (Files.isSymbolicLink(aliasUpdates.toPath())) Files.delete(aliasUpdates.toPath())
+                            else check(Files.notExists(aliasUpdates.toPath(), LinkOption.NOFOLLOW_LINKS)) { "Fixture directory link was replaced" }
+                            check(alias.delete()) { "Cannot remove owned alias fixture" }
+                        }
+                    }
                     fixtureLink?.let { link ->
                         check(link.name == "lume-update-link.apk" && link.parentFile.canonicalFile == updates.canonicalFile)
                         if (Files.isSymbolicLink(link.toPath())) Files.delete(link.toPath())
